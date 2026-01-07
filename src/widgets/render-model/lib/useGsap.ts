@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import * as THREE from "three";
-import { int } from "three/tsl";
 
 export interface Rotation {
   rotation: THREE.Euler;

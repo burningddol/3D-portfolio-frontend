@@ -38,6 +38,8 @@ function Standard({ nodes }: { nodes: GLTFNodes }) {
 
 function Screen({ nodes }: { nodes: GLTFNodes }) {
   const ScreenMesh: any = nodes.Screen;
+  const { onDesktop } = useDesktop();
+
   return (
     <mesh geometry={ScreenMesh.geometry}>
       <meshBasicMaterial color="black" />
@@ -54,7 +56,7 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
           id="iframe"
           style={{
             border: "none",
-            pointerEvents: "auto",
+            pointerEvents: onDesktop ? "auto" : "none",
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",
