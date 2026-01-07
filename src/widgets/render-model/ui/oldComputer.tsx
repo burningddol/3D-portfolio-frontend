@@ -5,7 +5,7 @@ import type { ThreeEvent } from "@react-three/fiber";
 import type { RefObject } from "react";
 import { useRef } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { useDesktop } from "@/shares/zustand";
+import { useDesktop, useHover } from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
 import type { Rotation, LookAt } from "../lib/useGsap";
 
@@ -90,6 +90,7 @@ export default function ObjectRender({ orbitRef }: Props) {
   const { camera } = useThree();
 
   const { onDesktop, setOnDesktop } = useDesktop();
+  const { setIsHovered } = useHover();
   const { changeRotation, moveLookAt } = useGsap;
 
   const zoom = (e: ThreeEvent<PointerEvent>): void => {
@@ -156,6 +157,8 @@ export default function ObjectRender({ orbitRef }: Props) {
       ref={deskTopGroup}
       onPointerDown={zoom}
       onPointerMissed={missed}
+      onPointerOver={() => setIsHovered(true)}
+      onPointerOut={() => setIsHovered(false)}
     >
       <Standard nodes={nodes} />
       <Screen nodes={nodes} />
