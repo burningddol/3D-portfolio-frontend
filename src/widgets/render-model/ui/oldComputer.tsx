@@ -65,7 +65,7 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
           }}
           width={1336}
           height={1060}
-          src={`${window.location.origin}/screen`}
+          src={`/screen`}
         />
       </Html>
     </mesh>
