@@ -5,6 +5,7 @@ import { int } from "three/tsl";
 export interface Rotation {
   rotation: THREE.Euler;
   pointer: THREE.Vector2;
+  useY?: boolean;
 }
 
 export interface LookAt {
@@ -21,11 +22,11 @@ interface UseGsap {
 
 const useGsap: UseGsap = { changeRotation: () => {}, moveLookAt: () => {} };
 
-useGsap.changeRotation = ({ rotation, pointer }: Rotation) => {
+useGsap.changeRotation = ({ rotation, pointer, useY }: Rotation) => {
   gsap.to(rotation, {
     duration: 2,
     repeat: 0,
-    x: 0,
+    x: useY ? pointer.y : 0,
     y: -pointer.x / 3.5,
     z: 0,
     ease: "power3.out",

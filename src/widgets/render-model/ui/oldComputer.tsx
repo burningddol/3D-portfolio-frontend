@@ -40,12 +40,13 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
   const ScreenMesh: any = nodes.Screen;
   return (
     <mesh geometry={ScreenMesh.geometry}>
+      <meshBasicMaterial color="black" />
       <Html
         transform
         occlude
         distanceFactor={1}
         rotation={[-0.1, 0, 0]}
-        position={[0, 36.38, 11.9]}
+        position={[0, 36.5, 11.9]}
         center
         pointerEvents="none"
       >
@@ -73,7 +74,7 @@ type Props = {
   orbitRef: RefObject<OrbitControlsImpl | null>;
 };
 
-const FLY_ZOOM = new THREE.Vector3(0, 40, 48);
+const FLY_ZOOM = new THREE.Vector3(0, 37, 48);
 const LOOKAT_ZOOM = new THREE.Vector3(0, 30, 0);
 
 const FLY_MISSED = new THREE.Vector3(-70, 60, 110);
@@ -93,6 +94,8 @@ export default function ObjectRender({ orbitRef }: Props) {
 
   const zoom = (e: ThreeEvent<PointerEvent>): void => {
     e.stopPropagation();
+    if (onDesktop) return;
+    if (e.eventObject.name !== "desktopGroup") return;
 
     const argues: LookAt = {
       position: camera.position,
@@ -101,13 +104,10 @@ export default function ObjectRender({ orbitRef }: Props) {
       lookAt: LOOKAT_ZOOM,
       isOut: false,
     };
-    if (e.eventObject.name !== "desktopGroup") return;
 
-    if (!onDesktop) {
-      moveLookAt(argues);
+    moveLookAt(argues);
 
-      setOnDesktop(true);
-    }
+    setOnDesktop(true);
   };
 
   const missed = (): void => {
@@ -130,13 +130,21 @@ export default function ObjectRender({ orbitRef }: Props) {
 
   useFrame((state) => {
     const desktop = deskTopGroup.current as THREE.Group;
-    const argues: Rotation = {
+    const argues1: Rotation = {
       rotation: desktop.rotation,
       pointer: state.pointer,
     };
 
-    if (!onDesktop) {
-      changeRotation(argues);
+    const argues2: Rotation = {
+      rotation: desktop.rotation,
+      pointer: new THREE.Vector2(0, 0.05),
+      useY: true,
+    };
+
+    if (onDesktop) {
+      changeRotation(argues2);
+    } else {
+      changeRotation(argues1);
     }
   });
 
