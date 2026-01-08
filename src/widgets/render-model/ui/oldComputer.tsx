@@ -164,6 +164,7 @@ export default function ObjectRender({ orbitRef }: Props) {
   const missed = useCallback(
     (): (() => void) => (): void => {
       if (onControl) return;
+
       const argues: LookAt = {
         position: camera.position,
         fly: FLY_MISSED,
@@ -188,8 +189,9 @@ export default function ObjectRender({ orbitRef }: Props) {
   );
 
   const inOut = (): void => {
-    if (!onDesktop) return;
+    //if (!onDesktop) return;  어차피 useFrame에서 rotation중 윈도우종료버튼때도 돌아가게하려고 잠시 뺌
     const isMissed = missed();
+
     isMissed();
   };
 
@@ -230,7 +232,6 @@ export default function ObjectRender({ orbitRef }: Props) {
       if (e.data?.type !== "SET_SCREEN") return;
 
       if (e.data.payload.on === false) {
-        console.log("missed");
         inOut();
       }
     };
