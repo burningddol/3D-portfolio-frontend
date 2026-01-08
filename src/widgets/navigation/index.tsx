@@ -42,7 +42,7 @@ export default function Navigation({ setOnScreen }: Props) {
           size="large"
           onClick={handleClick}
         >
-          시작
+          Start
         </Win98Button>
       </div>
       {isShowMenu && (

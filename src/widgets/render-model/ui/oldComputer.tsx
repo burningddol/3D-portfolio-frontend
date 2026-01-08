@@ -126,7 +126,6 @@ const FLY_MISSED = new THREE.Vector3(-70, 60, 110);
 const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
 
 export default function ObjectRender({ orbitRef }: Props) {
-  let timer: number;
   const { nodes } = useGLTF("/old_computer.glb");
 
   const control = orbitRef as RefObject<OrbitControlsImpl>;

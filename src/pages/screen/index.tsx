@@ -1,7 +1,7 @@
 import styles from "./style/screen.module.scss";
 import { useState, useEffect } from "react";
 import Glitch from "./ui/glitch";
-import Navigation from "@/widgets/navigation/navigation";
+import Navigation from "@/widgets/navigation";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
