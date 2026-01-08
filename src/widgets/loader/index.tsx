@@ -3,17 +3,21 @@ import styles from "./style/loader.module.scss";
 import { useState, useEffect } from "react";
 import ProgressBar from "./ui/progressBar";
 import { useProgress } from "@react-three/drei";
+import { useProject } from "@/shares/zustand";
 
 export default function Loader() {
   const [isShowModel, setIsShowModel] = useState<boolean>(true);
   const [filteredProgress, setFilteredProgress] = useState<number>(0);
   const { progress, active } = useProgress();
+  const { setOnProject } = useProject();
+
   const percent: number = Math.floor(filteredProgress);
 
   const isActive: boolean = !active && percent == 100;
 
   const handleClick = (): void => {
     setIsShowModel(false);
+    setOnProject(true);
   };
 
   useEffect(() => {

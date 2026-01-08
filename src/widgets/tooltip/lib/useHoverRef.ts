@@ -26,7 +26,7 @@ export default function useHoverRef() {
       changeOpacity({
         el: tooltip,
         attr: "opacity",
-        value: `${isActive ? "0.8" : "0"}`,
+        value: `${isActive ? "1" : "0"}`,
       });
       changeOpacity({
         el: balloon,
@@ -36,7 +36,7 @@ export default function useHoverRef() {
       changeOpacity({
         el: text,
         attr: "opacity",
-        value: `${isActive ? "0.8" : "0"}`,
+        value: `${isActive ? "1" : "0"}`,
       });
     },
     [tooltip, balloon, text]

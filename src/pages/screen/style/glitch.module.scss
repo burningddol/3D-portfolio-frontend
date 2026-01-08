@@ -1,0 +1,17 @@
+.bgWrap {
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.bgVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(10) contrast(0.5);
+  opacity: 0.13;
+}

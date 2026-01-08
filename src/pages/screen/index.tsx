@@ -1,5 +1,7 @@
 import styles from "./style/screen.module.scss";
 import { useState, useEffect } from "react";
+import Glitch from "./ui/glitch";
+import Navigation from "@/widgets/navigation/navigation";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
@@ -12,24 +14,39 @@ export default function Screen() {
     onScreen ? styles.screenOn : styles.screenOff
   }`;
 
+  //송신
+  useEffect(() => {
+    window.parent.postMessage(
+      {
+        type: "SET_SCREEN",
+        payload: {
+          on: onScreen,
+        },
+      },
+      window.location.origin
+    );
+  }, [onScreen]);
+
+  //수신
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.origin !== window.location.origin) return;
       if (e.data?.type !== "DESKTOP_STATE") return;
-
-      setOnScreen(e.data.payload.on);
+      if (e.data.payload.on === true) {
+        setOnScreen(true);
+      }
     };
 
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
   }, []);
 
-  console.log(onScreen);
   return (
     <>
+      <Glitch />
       <div className={oldEffectStyles} />
       <div className={wallPaperStyles}>
-        <div className={styles.nav}>d</div>
+        <Navigation setOnScreen={setOnScreen} />
       </div>
     </>
   );

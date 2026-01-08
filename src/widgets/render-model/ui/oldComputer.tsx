@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Html, useGLTF, useTexture } from "@react-three/drei";
+import { Html, useGLTF, useTexture, useVideoTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { ThreeEvent } from "@react-three/fiber";
 import type { RefObject } from "react";
@@ -41,7 +41,13 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const onDesktop = useDesktop((s) => s.onDesktop);
   const texture = useTexture("/oldEffect.png");
+  const noise = useVideoTexture("/glitch.mp4", {
+    loop: true,
+    muted: true,
+    autoplay: true,
+  });
 
+  //송신
   useEffect(() => {
     iframeRef.current?.contentWindow?.postMessage(
       {
@@ -56,9 +62,20 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
 
   return (
     <>
+      <mesh geometry={ScreenMesh.geometry} visible={!onDesktop}>
+        <meshBasicMaterial
+          map={noise}
+          toneMapped={false}
+          transparent
+          opacity={0.1}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+
       <mesh geometry={ScreenMesh.geometry}>
         <meshBasicMaterial color="black" toneMapped={false} />
       </mesh>
+
       <mesh geometry={ScreenMesh.geometry}>
         <meshBasicMaterial
           alphaMap={texture}
@@ -67,6 +84,7 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
           toneMapped={false}
           depthWrite={false}
         />
+
         <Html
           transform
           occlude
@@ -175,6 +193,22 @@ export default function ObjectRender({ orbitRef }: Props) {
       changeRotation(argues1);
     }
   });
+
+  //수신
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return;
+      if (e.data?.type !== "SET_SCREEN") return;
+
+      if (e.data.payload.on === false) {
+        console.log("missed");
+        missed();
+      }
+    };
+
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, [missed]);
 
   return (
     <group

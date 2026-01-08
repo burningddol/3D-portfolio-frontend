@@ -35,3 +35,9 @@ body {
   font-weight: 700;
   src: url("../fonts/SpaceMono-Bold.ttf") format("woff");
 }
+
+@font-face {
+  font-family: "micross";
+  font-weight: 700;
+  src: url("../fonts/micross.ttf") format("woff");
+}

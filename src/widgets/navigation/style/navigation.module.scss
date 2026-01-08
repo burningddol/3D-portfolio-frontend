@@ -1,0 +1,25 @@
+$win98-face: #c0c0c0;
+$win98-wallPaper: #008081;
+$win98-highlight: #dfdfdf;
+$win98-light: #ffffff;
+$win98-dark: #404040;
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: $win98-face;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 2px solid $win98-light;
+  box-shadow: inset 0px 2px 0 0 $win98-highlight;
+}
+
+.icon {
+  width: 27px;
+  height: 27px;
+  margin-right: 3px;
+}

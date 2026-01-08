@@ -1,0 +1,83 @@
+/* Win98 기본 팔레트 */
+$win98-face: #c0c0c0;
+$win98-shadow: #808080;
+$win98-dark: #404040;
+$win98-light: #ffffff;
+$win98-highlight: #dfdfdf;
+$win98-focus: #000000;
+$win98-primary: #000080;
+
+%win98-font {
+  font-family: "spaceMono";
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.container {
+  width: 350px;
+  height: 400px;
+  position: absolute;
+  bottom: 56px;
+  left: 5px;
+
+  display: flex;
+
+  background-color: $win98-face;
+
+  border-top: 2px solid $win98-light;
+  border-left: 2px solid $win98-light;
+  border-right: 2px solid $win98-dark;
+  border-bottom: 2px solid $win98-dark;
+
+  /* 안쪽 하이라이트/그림자 (클래식한 입체감) */
+  box-shadow:
+    inset 1px 1px 0 0 $win98-highlight,
+    inset -1px -1px 0 0 $win98-shadow;
+}
+
+.osName {
+  @extend %win98-font;
+  font-size: 40px;
+  width: 63px;
+  height: 100%;
+  background-color: $win98-shadow;
+  color: $win98-face;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+
+  transform: scaleX(-1) scaleY(-1);
+}
+
+.os {
+  position: relative;
+  left: 5px;
+  top: 3px;
+  font-size: 56px;
+}
+
+.menuList {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+
+  .menuItem {
+    @extend %win98-font;
+    font-size: 28px;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 99%;
+    height: 80px;
+    background-color: $win98-face;
+    border: none;
+    border-top: 2px solid $win98-light;
+
+    img {
+      width: 45px;
+      height: 45px;
+      margin-right: 10px;
+    }
+  }
+}

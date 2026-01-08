@@ -11,15 +11,8 @@ $win98-primary: #000080;
 
 /* 폰트: Win98 느낌 (MS Sans Serif 대체로 Tahoma) */
 %win98-font {
-  font-family:
-    Tahoma,
-    "MS Sans Serif",
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    Arial,
-    sans-serif;
+  font-family: "spaceMono";
+  font-weight: 700;
   font-size: 13px;
   line-height: 1;
 }
@@ -37,10 +30,10 @@ $win98-primary: #000080;
 }
 
 @mixin bevel-in {
-  border-top: 2px solid $win98-dark;
-  border-left: 2px solid $win98-dark;
-  border-right: 2px solid $win98-light;
-  border-bottom: 2px solid $win98-light;
+  border-top: 3px solid $win98-dark;
+  border-left: 3px solid $win98-dark;
+  border-right: 3px solid $win98-light;
+  border-bottom: 3px solid $win98-light;
 
   box-shadow:
     inset 1px 1px 0 0 $win98-shadow,
@@ -142,14 +135,16 @@ $win98-primary: #000080;
 /* 큰 사이즈 */
 .large {
   @extend .button;
-  height: 34px;
+  height: 52px;
   padding: 0 14px;
-  font-size: 14px;
+  font-size: 30px;
 }
 
 /* 버튼 내부 아이콘(선택) */
 .icon {
-  width: 14px;
-  height: 14px;
-  display: inline-block;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

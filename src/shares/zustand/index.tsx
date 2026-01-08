@@ -23,3 +23,15 @@ export const useHover = create<Hover>((set) => ({
     set(() => ({ isHovered: isActive }));
   },
 }));
+
+type Project = {
+  onProject: boolean;
+  setOnProject: (isActive: boolean) => void;
+};
+
+export const useProject = create<Project>((set) => ({
+  onProject: false,
+  setOnProject(isActive: boolean) {
+    set(() => ({ onProject: isActive }));
+  },
+}));

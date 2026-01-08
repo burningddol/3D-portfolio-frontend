@@ -1,0 +1,35 @@
+.cursor {
+  display: inline-block;
+  width: 8px;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 5px 0 5px;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: black;
+  font-family: "spaceMono";
+  font-weight: 400;
+  font-size: 17px;
+  color: white;
+  white-space: pre-wrap;
+}
+
+.info {
+  top: 100px;
+  left: 200px;
+  font-size: 20px;
+  height: 30px;
+}
