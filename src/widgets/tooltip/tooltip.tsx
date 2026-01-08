@@ -1,5 +1,5 @@
 import "./style/tooltip.scss";
-import useHoverRef from "./lib/activateHoverSystem";
+import useHoverRef from "./lib/useHoverRef";
 
 export default function Tooltip() {
   const tooltipRef = useHoverRef();

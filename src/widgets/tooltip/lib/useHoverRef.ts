@@ -51,7 +51,6 @@ export default function useHoverRef() {
       if (!tooltip) return;
 
       if (!onDesktop && isHovered) {
-        console.log(1);
         tooltip.style.top = `${e.clientY + 10}px`;
         tooltip.style.left = `${e.clientX + 25}px`;
       }

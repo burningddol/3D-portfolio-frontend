@@ -6,9 +6,9 @@
   box-sizing: border-box;
 }
 
-:root {
+body {
+  position: relative;
 }
-
 /*---------------font------------*/
 
 @font-face {
@@ -21,4 +21,16 @@
   font-family: "pretendard";
   font-weight: 700;
   src: url("../fonts/Pretendard-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "spaceMono";
+  font-weight: 500;
+  src: url("../fonts/SpaceMono-Regular.ttf") format("woff");
+}
+
+@font-face {
+  font-family: "spaceMono";
+  font-weight: 700;
+  src: url("../fonts/SpaceMono-Bold.ttf") format("woff");
 }

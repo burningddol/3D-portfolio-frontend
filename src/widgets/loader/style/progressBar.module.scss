@@ -1,0 +1,30 @@
+.flexBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0 10px;
+  margin: 10px 0 20px 0;
+}
+
+.progressBox {
+  width: 475px;
+  height: 22px;
+  background-color: transparent;
+  display: grid;
+  grid-template-columns: repeat(100, 1fr);
+  gap: 0 1px;
+}
+
+.progressItem {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.info {
+  padding-top: 15px;
+  position: relative;
+  top: 5px;
+  font-size: 14px;
+}

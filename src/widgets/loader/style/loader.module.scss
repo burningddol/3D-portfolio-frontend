@@ -1,0 +1,51 @@
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999999;
+  font-family: "spaceMono";
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+}
+
+.dosModal {
+  width: 600px;
+  height: 400px;
+  background-color: #000080;
+
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+}
+
+.borderBox {
+  width: 550px;
+  height: 360px;
+  background-color: transparent;
+  border: 7px solid white;
+  margin: 20px auto;
+  padding: 15px 15px;
+}
+
+.pressBtn {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  border: none;
+  width: 100px;
+  height: 35px;
+  background-color: white;
+  font-size: 17px;
+  font-weight: 700;
+
+  &:hover {
+    background-color: #008080;
+  }
+}
