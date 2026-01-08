@@ -43,8 +43,10 @@ export default function useHoverRef() {
   );
 
   const switchingCursor = useCallback(() => {
-    document.body.style.cursor = !isHovered ? "pointer" : "";
-  }, [isHovered]);
+    if (onDesktop) {
+      document.body.style.cursor = !isHovered ? "pointer" : "";
+    }
+  }, [isHovered, onDesktop]);
 
   const handleMouseMove = useCallback(
     (e: globalThis.MouseEvent) => {
