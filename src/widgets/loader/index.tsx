@@ -3,7 +3,6 @@ import styles from "./style/loader.module.scss";
 import { useState, useEffect } from "react";
 import ProgressBar from "./ui/progressBar";
 import { useProgress } from "@react-three/drei";
-import { MouseEvent } from "react";
 
 export default function Loader() {
   const [isShowModel, setIsShowModel] = useState<boolean>(true);
@@ -11,7 +10,7 @@ export default function Loader() {
   const { progress, active } = useProgress();
   const percent: number = Math.floor(filteredProgress);
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>): void => {
+  const handleClick = (): void => {
     setIsShowModel(false);
   };
 
