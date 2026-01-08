@@ -3,9 +3,9 @@ import { Html, useGLTF, useTexture, useVideoTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { ThreeEvent } from "@react-three/fiber";
 import type { RefObject } from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { useDesktop, useHover } from "@/shares/zustand";
+import { useDesktop, useHover, useControlOrbit } from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
 import type { Rotation, LookAt } from "../lib/useGsap";
 
@@ -40,6 +40,7 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
   const ScreenMesh: any = nodes.Screen;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const onDesktop = useDesktop((s) => s.onDesktop);
+  const onControl = useControlOrbit((s) => s.onControl);
   const texture = useTexture("/oldEffect.png");
   const noise = useVideoTexture("/glitch.mp4", {
     loop: true,
@@ -54,11 +55,12 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
         type: "DESKTOP_STATE",
         payload: {
           on: onDesktop,
+          onControl: onControl,
         },
       },
       window.location.origin
     );
-  }, [onDesktop]);
+  }, [onDesktop, onControl]);
 
   return (
     <>
@@ -135,11 +137,14 @@ export default function ObjectRender({ orbitRef }: Props) {
 
   const { onDesktop, setOnDesktop } = useDesktop();
   const { setIsHovered } = useHover();
+  const { onControl, setOnControl } = useControlOrbit();
+
   const { changeRotation, moveLookAt } = useGsap;
 
   const zoom = (e: ThreeEvent<PointerEvent>): void => {
     e.stopPropagation();
     if (onDesktop) return;
+    if (onControl) return;
     if (e.eventObject.name !== "desktopGroup") return;
 
     const argues: LookAt = {
@@ -153,23 +158,45 @@ export default function ObjectRender({ orbitRef }: Props) {
     moveLookAt(argues);
 
     setOnDesktop(true);
+    setOnControl(false);
   };
 
-  const missed = (): void => {
+  const missed = useCallback(
+    (): (() => void) => (): void => {
+      if (onControl) return;
+      const argues: LookAt = {
+        position: camera.position,
+        fly: FLY_MISSED,
+        target: control.current.target,
+        lookAt: LOOKAT_MISSED,
+        isOut: true,
+      };
+
+      moveLookAt(argues);
+
+      setOnDesktop(false);
+    },
+    [
+      onControl,
+      camera,
+      FLY_MISSED,
+      control,
+      LOOKAT_MISSED,
+      moveLookAt,
+      setOnDesktop,
+    ]
+  );
+
+  const inOut = (): void => {
     if (!onDesktop) return;
-
-    const argues: LookAt = {
-      position: camera.position,
-      fly: FLY_MISSED,
-      target: control.current.target,
-      lookAt: LOOKAT_MISSED,
-      isOut: true,
-    };
-
-    moveLookAt(argues);
-
-    setOnDesktop(false);
+    const isMissed = missed();
+    isMissed();
   };
+
+  const controlOut = useCallback((): void => {
+    const isMissed = missed();
+    isMissed();
+  }, [onControl]); // deps에 missed추가하면 무한렌더링
 
   useFrame((state) => {
     const desktop = deskTopGroup.current as THREE.Group;
@@ -184,12 +211,17 @@ export default function ObjectRender({ orbitRef }: Props) {
       useY: true,
     };
 
-    if (onDesktop) {
+    if (onDesktop && !onControl) {
       changeRotation(argues2);
-    } else {
+    }
+    if (!onDesktop && !onControl) {
       changeRotation(argues1);
     }
   });
+
+  useEffect(() => {
+    if (!onControl) controlOut();
+  }, [controlOut, onControl]);
 
   //수신
   useEffect(() => {
@@ -199,7 +231,7 @@ export default function ObjectRender({ orbitRef }: Props) {
 
       if (e.data.payload.on === false) {
         console.log("missed");
-        missed();
+        inOut();
       }
     };
 
@@ -214,7 +246,7 @@ export default function ObjectRender({ orbitRef }: Props) {
       rotation={[0, 0, 0]}
       ref={deskTopGroup}
       onPointerDown={zoom}
-      onPointerMissed={missed}
+      onPointerMissed={inOut}
       onPointerOver={() => setIsHovered(true)}
       onPointerOut={() => setIsHovered(false)}
     >

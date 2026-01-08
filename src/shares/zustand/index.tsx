@@ -35,3 +35,15 @@ export const useProject = create<Project>((set) => ({
     set(() => ({ onProject: isActive }));
   },
 }));
+
+type Control = {
+  onControl: boolean;
+  setOnControl: (isActive: boolean) => void;
+};
+
+export const useControlOrbit = create<Control>((set) => ({
+  onControl: false,
+  setOnControl(isActive: boolean) {
+    set(() => ({ onControl: isActive }));
+  },
+}));

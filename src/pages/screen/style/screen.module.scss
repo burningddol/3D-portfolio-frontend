@@ -60,3 +60,12 @@ $win98-dark: #404040;
   z-index: 99999;
   opacity: 0.25;
 }
+
+.screenOn.onControl {
+  transform: scale(1);
+  animation: none;
+}
+.screenOff.onControl {
+  transform: scale(0);
+  animation: none;
+}

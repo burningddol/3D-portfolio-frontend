@@ -4,9 +4,11 @@ import ObjectRender from "./ui/oldComputer";
 import LightObject from "./ui/lightObject";
 import { Suspense, useRef } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { useControlOrbit } from "@/shares/zustand";
 
 export default function RenderModel() {
   const orbit = useRef<OrbitControlsImpl | null>(null);
+  const onControl = useControlOrbit((s) => s.onControl);
 
   return (
     <Suspense fallback={null}>
@@ -15,13 +17,10 @@ export default function RenderModel() {
       >
         <OrbitControls
           ref={orbit}
-          enablePan={false}
-          enableZoom={false}
-          enableRotate={false}
+          enablePan={onControl}
+          enableZoom={onControl}
+          enableRotate={onControl}
           maxDistance={130}
-          maxPolarAngle={Math.PI / 2}
-          minAzimuthAngle={-Math.PI / 2}
-          maxAzimuthAngle={Math.PI / 2}
         />
         <LightObject />
         <ObjectRender orbitRef={orbit} />

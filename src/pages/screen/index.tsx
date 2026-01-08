@@ -5,14 +5,15 @@ import Navigation from "@/widgets/navigation";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
+  const [onControl, setOnControl] = useState<boolean>(false);
 
   const wallPaperStyles = `${styles.wallPaper} ${
     onScreen ? styles.screenOn : styles.screenOff
-  }`;
+  } ${onControl && styles.onControl}`;
 
   const oldEffectStyles = `${styles.oldEffect} ${
     onScreen ? styles.screenOn : styles.screenOff
-  }`;
+  } ${onControl && styles.onControl}`;
 
   //송신
   useEffect(() => {
@@ -35,6 +36,8 @@ export default function Screen() {
       if (e.data.payload.on === true) {
         setOnScreen(true);
       }
+
+      setOnControl(e.data.payload.onControl);
     };
 
     window.addEventListener("message", handler);
