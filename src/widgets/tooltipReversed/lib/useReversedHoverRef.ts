@@ -43,14 +43,14 @@ export default function useHoverRef() {
   );
 
   const switchingCursor = useCallback(() => {
-    document.body.style.cursor = isHovered ? "pointer" : "";
+    document.body.style.cursor = !isHovered ? "pointer" : "";
   }, [isHovered]);
 
   const handleMouseMove = useCallback(
     (e: globalThis.MouseEvent) => {
       if (!tooltip) return;
 
-      if (!onDesktop && isHovered) {
+      if (onDesktop && !isHovered) {
         tooltip.style.top = `${e.clientY + 10}px`;
         tooltip.style.left = `${e.clientX + 25}px`;
       }
@@ -66,7 +66,7 @@ export default function useHoverRef() {
   }, [handleMouseMove]);
 
   useEffect(() => {
-    const isActive: boolean = !onDesktop && isHovered;
+    const isActive: boolean = onDesktop && !isHovered;
     hoverTooltip(isActive);
     switchingCursor();
   }, [onDesktop, isHovered, hoverTooltip]);

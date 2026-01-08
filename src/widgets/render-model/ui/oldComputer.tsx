@@ -157,21 +157,19 @@ export default function ObjectRender({ orbitRef }: Props) {
   };
 
   const missed = (): void => {
-    if (onDesktop) {
-      if (timer) return;
+    if (!onDesktop) return;
 
-      const argues: LookAt = {
-        position: camera.position,
-        fly: FLY_MISSED,
-        target: control.current.target,
-        lookAt: LOOKAT_MISSED,
-        isOut: true,
-      };
+    const argues: LookAt = {
+      position: camera.position,
+      fly: FLY_MISSED,
+      target: control.current.target,
+      lookAt: LOOKAT_MISSED,
+      isOut: true,
+    };
 
-      moveLookAt(argues);
+    moveLookAt(argues);
 
-      timer = setTimeout(() => setOnDesktop(false), 1200);
-    }
+    setOnDesktop(false);
   };
 
   useFrame((state) => {
