@@ -10,6 +10,8 @@ export default function Loader() {
   const { progress, active } = useProgress();
   const percent: number = Math.floor(filteredProgress);
 
+  const isActive: boolean = !active && percent == 100;
+
   const handleClick = (): void => {
     setIsShowModel(false);
   };
@@ -27,7 +29,7 @@ export default function Loader() {
 
           <ProgressBar percent={percent} />
 
-          {!active && (
+          {isActive && (
             <>
               <span>Press the button to continue... </span>
               <button onClick={handleClick} className={styles.pressBtn}>
