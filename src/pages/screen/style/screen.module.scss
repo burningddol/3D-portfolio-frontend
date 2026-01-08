@@ -1,0 +1,73 @@
+$win98-face: #c0c0c0;
+$win98-wallPaper: #008081;
+$win98-highlight: #dfdfdf;
+$win98-light: #ffffff;
+$win98-dark: #404040;
+
+@keyframes screenOn {
+  0% {
+    transform: scaleX(0.2) scaleY(0.02);
+  }
+  60% {
+    transform: scaleX(1.05) scaleY(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes screenOff {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+.screenOn {
+  animation: screenOn 0.4s ease-out forwards;
+  transform-origin: center center;
+}
+
+.screenOff {
+  animation: screenOff 0.25s ease-in forwards;
+  transform-origin: center center;
+}
+
+.wallPaper {
+  width: 100vw;
+  height: 100vh;
+  background-color: $win98-wallPaper;
+  position: relative;
+}
+
+.oldEffect {
+  background-image: url(/oldEffect.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+
+  z-index: 99999999999;
+  opacity: 0.25;
+}
+
+.nav {
+  width: 100%;
+  height: 50px;
+  background-color: $win98-face;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 2px solid $win98-light;
+  box-shadow: inset 0px 2px 0 0 $win98-highlight;
+}

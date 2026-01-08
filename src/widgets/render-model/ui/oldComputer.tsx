@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { Html, useGLTF } from "@react-three/drei";
+import { Html, useGLTF, useTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { ThreeEvent } from "@react-three/fiber";
 import type { RefObject } from "react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useDesktop, useHover } from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
@@ -38,37 +38,62 @@ function Standard({ nodes }: { nodes: GLTFNodes }) {
 
 function Screen({ nodes }: { nodes: GLTFNodes }) {
   const ScreenMesh: any = nodes.Screen;
-  const { onDesktop } = useDesktop();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const onDesktop = useDesktop((s) => s.onDesktop);
+  const texture = useTexture("/oldEffect.png");
+
+  useEffect(() => {
+    iframeRef.current?.contentWindow?.postMessage(
+      {
+        type: "DESKTOP_STATE",
+        payload: {
+          on: onDesktop,
+        },
+      },
+      window.location.origin
+    );
+  }, [onDesktop]);
 
   return (
-    <mesh geometry={ScreenMesh.geometry}>
-      <meshBasicMaterial color="black" />
-      <Html
-        transform
-        occlude
-        distanceFactor={1}
-        rotation={[-0.1, 0, 0]}
-        position={[0, 36.5, 11.9]}
-        center
-        pointerEvents="none"
-      >
-        <iframe
-          id="iframe"
-          style={{
-            border: "none",
-            pointerEvents: onDesktop ? "auto" : "none",
-            WebkitUserSelect: "none",
-            MozUserSelect: "none",
-            msUserSelect: "none",
-            userSelect: "none",
-            transform: "scale(10)",
-          }}
-          width={1336}
-          height={1060}
-          src={`https://velog.io/@junbug/posts`}
+    <>
+      <mesh geometry={ScreenMesh.geometry}>
+        <meshBasicMaterial color="black" toneMapped={false} />
+      </mesh>
+      <mesh geometry={ScreenMesh.geometry}>
+        <meshBasicMaterial
+          alphaMap={texture}
+          transparent
+          opacity={0.25}
+          toneMapped={false}
+          depthWrite={false}
         />
-      </Html>
-    </mesh>
+        <Html
+          transform
+          occlude
+          distanceFactor={7}
+          rotation={[-0.09, 0, 0]}
+          position={[0.01, 36.5, 11.9]}
+          center
+          pointerEvents="none"
+        >
+          <iframe
+            ref={iframeRef}
+            id="iframe"
+            style={{
+              border: "none",
+              pointerEvents: onDesktop ? "auto" : "none",
+              WebkitUserSelect: "none",
+              MozUserSelect: "none",
+              msUserSelect: "none",
+              userSelect: "none",
+            }}
+            width={1840}
+            height={1440}
+            src={`/screen`}
+          />
+        </Html>
+      </mesh>
+    </>
   );
 }
 
@@ -127,7 +152,7 @@ export default function ObjectRender({ orbitRef }: Props) {
 
       moveLookAt(argues);
 
-      timer = setTimeout(() => setOnDesktop(false), 2000);
+      timer = setTimeout(() => setOnDesktop(false), 1200);
     }
   };
 

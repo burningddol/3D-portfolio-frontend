@@ -1,0 +1,155 @@
+/* win98-button.module.scss */
+
+/* Win98 기본 팔레트 */
+$win98-face: #c0c0c0;
+$win98-shadow: #808080;
+$win98-dark: #404040;
+$win98-light: #ffffff;
+$win98-highlight: #dfdfdf;
+$win98-focus: #000000;
+$win98-primary: #000080;
+
+/* 폰트: Win98 느낌 (MS Sans Serif 대체로 Tahoma) */
+%win98-font {
+  font-family:
+    Tahoma,
+    "MS Sans Serif",
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  font-size: 13px;
+  line-height: 1;
+}
+
+@mixin bevel-out {
+  border-top: 2px solid $win98-light;
+  border-left: 2px solid $win98-light;
+  border-right: 2px solid $win98-dark;
+  border-bottom: 2px solid $win98-dark;
+
+  /* 안쪽 하이라이트/그림자 (클래식한 입체감) */
+  box-shadow:
+    inset 1px 1px 0 0 $win98-highlight,
+    inset -1px -1px 0 0 $win98-shadow;
+}
+
+@mixin bevel-in {
+  border-top: 2px solid $win98-dark;
+  border-left: 2px solid $win98-dark;
+  border-right: 2px solid $win98-light;
+  border-bottom: 2px solid $win98-light;
+
+  box-shadow:
+    inset 1px 1px 0 0 $win98-shadow,
+    inset -1px -1px 0 0 $win98-highlight;
+}
+
+.button {
+  @extend %win98-font;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  height: 28px;
+  padding: 0 12px;
+
+  background: $win98-face;
+  color: #000;
+
+  cursor: pointer;
+  user-select: none;
+
+  @include bevel-out;
+
+  /* 살짝 둔탁한 Win98 느낌 */
+  border-radius: 0;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.02);
+  }
+
+  &:active:not(:disabled),
+  &.pressed {
+    @include bevel-in;
+    /* 눌린 느낌: 내용이 살짝 들어감 */
+    padding-top: 1px;
+    padding-left: 13px;
+    padding-right: 11px;
+  }
+
+  &:focus-visible {
+    /* Win98 점선 포커스 */
+    outline: 1px dotted $win98-focus;
+    outline-offset: -4px;
+  }
+
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    color: $win98-shadow;
+    text-shadow: 1px 1px 0 $win98-light;
+    filter: grayscale(0.2);
+  }
+}
+
+/* 아이콘 전용 버튼 */
+.iconButton {
+  @extend .button;
+  width: 28px;
+  padding: 0;
+  gap: 0;
+}
+
+/* Primary 느낌 (예: OK 버튼) */
+.primary {
+  @extend .button;
+  /* 배경은 회색 유지하되, 내부 포커스/강조만 클래식하게 */
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid $win98-primary;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  &:active:not(:disabled),
+  &.pressed {
+    &::after {
+      inset: 4px 3px 2px 4px;
+    }
+  }
+}
+
+/* 작은 사이즈 */
+.small {
+  @extend .button;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* 큰 사이즈 */
+.large {
+  @extend .button;
+  height: 34px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+/* 버튼 내부 아이콘(선택) */
+.icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
