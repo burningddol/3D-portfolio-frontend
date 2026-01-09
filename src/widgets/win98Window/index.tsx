@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import styles from "./win98-window.module.scss";
+import styles from "./style/win98Window.module.scss";
+import close from "/close.png";
+import minimize from "/minimize.png";
+import maximize from "/maximize.png";
 
 type Win98WindowProps = {
   title: string;
@@ -64,7 +67,7 @@ export function Win98Window({
               aria-label="Minimize"
               onClick={onMinimize}
             >
-              _
+              <img src={minimize} />
             </button>
             <button
               type="button"
@@ -72,7 +75,7 @@ export function Win98Window({
               aria-label="Maximize"
               onClick={onMaximize}
             >
-              □
+              <img src={maximize} />
             </button>
             <button
               type="button"
@@ -80,7 +83,7 @@ export function Win98Window({
               aria-label="Close"
               onClick={onClose}
             >
-              ×
+              <img src={close} />
             </button>
           </div>
         ) : null}

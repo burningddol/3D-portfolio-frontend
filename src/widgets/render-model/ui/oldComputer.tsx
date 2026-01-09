@@ -92,7 +92,7 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
           occlude
           distanceFactor={7}
           rotation={[-0.09, 0, 0]}
-          position={[0.01, 36.5, 11.9]}
+          position={[0.01, 36.3, 11.2]}
           center
           pointerEvents="none"
         >
@@ -107,8 +107,8 @@ function Screen({ nodes }: { nodes: GLTFNodes }) {
               msUserSelect: "none",
               userSelect: "none",
             }}
-            width={1840}
-            height={1440}
+            width={1870}
+            height={1480}
             src={`/screen`}
           />
         </Html>

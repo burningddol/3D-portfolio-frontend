@@ -69,3 +69,14 @@ $win98-dark: #404040;
   transform: scale(0);
   animation: none;
 }
+
+.stillWork {
+  width: 1000px;
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 50px;
+  font-weight: 600;
+  color: black;
+}

@@ -56,6 +56,17 @@ $win98-primary: #000080;
   font-size: 56px;
 }
 
+@mixin bevel-in {
+  border-top: 3px solid $win98-dark;
+  border-left: 3px solid $win98-dark;
+  border-right: 3px solid $win98-light;
+  border-bottom: 3px solid $win98-light;
+
+  box-shadow:
+    inset 1px 1px 0 0 $win98-shadow,
+    inset -1px -1px 0 0 $win98-highlight;
+}
+
 .menuList {
   width: 100%;
   display: flex;
@@ -73,6 +84,14 @@ $win98-primary: #000080;
     background-color: $win98-face;
     border: none;
     border-top: 2px solid $win98-light;
+
+    &:active:not(:disabled) {
+      @include bevel-in;
+
+      padding-top: 1px;
+      padding-left: 13px;
+      padding-right: 11px;
+    }
 
     img {
       width: 45px;
