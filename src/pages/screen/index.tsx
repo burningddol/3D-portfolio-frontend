@@ -1,8 +1,8 @@
 import styles from "./style/screen.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Glitch from "./ui/glitch";
 import Navigation from "@/widgets/navigation";
-import { useMouseAudio } from "./lib/useAudio";
+import { useDesktopAudio, useMouseAudio } from "./lib/useAudio";
 import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
@@ -14,6 +14,7 @@ export default function Screen() {
     internet: false,
   });
   const mouseAudio = useMouseAudio();
+  const screenOnOffAudio = useDesktopAudio();
 
   const wallPaperStyles = `${styles.wallPaper} ${
     onScreen ? styles.screenOn : styles.screenOff
@@ -31,6 +32,10 @@ export default function Screen() {
   };
 
   usePostMessage(onScreen, setOnScreen, setOnControl);
+
+  useEffect(() => {
+    screenOnOffAudio();
+  }, [onScreen]);
 
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>

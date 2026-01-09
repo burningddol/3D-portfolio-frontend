@@ -21,6 +21,7 @@ export default function RenderModel() {
           enableZoom={onControl}
           enableRotate={onControl}
           maxDistance={130}
+          maxPolarAngle={Math.PI / 2}
         />
         <LightObject />
         <ObjectRender orbitRef={orbit} />

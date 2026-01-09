@@ -27,7 +27,7 @@ export function usePostMessage(
         setOnScreen(true);
       }
 
-      setOnControl(e.data.payload.onControl);
+      setOnControl(e.data.payload.onControl); //onControl= orbit manual mode
     };
 
     window.addEventListener("message", handler);
