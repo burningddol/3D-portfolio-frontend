@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ProgressBar from "./ui/progressBar";
 import { useProgress } from "@react-three/drei";
 import { useProject } from "@/shares/zustand";
-import { useAtmosphereAudio } from "./lib/useAudio";
+import { useAtmosphereAudio } from "@/features/audio/useAudio";
 
 export default function Loader() {
   const [isShowModel, setIsShowModel] = useState<boolean>(true);

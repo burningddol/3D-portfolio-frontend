@@ -3,7 +3,7 @@ import styles from "./style/typeWriter.module.scss";
 import camera from "/camera.svg";
 import manual from "/manual.svg";
 import { useControlOrbit } from "@/shares/zustand";
-import { useKeyboardAudio } from "./lib/useAudio";
+import { useKeyboardAudio } from "@/features/audio/useAudio";
 
 type Props = {
   text: string;
