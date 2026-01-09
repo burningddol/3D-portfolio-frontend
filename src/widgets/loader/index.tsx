@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ProgressBar from "./ui/progressBar";
 import { useProgress } from "@react-three/drei";
 import { useProject } from "@/shares/zustand";
+import { useAtmosphereAudio } from "./lib/useAudio";
 
 export default function Loader() {
   const [isShowModel, setIsShowModel] = useState<boolean>(true);
@@ -14,10 +15,12 @@ export default function Loader() {
   const percent: number = Math.floor(filteredProgress);
 
   const isActive: boolean = !active && percent == 100;
+  const playAtmosphereAudio = useAtmosphereAudio();
 
   const handleClick = (): void => {
     setIsShowModel(false);
     setOnProject(true);
+    playAtmosphereAudio();
   };
 
   useEffect(() => {

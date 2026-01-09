@@ -5,7 +5,6 @@ import Loader from "@/widgets/loader";
 import Typewriter from "@/shares/components/typeWriter";
 import { useControlOrbit, useDesktop, useProject } from "@/shares/zustand";
 import { useEffect, useState } from "react";
-import { useAtmophereAudio } from "./lib/useAudio";
 
 const Main = () => {
   const [isShowManual, setIsShowManual] = useState<boolean>(false);
@@ -14,13 +13,11 @@ const Main = () => {
   const onControl = useControlOrbit((s) => s.onControl);
   const isShowIntro: boolean = isShowManual && !onDesktop;
 
-  useAtmophereAudio();
-
   useEffect(() => {
     if (onProject) {
       setTimeout(() => setIsShowManual(true), 1700);
     }
-    return setIsShowManual(false);
+    setIsShowManual(false);
   }, [onProject, onDesktop]);
 
   return (
