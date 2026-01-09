@@ -32,14 +32,14 @@ export default function Screen() {
   };
 
   usePostMessage(onScreen, setOnScreen, setOnControl);
-
+  console.log(onScreen);
   useEffect(() => {
     screenOnOffAudio();
   }, [onScreen]);
 
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>
-      {onScreen ?? <Glitch />}
+      <Glitch />
       <div className={oldEffectStyles} />
 
       <div className={wallPaperStyles}>
