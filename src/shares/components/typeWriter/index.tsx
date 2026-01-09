@@ -3,6 +3,7 @@ import styles from "./style/typeWriter.module.scss";
 import camera from "/camera.svg";
 import manual from "/manual.svg";
 import { useControlOrbit } from "@/shares/zustand";
+import { useKeyboardAudio } from "./lib/useAudio";
 
 type Props = {
   text: string;
@@ -15,6 +16,8 @@ export default function Typewriter({ text, speed = 50, info = false }: Props) {
   const chars = useMemo(() => Array.from(text ?? ""), [text]);
   const [i, setI] = useState(0);
 
+  const audio = useKeyboardAudio();
+
   useEffect(() => {
     setI(0);
   }, [text]);
@@ -25,7 +28,8 @@ export default function Typewriter({ text, speed = 50, info = false }: Props) {
     const id = setTimeout(() => {
       setI((prev) => prev + 1);
     }, speed);
-
+    audio.currentTime = 0;
+    audio.play();
     return () => clearTimeout(id);
   }, [i, chars.length, speed]);
 

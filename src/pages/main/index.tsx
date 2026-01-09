@@ -17,7 +17,8 @@ const Main = () => {
     if (onProject) {
       setTimeout(() => setIsShowManual(true), 1700);
     }
-  }, [onProject]);
+    return setIsShowManual(false);
+  }, [onProject, onDesktop]);
 
   return (
     <>

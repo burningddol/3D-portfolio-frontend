@@ -31,7 +31,7 @@ export default function Navigation({ setOnScreen }: Props) {
 
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
-  }, [isShowMenu]);
+  }, [isShowMenu, setIsShowMenu]);
 
   return (
     <div className={styles.nav}>
