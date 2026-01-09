@@ -121,7 +121,7 @@ type Props = {
   orbitRef: RefObject<OrbitControlsImpl | null>;
 };
 
-const FLY_ZOOM = new THREE.Vector3(0, 37, 48);
+const FLY_ZOOM = new THREE.Vector3(0, 33, 40);
 const LOOKAT_ZOOM = new THREE.Vector3(0, 30, 0);
 
 const FLY_MISSED = new THREE.Vector3(-70, 60, 110);
