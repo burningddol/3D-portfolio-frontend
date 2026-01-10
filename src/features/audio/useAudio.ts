@@ -4,7 +4,7 @@ import React from "react";
 export function useDesktopAudio(): () => void {
   const audio = useMemo(() => {
     const desktopOnOff = new Audio("/audio/desktop/desktopStart.mp3");
-    desktopOnOff.volume = 0.42;
+    desktopOnOff.volume = 0.45;
 
     return desktopOnOff;
   }, []);
@@ -41,7 +41,7 @@ export function useMouseAudio(): (e: React.MouseEvent) => void {
 export function useKeyboardAudio() {
   const audio = useMemo(() => {
     const keyDown = new Audio("/audio/mouse/mouse_down.mp3");
-    keyDown.volume = 0.35;
+    keyDown.volume = 0.38;
     return keyDown;
   }, []);
 
@@ -51,7 +51,7 @@ export function useKeyboardAudio() {
 export function useAtmosphereAudio(): () => void {
   const audio = useMemo(() => {
     const desktopOnOff = new Audio("/audio/atmosphere/atmosphere.mp3");
-    desktopOnOff.volume = 0.3;
+    desktopOnOff.volume = 0.45;
     desktopOnOff.loop = true;
     return desktopOnOff;
   }, []);
