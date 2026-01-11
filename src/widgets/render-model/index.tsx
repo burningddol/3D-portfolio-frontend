@@ -26,7 +26,7 @@ export default function RenderModel() {
         <LightObject />
         <ObjectRender orbitRef={orbit} />
         <ContactShadows
-          position={[-7, 0, -5]}
+          position={[-7, -4.9, -5]}
           scale={200}
           blur={2}
           opacity={0.35}
