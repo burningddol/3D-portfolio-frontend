@@ -24,12 +24,12 @@ export default function RenderModel() {
         <LightObject />
         <ObjectRender orbitRef={orbit} />
         <ContactShadows
-          position={[0, 0, -1]}
+          position={[-7, 0, -5]}
           scale={200}
-          blur={0.5}
-          opacity={0.2}
+          blur={2}
+          opacity={0.35}
           far={35}
-          color={"#a79a73"}
+          color={"#000000"}
         />
         <Environment
           files="/moonless_golf_1k.exr"
