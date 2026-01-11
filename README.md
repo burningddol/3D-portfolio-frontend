@@ -1,11 +1,43 @@
 ## 
 
-**Portfolio Concept**
+**Interactive 3D Desktop Portfolio**
 
-이 포트폴리오는 개발자 Henry Hefferman 및 jiwoo의 R3F 포트폴리오에서 영감을 받아 시작.  
-3D요소를 접목하여 화면안의 또다른 화면이 주는 이질적인 경험이 매우 인상깊어  
-나의 취향을 반영하여 나의 방식으로 제작을 진행.  
+3D로 렌더링된 컴퓨터 모델 안에  
+실제로 동작하는 웹 데스크톱(바탕화면, 앱, 이력서)을  
+임베드한 인터랙티브 포트폴리오  
 
+사용자는 3D 공간 속 컴퓨터를 조작하고,  
+화면에 포커스하여 마치 진짜 PC처럼 웹 UI를 사용할 수 있다.  
+
+
+**Main Features**
+- 3D 컴퓨터 모델 (Three.js / React Three Fiber)  
+- 실제 웹 기반 데스크톱 UI (iframe)
+- 앱, 폴더, resume 실행 (작업중...)
+- 마우스 & 키보드 입력 지원
+- 카메라 이동 및 화면 포커스 애니메이션
+
+**System Architecture**  
+- 3D Layer (WebGL 기반)  
+Three.js (R3F)  
+GLTF 컴퓨터 모델 (fab 구매)  
+Screen Mesh (Mesh, 3dObject 분리 적용)  
+
+- UI Layer (DOM)
+React (vite)  
+iframe 기반 데스크톱 OS (독립적 환경, postMessage를 활용한 상태공유)  
+앱 및 resume  
+
+3D 화면과 iframe UI는 정확히 정렬되어  
+WebGL 화면 위에서 실제 웹 OS가 실행되는 구조  
+
+**Camera & Motion**
+- GSAP  
+카메라 이동  
+화면 줌인  
+UI 포커스 전환  
+을 자연스럽게 연결해  
+공간 기반 인터페이스 경험을 제공
 
 **Convention**
 
@@ -20,16 +52,13 @@
 [Feature-Sliced Design](https://emewjin.github.io/feature-sliced-design/)
 
 **Stacks**
+ - React:  3D 씬과 UI를 하나의 컴포넌트 트리로 통합하기 위해 사용. SEO와 페이지라우팅 최적화 불필요, Canvas는 브라우저에서 연산되므로 ssr, ssg장점 희미.     
+ - Typescript:  3D 오브젝트, 좌표, 상태 구조를 타입으로 안정적으로 관리  
+ - three.js:  WebGL 기반으로 GLB 모델과 3D 씬을 제어하기 위해 사용  
+ - scss:  WebGL 렌더링 성능 유지를 위해 런타임 CSS-in-JS를 피하고 정적 스타일링 적용  
+ - gsap:  카메라와 3D 오브젝트를 부드럽게 애니메이션하기 위해 사용   
+ -zustand:  3D와 UI 상태를 가볍게 공유하기 위한 전역 상태 관리   
 
-| **스킬** | **내용** |
-| --- | --- |
-| React | 적절한 컴포넌트분리 및 Three.js를 리액트에서 쉽게 사용할 수 있는 R3F의 존재,  SEO최적화, 페이지라우팅 최적화 불필요 & Canvas는 어차피 브라우저에서 연산되므로 ssr ssg불필요로 리액트 선택   |
-| Typescript | 런타임 환경에서의 에러를 방지하고 빠른 데이터 인터페이스 파악 |
-| three.js | glb데이터를 리액트 컴포넌트화하여 관리 가능, 리액트와의 좋은 호환성으로 선택|
-| scss | 이미 3D렌더링으로 이한 js실행시간 과점유 우려로 스타일드 컴포넌트와 같은 css in js의 편리성을 포기하고 css로 작성|
-| gsap | 애니메이션을 부드럽게 주는데 유용한 라이브러리. 객체의 Vector3{[x,y,z}]를 효율적으로 control|
-| zustand | 많지않은 전역 상태를 구독방식으로 간편하게 관리|
-**Libraries**
 
 
 
