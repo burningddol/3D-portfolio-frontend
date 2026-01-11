@@ -27,17 +27,17 @@ body {
 @font-face {
   font-family: "spaceMono";
   font-weight: 500;
-  src: url("../fonts/SpaceMono-Regular.ttf") format("woff");
+  src: url("../fonts/SpaceMono-Regular.ttf") format("ttf");
 }
 
 @font-face {
   font-family: "spaceMono";
   font-weight: 700;
-  src: url("../fonts/SpaceMono-Bold.ttf") format("woff");
+  src: url("../fonts/SpaceMono-Bold.ttf") format("ttf");
 }
 
 @font-face {
   font-family: "micross";
   font-weight: 700;
-  src: url("../fonts/micross.ttf") format("woff");
+  src: url("../fonts/micross.ttf") format("ttf");
 }

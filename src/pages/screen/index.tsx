@@ -50,7 +50,7 @@ export default function Screen() {
         <Navigation setOnScreen={setOnScreen} />
 
         {isOpenApp.internet && (
-          <Win98Window title="32" onClose={OnClose}>
+          <Win98Window title="To-do-list" onClose={OnClose}>
             <iframe
               id="iframe"
               style={{
@@ -63,7 +63,7 @@ export default function Screen() {
                 width: "100%",
                 height: "100%",
               }}
-              src={`https://velog.io/@junbug/posts`}
+              src={`https://21-sprint-mission-xw9a.vercel.app/`}
             />
           </Win98Window>
         )}

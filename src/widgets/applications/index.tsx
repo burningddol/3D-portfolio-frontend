@@ -1,5 +1,5 @@
 import styles from "./style/applications.module.scss";
-import internet from "/internet.ico";
+import toDoList from "/toDoList.png";
 import {
   useState,
   useEffect,
@@ -58,8 +58,8 @@ export default function Applications({ setIsOpenApp }: Props) {
         onDoubleClick={handleDoubleClick}
         onMouseDown={handleDownInternet}
       >
-        <img src={internet} />
-        <span>Internet Exploler</span>
+        <img src={toDoList} />
+        <span>ToDoList Scheduler</span>
       </button>
     </div>
   );

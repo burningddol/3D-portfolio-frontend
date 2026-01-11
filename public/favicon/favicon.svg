@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" shape-rendering="crispEdges">
+  <rect width="48" height="48" fill="transparent"></rect>
+
+  <!-- palette -->
+  <!-- outline: #2a170f | tan: #d6a066 | tan2: #c78a51 | cream: #f2d9bf | eye: #111 -->
+
+  <!-- big upright ears (wider, fills canvas more) -->
+  <!-- left ear -->
+  <rect x="12" y="4" width="7" height="2" fill="#2a170f"></rect>
+  <rect x="11" y="6" width="9" height="2" fill="#2a170f"></rect>
+  <rect x="11" y="8" width="9" height="10" fill="#2a170f"></rect>
+  <rect x="12" y="6" width="7" height="12" fill="#d6a066"></rect>
+  <rect x="13" y="9" width="5" height="7" fill="#f2d9bf"></rect>
+
+  <!-- right ear -->
+  <rect x="29" y="4" width="7" height="2" fill="#2a170f"></rect>
+  <rect x="28" y="6" width="9" height="2" fill="#2a170f"></rect>
+  <rect x="28" y="8" width="9" height="10" fill="#2a170f"></rect>
+  <rect x="29" y="6" width="7" height="12" fill="#d6a066"></rect>
+  <rect x="30" y="9" width="5" height="7" fill="#f2d9bf"></rect>
+
+  <!-- head outline (bigger, centered, not too wide) -->
+  <rect x="18" y="14" width="12" height="1" fill="#2a170f"></rect>
+  <rect x="16" y="15" width="16" height="1" fill="#2a170f"></rect>
+  <rect x="15" y="16" width="18" height="1" fill="#2a170f"></rect>
+  <rect x="14" y="17" width="20" height="1" fill="#2a170f"></rect>
+  <rect x="14" y="18" width="20" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="19" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="20" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="21" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="22" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="23" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="13" y="24" width="22" height="1" fill="#2a170f"></rect>
+  <rect x="14" y="25" width="20" height="1" fill="#2a170f"></rect>
+  <rect x="14" y="26" width="20" height="1" fill="#2a170f"></rect>
+  <rect x="15" y="27" width="18" height="1" fill="#2a170f"></rect>
+  <rect x="16" y="28" width="16" height="1" fill="#2a170f"></rect>
+  <rect x="18" y="29" width="12" height="1" fill="#2a170f"></rect>
+
+  <!-- head fill -->
+  <rect x="18" y="15" width="12" height="1" fill="#c78a51"></rect>
+  <rect x="16" y="16" width="16" height="1" fill="#d6a066"></rect>
+  <rect x="15" y="17" width="18" height="1" fill="#d6a066"></rect>
+  <rect x="15" y="18" width="18" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="19" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="20" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="21" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="22" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="23" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="14" y="24" width="20" height="1" fill="#d6a066"></rect>
+  <rect x="15" y="25" width="18" height="1" fill="#c78a51"></rect>
+  <rect x="15" y="26" width="18" height="1" fill="#c78a51"></rect>
+  <rect x="16" y="27" width="16" height="1" fill="#c78a51"></rect>
+
+  <!-- muzzle (short & cream) -->
+  <rect x="19" y="22" width="10" height="1" fill="#f2d9bf"></rect>
+  <rect x="18" y="23" width="12" height="1" fill="#f2d9bf"></rect>
+  <rect x="18" y="24" width="12" height="1" fill="#f2d9bf"></rect>
+  <rect x="19" y="25" width="10" height="1" fill="#f2d9bf"></rect>
+
+  <!-- eyes (smaller than previous) -->
+  <rect x="18" y="19" width="3" height="3" fill="#111"></rect>
+  <rect x="19" y="20" width="1" height="1" fill="#ffffff"></rect>
+  <rect x="27" y="19" width="3" height="3" fill="#111"></rect>
+  <rect x="28" y="20" width="1" height="1" fill="#ffffff"></rect>
+
+  <!-- nose -->
+  <rect x="22" y="24" width="4" height="3" fill="#111"></rect>
+  <rect x="23" y="25" width="1" height="1" fill="#ffffff"></rect>
+
+  <!-- mouth -->
+  <rect x="22" y="28" width="4" height="1" fill="#2a170f"></rect>
+
+  <!-- tiny chest hint (keeps icon feeling grounded, helps centering visually) -->
+  <rect x="20" y="31" width="8" height="1" fill="#2a170f"></rect>
+  <rect x="19" y="32" width="10" height="1" fill="#c78a51"></rect>
+</svg>
