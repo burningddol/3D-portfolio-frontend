@@ -11,8 +11,10 @@ export default function RenderModel() {
   const onControl = useControlOrbit((s) => s.onControl);
 
   return (
-    <Canvas camera={{ position: [-70, 60, 100], fov: 55, near: 0.1, far: 200 }}>
-      <Suspense fallback={null}>
+    <Suspense fallback={null}>
+      <Canvas
+        camera={{ position: [-70, 60, 100], fov: 55, near: 0.1, far: 200 }}
+      >
         <OrbitControls
           ref={orbit}
           enablePan={onControl}
@@ -38,7 +40,7 @@ export default function RenderModel() {
           environmentIntensity={0.1}
           backgroundIntensity={0.35}
         />
-      </Suspense>
-    </Canvas>
+      </Canvas>
+    </Suspense>
   );
 }
