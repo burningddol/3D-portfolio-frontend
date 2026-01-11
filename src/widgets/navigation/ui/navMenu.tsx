@@ -1,5 +1,6 @@
 import shutdown from "/shutdown.png";
 import styles from "../style/navMenu.module.scss";
+import { useDesktopAudio } from "@/features/audio/useAudio";
 
 interface Props {
   setOnScreen: (isActive: boolean) => void;
@@ -7,8 +8,10 @@ interface Props {
 }
 
 export default function NavMenu({ setOnScreen, setIsShowMenu }: Props) {
+  const screenOnOffAudio = useDesktopAudio();
   const handleClick = () => {
     setIsShowMenu(false);
+    screenOnOffAudio();
     setOnScreen(false);
   };
 

@@ -32,9 +32,9 @@ export default function Screen() {
   };
 
   usePostMessage(onScreen, setOnScreen, setOnControl);
-  console.log(onScreen);
+
   useEffect(() => {
-    screenOnOffAudio();
+    if (onScreen) screenOnOffAudio();
   }, [onScreen]);
 
   return (
