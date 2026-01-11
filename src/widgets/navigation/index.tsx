@@ -45,6 +45,7 @@ export default function Navigation({ setOnScreen }: Props) {
           Start
         </Win98Button>
       </div>
+      <span className={styles.navInfo}>El Psy Kongroo</span>
       {isShowMenu && (
         <div ref={menuRef}>
           <NavMenu setOnScreen={setOnScreen} setIsShowMenu={setIsShowMenu} />
