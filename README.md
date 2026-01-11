@@ -10,6 +10,10 @@
 화면에 포커스하여 마치 진짜 PC처럼 웹 UI를 사용할 수 있다.  
 
 
+**Architecture**
+
+[Feature-Sliced Design](https://emewjin.github.io/feature-sliced-design/)  
+
 **Main Features**
 - 3D 컴퓨터 모델 (Three.js / React Three Fiber)  
 - 실제 웹 기반 데스크톱 UI (iframe)
@@ -41,15 +45,11 @@ UI 포커스 전환
 
 **Convention**
 
-| **태그** | **내용** |
-| --- | --- |
-| Feat | 새로운 기능을 추가한 경우 |
-| -_-  | 별 의미없는 사소한 변경이지만 심적 만족감을 주는 것 |
+
+ - Feat:  새로운 기능을 추가한 경우   
+ - -_-:  별 의미없는 사소한 변경이지만 심적 만족감을 주는 것   
 
 
-**Architecture**
-
-[Feature-Sliced Design](https://emewjin.github.io/feature-sliced-design/)
 
 **Stacks**
  - React:  3D 씬과 UI를 하나의 컴포넌트 트리로 통합하기 위해 사용. SEO와 페이지라우팅 최적화 불필요, Canvas는 브라우저에서 연산되므로 ssr, ssg장점 희미.     
