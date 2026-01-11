@@ -6,6 +6,7 @@ import { useDesktopAudio, useMouseAudio } from "@/features/audio/useAudio";
 import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
+import { AppLoader } from "./ui/appLoader";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
@@ -13,6 +14,8 @@ export default function Screen() {
   const [isOpenApp, setIsOpenApp] = useState<{ [key: string]: boolean }>({
     internet: false,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const mouseAudio = useMouseAudio();
   const screenOnOffAudio = useDesktopAudio();
 
@@ -37,6 +40,13 @@ export default function Screen() {
     if (onScreen) screenOnOffAudio();
   }, [onScreen]);
 
+  //앱 오픈시 로딩
+  useEffect(() => {
+    if (isOpenApp.internet) {
+      setIsLoading(true);
+    }
+  }, [isOpenApp.internet]);
+
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>
       <Glitch />
@@ -51,8 +61,10 @@ export default function Screen() {
 
         {isOpenApp.internet && (
           <Win98Window title="To-do-list" onClose={OnClose}>
+            {isLoading && <AppLoader />}
             <iframe
               id="iframe"
+              onLoad={() => setIsLoading(false)}
               style={{
                 border: "none",
                 pointerEvents: "auto",

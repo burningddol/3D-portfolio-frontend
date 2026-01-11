@@ -1,0 +1,146 @@
+@keyframes dotBlink {
+  0%,
+  20% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+  80%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+}
+
+.scaler {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+}
+
+.bootWindow {
+  width: 260px;
+  background: #c0c0c0;
+  color: #000;
+  font-family: "spaceMono";
+  font-size: 12px;
+
+  /* Win98 튀어나온 3D 테두리 */
+  border: 2px solid;
+  border-color: #ffffff #404040 #404040 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+
+  /* 가운데 정렬 */
+
+  /* 창 느낌 */
+  padding: 0;
+}
+
+/* 타이틀바 */
+.bootTitleBar {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6px;
+  background: linear-gradient(to right, #000080, #1084d0); /* Win98 블루 */
+  color: #fff;
+  font-weight: 700;
+  user-select: none;
+}
+
+.bootTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 작은 아이콘(선택) */
+.bootIcon {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px 0 #c0c0c0;
+}
+
+/* 닫기 버튼처럼 보이는 장식 */
+.bootClose {
+  width: 16px;
+  height: 14px;
+  background: #c0c0c0;
+
+  border: 2px solid;
+  border-color: #ffffff #404040 #404040 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+  position: relative;
+}
+
+.bootClose::before,
+.bootClose::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 7px;
+  width: 1px;
+  height: 8px;
+  background: #000;
+}
+.bootClose::before {
+  transform: rotate(45deg);
+}
+.bootClose::after {
+  transform: rotate(-45deg);
+}
+
+/* 본문 */
+.bootBody {
+  padding: 14px 12px 12px;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Win98식 로딩 "점 3개" */
+.spinner {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.spinner span {
+  width: 6px;
+  height: 6px;
+  background: #000;
+  opacity: 0.2;
+}
+
+.spinner span:nth-child(1) {
+  animation: dotBlink 0.9s infinite;
+}
+.spinner span:nth-child(2) {
+  animation: dotBlink 0.9s infinite 0.15s;
+}
+.spinner span:nth-child(3) {
+  animation: dotBlink 0.9s infinite 0.3s;
+}
+
+/* 퍼센트(선택) */
+.percent {
+  margin-top: 10px;
+  font-family: "spaceMono";
+  font-size: 12px;
+}
