@@ -71,7 +71,7 @@ export function useWhooshAudio(): () => void {
   }, []);
 
   const playEffect = () => {
-    audio.currentTime = 0.3;
+    audio.currentTime = 0.45;
     audio.play();
   };
 
