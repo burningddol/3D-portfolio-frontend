@@ -238,10 +238,6 @@ export default function ObjectRender({ orbitRef }: Props) {
     if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행
   }, [controlOut, onControl, onProject]);
 
-  useEffect(() => {
-    if (onProject) startProjectMotion(); //웹 접속하자마자 1회실행 startProjectMotion이 controlOut 덮어씀
-  }, [onProject]);
-
   //수신
   useEffect(() => {
     const handler = (e: MessageEvent) => {
@@ -256,7 +252,11 @@ export default function ObjectRender({ orbitRef }: Props) {
 
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
-  }, [missed]);
+  }, [missed, onProject]);
+
+  useEffect(() => {
+    if (onProject) startProjectMotion(); //웹 접속하자마자 1회실행 startProjectMotion이 controlOut과 inOut 덮어씀 순서 중요
+  }, [onProject]);
 
   return (
     <group
