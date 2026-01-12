@@ -13,6 +13,7 @@ export default function RenderModel() {
   return (
     <Suspense fallback={null}>
       <Canvas
+        dpr={[1, 1.5]}
         camera={{ position: [-70, 60, 100], fov: 55, near: 0.1, far: 200 }}
       >
         <OrbitControls
