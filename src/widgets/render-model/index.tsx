@@ -14,15 +14,17 @@ export default function RenderModel() {
     <Suspense fallback={null}>
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [-70, 60, 100], fov: 55, near: 0.1, far: 200 }}
+        gl={{ powerPreference: "high-performance" }}
+        camera={{ position: [40, 0, 25], fov: 55, near: 0.1, far: 200 }} //첫진입 position 여기서 설정 ㄱㄱ
       >
         <OrbitControls
           ref={orbit}
+          target={[-20, 40, -30]}
           enablePan={onControl}
           enableZoom={onControl}
           enableRotate={onControl}
           maxDistance={130}
-          maxPolarAngle={Math.PI / 2}
+          maxPolarAngle={onControl ? Math.PI / 2 : Math.PI}
         />
         <LightObject />
         <ObjectRender orbitRef={orbit} />

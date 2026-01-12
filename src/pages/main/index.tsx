@@ -23,6 +23,7 @@ const Main = () => {
   return (
     <>
       <RenderModel />
+
       {isShowIntro && !onControl && (
         <Typewriter text="Hover over the desktop" speed={50} />
       )}
@@ -33,11 +34,18 @@ const Main = () => {
           speed={50}
         />
       )}
+
       {onProject && !onDesktop && (
         <Typewriter text="JunSeok Kim, enjoy it" speed={50} info />
       )}
-      {!onControl && <Tooltip />}
-      <TooltipReversed />
+
+      {!onControl && (
+        <>
+          <Tooltip />
+          <TooltipReversed />
+        </>
+      )}
+
       <Loader />
     </>
   );

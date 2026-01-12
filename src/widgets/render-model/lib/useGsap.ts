@@ -13,6 +13,7 @@ export interface LookAt {
   target: THREE.Vector3;
   lookAt: THREE.Vector3;
   isOut: boolean;
+  isWhoosh?: boolean;
 }
 interface UseGsap {
   changeRotation: (rotationInfo: Rotation) => void;
@@ -32,14 +33,21 @@ useGsap.changeRotation = ({ rotation, pointer, useY }: Rotation) => {
   });
 };
 
-useGsap.moveLookAt = ({ position, fly, target, lookAt, isOut }: LookAt) => {
+useGsap.moveLookAt = ({
+  position,
+  fly,
+  target,
+  lookAt,
+  isOut,
+  isWhoosh = false,
+}: LookAt) => {
   gsap.to(position, {
     duration: 2,
     repeat: 0,
     x: fly.x,
     y: fly.y,
     z: fly.z,
-    ease: isOut ? "power3.inout" : "power3.out",
+    ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
   });
   gsap.to(target, {
     duration: 2.5,

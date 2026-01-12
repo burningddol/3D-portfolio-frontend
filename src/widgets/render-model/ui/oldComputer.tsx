@@ -5,7 +5,12 @@ import type { ThreeEvent } from "@react-three/fiber";
 import type { RefObject } from "react";
 import { useRef, useEffect, useCallback } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { useDesktop, useHover, useControlOrbit } from "@/shares/zustand";
+import {
+  useDesktop,
+  useHover,
+  useControlOrbit,
+  useProject,
+} from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
 import type { Rotation, LookAt } from "../lib/useGsap";
 
@@ -138,6 +143,7 @@ export default function ObjectRender({ orbitRef }: Props) {
   const { onDesktop, setOnDesktop } = useDesktop();
   const { setIsHovered } = useHover();
   const { onControl, setOnControl } = useControlOrbit();
+  const { onProject } = useProject();
 
   const { changeRotation, moveLookAt } = useGsap;
 
@@ -162,21 +168,23 @@ export default function ObjectRender({ orbitRef }: Props) {
   };
 
   const missed = useCallback(
-    (): (() => void) => (): void => {
-      if (onControl) return;
+    (isWhoosh: boolean = false): (() => void) =>
+      (): void => {
+        if (onControl) return;
 
-      const argues: LookAt = {
-        position: camera.position,
-        fly: FLY_MISSED,
-        target: control.current.target,
-        lookAt: LOOKAT_MISSED,
-        isOut: true,
-      };
+        const argues: LookAt = {
+          position: camera.position,
+          fly: FLY_MISSED,
+          target: control.current.target,
+          lookAt: LOOKAT_MISSED,
+          isOut: true,
+          isWhoosh: isWhoosh,
+        };
 
-      moveLookAt(argues);
+        moveLookAt(argues);
 
-      setOnDesktop(false);
-    },
+        setOnDesktop(false);
+      },
     [
       onControl,
       camera,
@@ -190,15 +198,20 @@ export default function ObjectRender({ orbitRef }: Props) {
 
   const inOut = (): void => {
     //if (!onDesktop) return;  어차피 useFrame에서 rotation중 윈도우종료버튼때도 돌아가게하려고 잠시 뺌
-    const isMissed = missed();
-
-    isMissed();
+    const onMissed = missed();
+    onMissed();
   };
 
   const controlOut = useCallback((): void => {
-    const isMissed = missed();
-    isMissed();
-  }, [onControl]); // deps에 missed추가하면 무한렌더링
+    const onMissed = missed();
+    onMissed();
+  }, []); // deps에 missed추가하면 무한렌더링  onControl deps에 왜넣었더라,, 일단 뺌
+
+  const startProjectMotion = (): void => {
+    const isWhoosh = true;
+    const onMissed = missed(isWhoosh);
+    onMissed();
+  };
 
   useFrame((state) => {
     const desktop = deskTopGroup.current as THREE.Group;
@@ -222,8 +235,12 @@ export default function ObjectRender({ orbitRef }: Props) {
   });
 
   useEffect(() => {
-    if (!onControl) controlOut();
-  }, [controlOut, onControl]);
+    if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행
+  }, [controlOut, onControl, onProject]);
+
+  useEffect(() => {
+    if (onProject) startProjectMotion(); //웹 접속하자마자 1회실행 startProjectMotion이 controlOut 덮어씀
+  }, [onProject]);
 
   //수신
   useEffect(() => {
@@ -231,7 +248,8 @@ export default function ObjectRender({ orbitRef }: Props) {
       if (e.origin !== window.location.origin) return;
       if (e.data?.type !== "SET_SCREEN") return;
 
-      if (e.data.payload.on === false) {
+      if (e.data.payload.on === false && onProject) {
+        //웹 접속하자마자 1회실행, on=onScreen
         inOut();
       }
     };

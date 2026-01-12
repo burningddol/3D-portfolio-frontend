@@ -62,3 +62,18 @@ export function useAtmosphereAudio(): () => void {
 
   return playEffect;
 }
+
+export function useWhooshAudio(): () => void {
+  const audio = useMemo(() => {
+    const whoosh = new Audio("/audio/whoosh/whoosh.mp3");
+    whoosh.volume = 0.29;
+    return whoosh;
+  }, []);
+
+  const playEffect = () => {
+    audio.currentTime = 0.3;
+    audio.play();
+  };
+
+  return playEffect;
+}
