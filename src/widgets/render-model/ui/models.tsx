@@ -31,7 +31,7 @@ const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
 export default function ObjectsRender({ orbitRef }: Props) {
   const { nodes } = useGLTF("/old_computer.glb");
   const { scene } = useGLTF("/glb/divergence_meter.glb");
-  const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");
+  // const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");
   const { scene: scene3 } = useGLTF("/glb/dr_pepper.glb");
 
   const control = orbitRef as RefObject<OrbitControlsImpl>;
@@ -186,10 +186,6 @@ export default function ObjectsRender({ orbitRef }: Props) {
         <DivergenceMeter scene={scene} />
       </group>
 
-      <group>
-        <TimeMachine scene={scene2} />
-      </group>
-
       <group ref={drPepperGroup}>
         <DrPaper1 scene={scene3} />
         <DrPaper2 scene={scene3} />
@@ -197,3 +193,9 @@ export default function ObjectsRender({ orbitRef }: Props) {
     </>
   );
 }
+
+/*    렉 때문에 일단 모델 하나 빼둠
+  <group>
+        <TimeMachine scene={scene2} />
+      </group>
+*/
