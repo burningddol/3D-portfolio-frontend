@@ -31,7 +31,7 @@ const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
 export default function ObjectsRender({ orbitRef }: Props) {
   const { nodes } = useGLTF("/old_computer.glb");
   const { scene } = useGLTF("/glb/divergence_meter.glb");
-  const { scene: scene2 } = useGLTF("/glb/time_machine.glb");
+  const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");
   const { scene: scene3 } = useGLTF("/glb/dr_pepper.glb");
 
   const control = orbitRef as RefObject<OrbitControlsImpl>;
