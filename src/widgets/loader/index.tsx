@@ -2,15 +2,15 @@ import { createPortal } from "react-dom";
 import styles from "./style/loader.module.scss";
 import { useState, useEffect } from "react";
 import ProgressBar from "./ui/progressBar";
-import { useProgress } from "@react-three/drei";
 import { useProject } from "@/shares/zustand";
 import { useAtmosphereAudio, useWhooshAudio } from "@/features/audio/useAudio";
+import useDebouncedLoader from "./lib/useDebouncedLoader";
 
 export default function Loader() {
   const [isShowLoader, setIsShowLoader] = useState<boolean>(true);
   const [filteredProgress, setFilteredProgress] = useState<number>(0);
-  const [debouncedIsActive, setDebouncedIsActive] = useState<boolean>(false);
-  const { progress, active } = useProgress();
+
+  const { isShowBtn, progress } = useDebouncedLoader(700);
   const { setOnProject } = useProject();
 
   const percent: number = Math.floor(filteredProgress);
@@ -27,10 +27,7 @@ export default function Loader() {
 
   useEffect(() => {
     setFilteredProgress((prev) => Math.max(prev, progress));
-
-    if (!active && progress === 100)
-      setTimeout(() => setDebouncedIsActive(true), 1200);
-  }, [progress, active]);
+  }, [progress]);
 
   if (!isShowLoader) return;
   return createPortal(
@@ -41,7 +38,7 @@ export default function Loader() {
 
           <ProgressBar percent={percent} />
 
-          {debouncedIsActive && (
+          {isShowBtn && (
             <>
               <span>Press the button to continue... </span>
               <button onClick={handleClick} className={styles.pressBtn}>
