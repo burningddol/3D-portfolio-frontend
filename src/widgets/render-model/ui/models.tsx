@@ -15,7 +15,6 @@ import useGsap from "../lib/useGsap";
 import type { Rotation, LookAt } from "../lib/useGsap";
 import { Standard, Screen } from "./oldComputer";
 import { DivergenceMeter } from "./divergenceMeter";
-import { TimeMachine } from "./timeMachine";
 import { DrPaper1, DrPaper2 } from "./drPaper";
 
 type Props = {
