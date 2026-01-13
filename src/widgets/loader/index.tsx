@@ -27,7 +27,9 @@ export default function Loader() {
 
   useEffect(() => {
     setFilteredProgress((prev) => Math.max(prev, progress));
-    if (!active) setTimeout(() => setDebouncedIsActive(true), 1000);
+
+    if (!active && progress === 100)
+      setTimeout(() => setDebouncedIsActive(true), 1000);
   }, [progress, active]);
 
   if (!isShowLoader) return;
