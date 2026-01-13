@@ -14,8 +14,9 @@ import {
 import useGsap from "../lib/useGsap";
 import type { Rotation, LookAt } from "../lib/useGsap";
 import { Standard, Screen } from "./oldComputer";
-import { DivergenceMeter } from "./divergenceMeter";
+//import { DivergenceMeter } from "./divergenceMeter";
 import { DrPaper1, DrPaper2 } from "./drPaper";
+import { TimeMachine } from "./timeMachine";
 
 type Props = {
   orbitRef: RefObject<OrbitControlsImpl | null>;
@@ -29,8 +30,8 @@ const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
 
 export default function ObjectsRender({ orbitRef }: Props) {
   const { nodes } = useGLTF("/old_computer.glb");
-  const { scene } = useGLTF("/glb/divergence_meter.glb");
-  // const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");
+  //const { scene } = useGLTF("/glb/divergence_meter.glb");
+  const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");
   const { scene: scene3 } = useGLTF("/glb/dr_pepper.glb");
 
   const control = orbitRef as RefObject<OrbitControlsImpl>;
@@ -181,20 +182,19 @@ export default function ObjectsRender({ orbitRef }: Props) {
         <Screen nodes={nodes} />
       </group>
 
-      <group>
-        <DivergenceMeter scene={scene} />
-      </group>
-
       <group ref={drPepperGroup}>
         <DrPaper1 scene={scene3} />
         <DrPaper2 scene={scene3} />
+      </group>
+      <group>
+        <TimeMachine scene={scene2} />
       </group>
     </>
   );
 }
 
 /*    렉 때문에 일단 모델 하나 빼둠
-  <group>
-        <TimeMachine scene={scene2} />
+   <group>
+        <DivergenceMeter scene={scene} />
       </group>
 */
