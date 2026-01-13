@@ -29,9 +29,9 @@ export function DivergenceMeter({ scene }: { scene: THREE.Group }) {
     <primitive
       ref={ref}
       object={scene}
-      position={[-63, baseY, 40]}
+      position={[-61, baseY, 42]}
       rotation={[0, -0.1, 0]}
-      scale={62}
+      scale={60}
     />
   );
 }

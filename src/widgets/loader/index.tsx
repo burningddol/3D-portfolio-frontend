@@ -29,7 +29,7 @@ export default function Loader() {
     setFilteredProgress((prev) => Math.max(prev, progress));
 
     if (!active && progress === 100)
-      setTimeout(() => setDebouncedIsActive(true), 1000);
+      setTimeout(() => setDebouncedIsActive(true), 1200);
   }, [progress, active]);
 
   if (!isShowLoader) return;
