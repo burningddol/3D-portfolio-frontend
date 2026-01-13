@@ -1,0 +1,199 @@
+import * as THREE from "three";
+import { useGLTF } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import type { ThreeEvent } from "@react-three/fiber";
+import type { RefObject } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import {
+  useDesktop,
+  useHover,
+  useControlOrbit,
+  useProject,
+} from "@/shares/zustand";
+import useGsap from "../lib/useGsap";
+import type { Rotation, LookAt } from "../lib/useGsap";
+import { Standard, Screen } from "./oldComputer";
+import { DivergenceMeter } from "./divergenceMeter";
+import { TimeMachine } from "./timeMachine";
+import { DrPaper1, DrPaper2 } from "./drPaper";
+
+type Props = {
+  orbitRef: RefObject<OrbitControlsImpl | null>;
+};
+
+const FLY_ZOOM = new THREE.Vector3(0, 33, 40);
+const LOOKAT_ZOOM = new THREE.Vector3(0, 30, 0);
+
+const FLY_MISSED = new THREE.Vector3(-70, 60, 110);
+const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
+
+export default function ObjectsRender({ orbitRef }: Props) {
+  const { nodes } = useGLTF("/old_computer.glb");
+  const { scene } = useGLTF("/glb/divergence_meter.glb");
+  const { scene: scene2 } = useGLTF("/glb/time_machine.glb");
+  const { scene: scene3 } = useGLTF("/glb/dr_pepper.glb");
+
+  const control = orbitRef as RefObject<OrbitControlsImpl>;
+  const deskTopGroup = useRef<THREE.Group>(null);
+  const drPepperGroup = useRef<THREE.Group>(null);
+
+  const { camera } = useThree();
+
+  const { onDesktop, setOnDesktop } = useDesktop();
+  const { setIsHovered } = useHover();
+  const { onControl, setOnControl } = useControlOrbit();
+  const { onProject } = useProject();
+
+  const { changeRotation, moveLookAt } = useGsap;
+
+  const zoom = (e: ThreeEvent<PointerEvent>): void => {
+    e.stopPropagation();
+    if (onDesktop) return;
+    if (onControl) return;
+    if (e.eventObject.name !== "desktopGroup") return;
+
+    const argues: LookAt = {
+      position: camera.position,
+      fly: FLY_ZOOM,
+      target: control.current.target,
+      lookAt: LOOKAT_ZOOM,
+      isOut: false,
+    };
+
+    moveLookAt(argues);
+
+    setOnDesktop(true);
+    setOnControl(false);
+  };
+
+  const missed = useCallback(
+    (isWhoosh: boolean = false): (() => void) =>
+      (): void => {
+        if (onControl) return;
+
+        const argues: LookAt = {
+          position: camera.position,
+          fly: FLY_MISSED,
+          target: control.current.target,
+          lookAt: LOOKAT_MISSED,
+          isOut: true,
+          isWhoosh: isWhoosh,
+        };
+
+        moveLookAt(argues);
+
+        setOnDesktop(false);
+      },
+    [
+      onControl,
+      camera,
+      FLY_MISSED,
+      control,
+      LOOKAT_MISSED,
+      moveLookAt,
+      setOnDesktop,
+    ]
+  );
+
+  const inOut = (): void => {
+    //if (!onDesktop) return;  어차피 useFrame에서 rotation중 윈도우종료버튼때도 돌아가게하려고 잠시 뺌
+    const onMissed = missed();
+    onMissed();
+  };
+
+  const controlOut = useCallback((): void => {
+    const onMissed = missed();
+    onMissed();
+  }, []); // deps에 missed추가하면 무한렌더링  onControl deps에 왜넣었더라,, 일단 뺌
+
+  const startProjectMotion = (): void => {
+    const isWhoosh = true;
+    const onMissed = missed(isWhoosh);
+    onMissed();
+  };
+
+  useFrame((state) => {
+    const desktop = deskTopGroup.current as THREE.Group;
+    const timeMachine = drPepperGroup.current as THREE.Group;
+
+    const argues1: Rotation = {
+      rotation: desktop.rotation,
+      pointer: state.pointer,
+    };
+
+    const argues2: Rotation = {
+      rotation: desktop.rotation,
+      pointer: new THREE.Vector2(0, 0.05),
+      useY: true,
+    };
+
+    const argues3: Rotation = {
+      rotation: timeMachine.rotation,
+      pointer: state.pointer,
+    };
+
+    if (onDesktop && !onControl) {
+      changeRotation(argues2);
+    }
+    if (!onDesktop && !onControl) {
+      changeRotation(argues1);
+      changeRotation(argues3);
+    }
+  });
+
+  useEffect(() => {
+    if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행
+  }, [controlOut, onControl, onProject]);
+
+  //수신
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return;
+      if (e.data?.type !== "SET_SCREEN") return;
+
+      if (e.data.payload.on === false && onProject) {
+        //웹 접속하자마자 1회실행, on=onScreen
+        inOut();
+      }
+    };
+
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, [missed, onProject]);
+
+  useEffect(() => {
+    if (onProject) startProjectMotion(); //웹 접속하자마자 1회실행 startProjectMotion이 controlOut과 inOut 덮어씀 순서 중요
+  }, [onProject]);
+
+  return (
+    <>
+      <group
+        name="desktopGroup"
+        position={[0, -5, 0]}
+        rotation={[0, 0, 0]}
+        ref={deskTopGroup}
+        onPointerDown={zoom}
+        onPointerMissed={inOut}
+        onPointerOver={() => setIsHovered(true)}
+        onPointerOut={() => setIsHovered(false)}
+      >
+        <Standard nodes={nodes} />
+        <Screen nodes={nodes} />
+      </group>
+
+      <group>
+        <DivergenceMeter scene={scene} />
+      </group>
+
+      <group>
+        <TimeMachine scene={scene2} />
+      </group>
+
+      <group ref={drPepperGroup}>
+        <DrPaper1 scene={scene3} />
+        <DrPaper2 scene={scene3} />
+      </group>
+    </>
+  );
+}

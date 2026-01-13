@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls } from "@react-three/drei";
-import ObjectRender from "./ui/oldComputer";
+import ObjectsRender from "./ui/models";
 import LightObject from "./ui/lightObject";
 import { Suspense, useRef } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
@@ -27,7 +27,7 @@ export default function RenderModel() {
           maxPolarAngle={onControl ? Math.PI / 2 : Math.PI}
         />
         <LightObject />
-        <ObjectRender orbitRef={orbit} />
+        <ObjectsRender orbitRef={orbit} />
         <ContactShadows
           position={[-7, -4.9, -5]}
           scale={200}
