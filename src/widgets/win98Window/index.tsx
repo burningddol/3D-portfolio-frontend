@@ -5,6 +5,7 @@ import minimize from "/minimize.png";
 import maximize from "/maximize.png";
 import { useRef, useState } from "react";
 import useResizeWindow from "./lib/useResizeWindow";
+import useRelocateWindow from "./lib/useRelocateWindow";
 
 type Win98WindowProps = {
   title: string;
@@ -19,7 +20,7 @@ type Win98WindowProps = {
 
   onMinimize?: () => void;
 
-  setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
 
   className?: string;
   style?: React.CSSProperties;
@@ -35,7 +36,7 @@ export function Win98Window({
   onClose,
   onMinimize,
 
-  setIsResizing,
+  setIsSetting,
 
   className = "",
   style,
@@ -45,13 +46,24 @@ export function Win98Window({
   const resizingBorderRef = useRef<HTMLDivElement | null>(null);
   const windowRef = useRef<HTMLDivElement | null>(null);
 
+  const titleRef = useRef<HTMLDivElement | null>(null);
+  const controlsRef = useRef<HTMLDivElement | null>(null);
+
   const [isMax, setIsMax] = useState<boolean>(false);
 
   useResizeWindow({
     resizingBtnRef,
     resizingBorderRef,
     windowRef,
-    setIsResizing,
+    setIsSetting,
+  });
+
+  useRelocateWindow({
+    titleRef,
+    resizingBorderRef,
+    windowRef,
+    controlsRef,
+    setIsSetting,
   });
 
   const onMaximize = () => {
@@ -70,7 +82,7 @@ export function Win98Window({
           .join(" ")}
         style={style}
       >
-        <div className={styles.titleBar}>
+        <div className={styles.titleBar} ref={titleRef}>
           <div className={styles.titleLeft}>
             {iconSrc ? (
               <img className={styles.titleIcon} src={iconSrc} alt={iconAlt} />
@@ -78,7 +90,7 @@ export function Win98Window({
             <div className={styles.titleText}>{title}</div>
           </div>
 
-          <div className={styles.controls}>
+          <div className={styles.controls} ref={controlsRef}>
             <button
               type="button"
               className={styles.controlBtn}

@@ -4,14 +4,14 @@ interface Props {
   resizingBtnRef: React.RefObject<HTMLButtonElement | null>;
   resizingBorderRef: React.RefObject<HTMLDivElement | null>;
   windowRef: React.RefObject<HTMLDivElement | null>;
-  setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function useResizeWindow({
   resizingBtnRef,
   resizingBorderRef,
   windowRef,
-  setIsResizing,
+  setIsSetting,
 }: Props) {
   useEffect(() => {
     const btn = resizingBtnRef?.current;
@@ -22,13 +22,13 @@ export default function useResizeWindow({
     // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ가독성용ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ가독성용ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     const onMouseDown = (e: MouseEvent) => {
-      setIsResizing(true);
+      setIsSetting(true);
       border.style.opacity = "1";
 
       const startX = e.clientX;
       const startY = e.clientY;
-      const currentWidth = border.offsetWidth;
-      const currentHeight = border.offsetHeight;
+      const currentWidth = windowbox.offsetWidth;
+      const currentHeight = windowbox.offsetHeight;
 
       // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ가독성용ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
       const onMove = (ev: MouseEvent) => {
@@ -47,7 +47,7 @@ export default function useResizeWindow({
         windowbox.style.width = `${newWidth}px`;
         windowbox.style.height = `${newHeight}px`;
 
-        setIsResizing(false);
+        setIsSetting(false);
         border.style.opacity = "0";
 
         window.removeEventListener("mousemove", onMove);
