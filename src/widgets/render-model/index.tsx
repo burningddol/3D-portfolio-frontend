@@ -11,12 +11,12 @@ export default function RenderModel() {
   const onControl = useControlOrbit((s) => s.onControl);
 
   return (
-    <Suspense fallback={null}>
-      <Canvas
-        dpr={1}
-        gl={{ powerPreference: "high-performance" }}
-        camera={{ position: [40, 0, 25], fov: 55, near: 0.1, far: 200 }} //첫진입 position 여기서 설정 ㄱㄱ
-      >
+    <Canvas
+      dpr={1}
+      gl={{ powerPreference: "high-performance" }}
+      camera={{ position: [40, 0, 25], fov: 55, near: 0.1, far: 200 }} //첫진입 position 여기서 설정 ㄱㄱ
+    >
+      <Suspense fallback={null}>
         <OrbitControls
           ref={orbit}
           target={[-20, 40, -30]}
@@ -43,7 +43,7 @@ export default function RenderModel() {
           environmentIntensity={0.1}
           backgroundIntensity={0.35}
         />
-      </Canvas>
-    </Suspense>
+      </Suspense>
+    </Canvas>
   );
 }
