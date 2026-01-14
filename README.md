@@ -16,7 +16,7 @@
 
 **Main Features**
 - 3D 컴퓨터 모델 (Three.js / React Three Fiber)  
-- 실제 웹 기반 데스크톱 UI (iframe)
+- 실제 웹 기반 데스크톱 UI
 - 앱, 폴더, resume 실행 (작업중...)
 - 마우스 & 키보드 입력 지원
 - 카메라 이동 및 화면 포커스 애니메이션
