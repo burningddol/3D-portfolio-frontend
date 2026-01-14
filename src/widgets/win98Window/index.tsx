@@ -3,28 +3,23 @@ import styles from "./style/win98Window.module.scss";
 import close from "/close.png";
 import minimize from "/minimize.png";
 import maximize from "/maximize.png";
+import { useRef, useState } from "react";
+import useResizeWindow from "./lib/useResizeWindow";
 
 type Win98WindowProps = {
   title: string;
   children: ReactNode;
 
-  /** 활성/비활성 타이틀바 */
   active?: boolean;
 
-  /** 타이틀바 아이콘 (선택) */
   iconSrc?: string;
   iconAlt?: string;
 
-  /** 타이틀바 버튼 표시 여부 */
-  showControls?: boolean;
-
-  /** 버튼 핸들러(선택) */
   onClose?: () => void;
-  onMinimize?: () => void;
-  onMaximize?: () => void;
 
-  /** 상태바(선택) */
-  status?: ReactNode;
+  onMinimize?: () => void;
+
+  setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
 
   className?: string;
   style?: React.CSSProperties;
@@ -36,30 +31,53 @@ export function Win98Window({
   active = true,
   iconSrc,
   iconAlt = "",
-  showControls = true,
+
   onClose,
   onMinimize,
-  onMaximize,
-  status,
+
+  setIsResizing,
+
   className = "",
   style,
 }: Win98WindowProps) {
+  //
+  const resizingBtnRef = useRef<HTMLButtonElement | null>(null);
+  const resizingBorderRef = useRef<HTMLDivElement | null>(null);
+  const windowRef = useRef<HTMLDivElement | null>(null);
+
+  const [isMax, setIsMax] = useState<boolean>(false);
+
+  useResizeWindow({
+    resizingBtnRef,
+    resizingBorderRef,
+    windowRef,
+    setIsResizing,
+  });
+
+  const onMaximize = () => {
+    setIsMax((prev) => !prev);
+  };
+
   return (
     <div
-      className={[styles.window, !active ? styles.inactive : "", className]
-        .filter(Boolean)
-        .join(" ")}
-      style={style}
+      className={`${styles.windowWrapper} ${isMax ? styles.max : ""}`}
+      ref={windowRef}
     >
-      <div className={styles.titleBar}>
-        <div className={styles.titleLeft}>
-          {iconSrc ? (
-            <img className={styles.titleIcon} src={iconSrc} alt={iconAlt} />
-          ) : null}
-          <div className={styles.titleText}>{title}</div>
-        </div>
+      <div className={styles.resizeBorder} ref={resizingBorderRef} />
+      <div
+        className={[styles.window, !active ? styles.inactive : "", className]
+          .filter(Boolean)
+          .join(" ")}
+        style={style}
+      >
+        <div className={styles.titleBar}>
+          <div className={styles.titleLeft}>
+            {iconSrc ? (
+              <img className={styles.titleIcon} src={iconSrc} alt={iconAlt} />
+            ) : null}
+            <div className={styles.titleText}>{title}</div>
+          </div>
 
-        {showControls ? (
           <div className={styles.controls}>
             <button
               type="button"
@@ -86,12 +104,23 @@ export function Win98Window({
               <img src={close} />
             </button>
           </div>
-        ) : null}
+        </div>
+
+        <div className={styles.content}>{children}</div>
+
+        <div className={styles.win98Statusbar}>
+          <div className={styles.statusPane}>ⓘ Ready</div>
+
+          <div className={styles.statusMiniPane} />
+          <div className={styles.statusMiniPane}>
+            <button
+              type="button"
+              className={styles.resizeHandle}
+              ref={resizingBtnRef}
+            />
+          </div>
+        </div>
       </div>
-
-      <div className={styles.content}>{children}</div>
-
-      {status ? <div className={styles.statusBar}>{status}</div> : null}
     </div>
   );
 }

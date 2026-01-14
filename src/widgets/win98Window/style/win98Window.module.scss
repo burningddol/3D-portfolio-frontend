@@ -36,7 +36,48 @@ $title-text: #ffffff;
     inset -1px -1px 0 0 $highlight;
 }
 
+.windowWrapper {
+  position: relative;
+  width: 1600px;
+  height: 1300px;
+  top: 100px;
+  left: 140px;
+
+  &.max {
+    width: 100% !important;
+    height: 96.3% !important;
+    top: 0;
+    left: 0;
+  }
+}
+
 /* 창 전체 */
+.resizeBorder {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  min-width: 750px;
+  min-height: 550px;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background-color: transparent;
+
+  opacity: 0;
+  z-index: 9999999999;
+  border: 9px solid transparent;
+
+  border-image: repeating-linear-gradient(
+      45deg,
+      $shadow 0,
+      $shadow 1px,
+      $light 1px,
+      $light 2px
+    )
+    2;
+}
+
 .window {
   @extend %win98-font;
   background: $face;
@@ -46,12 +87,11 @@ $title-text: #ffffff;
   @include bevel-out;
 
   border-radius: 0;
-  width: 1500px;
-  height: 1300px; /* 필요시 컴포넌트에서 스타일로 override */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 /* 타이틀바 */
@@ -142,6 +182,7 @@ $title-text: #ffffff;
 .content {
   height: 100%;
   padding: 10px;
+  padding-bottom: 0;
   background: $face;
 }
 
@@ -156,17 +197,79 @@ $title-text: #ffffff;
   padding: 8px;
   min-height: 120px;
 }
+//
 
-/* 상태바(옵션) */
-.statusBar {
+.win98Statusbar {
+  height: 40px;
+  padding: 3px 8px;
+
   display: flex;
-  gap: 8px;
-  padding: 6px 8px;
+  align-items: center;
+  gap: 6px;
+
   background: $face;
 
-  border-top: 1px solid $shadow;
-  box-shadow: inset 0 1px 0 $light;
+  // 바는 살짝 튀어나온 프레임
+  border-top: 2px solid $light;
+  border-left: 2px solid $light;
+  border-right: 2px solid $shadow;
+  border-bottom: 2px solid $shadow;
+}
+
+.statusPane {
+  flex: 1;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
 
   font-size: 12px;
-  color: #000;
+  color: $dark;
+  user-select: none;
+
+  background: $face;
+
+  // Win98 눌린(inset) 패널
+  border-top: 2px solid $shadow;
+  border-left: 2px solid $shadow;
+  border-right: 2px solid $light;
+  border-bottom: 2px solid $light;
+}
+
+.statusMiniPane {
+  height: 100%;
+  min-width: 86px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  font-size: 12px;
+  color: $dark;
+  user-select: none;
+
+  background: $face;
+
+  // 눌린 상태
+  border-top: 2px solid $shadow;
+  border-left: 2px solid $shadow;
+  border-right: 2px solid $light;
+  border-bottom: 2px solid $light;
+}
+
+.resizeHandle {
+  width: 26px;
+  height: 100%;
+  padding: 0;
+
+  background: $face;
+  border: none;
+  cursor: se-resize;
+
+  background-image: url("/public/resize.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }

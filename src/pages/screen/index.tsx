@@ -16,6 +16,8 @@ export default function Screen() {
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const [isResizing, setIsResizing] = useState<boolean>(false);
+  console.log(isResizing);
   const mouseAudio = useMouseAudio();
   const screenOnOffAudio = useDesktopAudio();
 
@@ -60,14 +62,18 @@ export default function Screen() {
         <Navigation setOnScreen={setOnScreen} />
 
         {isOpenApp.internet && (
-          <Win98Window title="To-do-list" onClose={OnClose}>
+          <Win98Window
+            title="To-do-list"
+            onClose={OnClose}
+            setIsResizing={setIsResizing}
+          >
             {isLoading && <AppLoader />}
             <iframe
               id="iframe"
               onLoad={() => setIsLoading(false)}
               style={{
                 border: "none",
-                pointerEvents: "auto",
+                pointerEvents: isResizing ? "none" : "auto",
                 WebkitUserSelect: "none",
                 MozUserSelect: "none",
                 msUserSelect: "none",
