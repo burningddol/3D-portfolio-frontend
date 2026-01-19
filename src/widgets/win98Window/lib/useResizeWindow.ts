@@ -4,7 +4,7 @@ interface Props {
   resizingBtnRef: React.RefObject<HTMLButtonElement | null>;
   resizingBorderRef: React.RefObject<HTMLDivElement | null>;
   windowRef: React.RefObject<HTMLDivElement | null>;
-  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSetting: (isActive: boolean) => void;
 }
 
 export default function useResizeWindow({

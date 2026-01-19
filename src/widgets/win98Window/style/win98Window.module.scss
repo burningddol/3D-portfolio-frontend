@@ -37,12 +37,12 @@ $title-text: #ffffff;
 }
 
 .windowWrapper {
-  position: relative;
+  position: absolute;
   width: 1600px;
   height: 1300px;
   top: 100px;
   left: 140px;
-
+  z-index: 1;
   &.max {
     width: 100% !important;
     height: 96.3% !important;
@@ -108,6 +108,10 @@ $title-text: #ffffff;
   /* 타이틀바 글자 Win98 느낌 */
   font-weight: 700;
   letter-spacing: 0.1px;
+}
+
+.unFocused {
+  background: $title-inactive;
 }
 
 /* 비활성 창 */

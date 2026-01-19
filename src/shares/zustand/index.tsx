@@ -47,3 +47,46 @@ export const useControlOrbit = create<Control>((set) => ({
     set(() => ({ onControl: isActive }));
   },
 }));
+
+type Setting = {
+  isSetting: boolean;
+  setIsSetting: (isActive: boolean) => void;
+};
+
+export const useSetting = create<Setting>((set) => ({
+  isSetting: false,
+  setIsSetting(isActive: boolean) {
+    set(() => ({ isSetting: isActive }));
+  },
+}));
+
+type ZIndexState = {
+  top: number;
+  next: () => number;
+};
+
+export const useZIndex = create<ZIndexState>((set, get) => ({
+  top: 1,
+  next: () => {
+    const nextZ = get().top + 1;
+    set({ top: nextZ });
+    return nextZ;
+  },
+}));
+
+type Focusing = {
+  onFocusing: Record<string, boolean>;
+  setOnFocusing: (name: string) => void;
+};
+
+const INITIAL_FOCUSING: Record<string, boolean> = {
+  toDo: false,
+  junseokBook: false,
+};
+
+export const useFocusing = create<Focusing>((set) => ({
+  onFocusing: INITIAL_FOCUSING,
+  setOnFocusing(name: string) {
+    set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: true } }));
+  },
+}));

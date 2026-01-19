@@ -6,17 +6,21 @@ import { useDesktopAudio, useMouseAudio } from "@/features/audio/useAudio";
 import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
-import { AppLoader } from "./ui/appLoader";
+
+interface APP {
+  toDo: boolean;
+  junseokBook: boolean;
+}
+
+const INITIAL_IS_OPEN_APP: APP = {
+  toDo: false,
+  junseokBook: false,
+};
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
   const [onControl, setOnControl] = useState<boolean>(false);
-  const [isOpenApp, setIsOpenApp] = useState<{ [key: string]: boolean }>({
-    internet: false,
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const [isSetting, setIsSetting] = useState<boolean>(false);
+  const [isOpenApp, setIsOpenApp] = useState<APP>(INITIAL_IS_OPEN_APP);
 
   const mouseAudio = useMouseAudio();
   const screenOnOffAudio = useDesktopAudio();
@@ -29,10 +33,11 @@ export default function Screen() {
     onScreen ? styles.screenOn : styles.screenOff
   } ${onControl && styles.onControl}`;
 
-  const OnClose = () => {
+  const OnClose = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name;
     setIsOpenApp((prev) => ({
       ...prev,
-      internet: false,
+      [name]: false,
     }));
   };
 
@@ -41,13 +46,6 @@ export default function Screen() {
   useEffect(() => {
     if (onScreen) screenOnOffAudio();
   }, [onScreen]);
-
-  //앱 오픈시 로딩
-  useEffect(() => {
-    if (isOpenApp.internet) {
-      setIsLoading(true);
-    }
-  }, [isOpenApp.internet]);
 
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>
@@ -61,29 +59,22 @@ export default function Screen() {
         <Applications setIsOpenApp={setIsOpenApp} />
         <Navigation setOnScreen={setOnScreen} />
 
-        {isOpenApp.internet && (
+        {isOpenApp.toDo && (
           <Win98Window
-            title="To-do-list"
+            name="toDo"
             onClose={OnClose}
-            setIsSetting={setIsSetting}
-          >
-            {isLoading && <AppLoader />}
-            <iframe
-              id="iframe"
-              onLoad={() => setIsLoading(false)}
-              style={{
-                border: "none",
-                pointerEvents: isSetting ? "none" : "auto",
-                WebkitUserSelect: "none",
-                MozUserSelect: "none",
-                msUserSelect: "none",
-                userSelect: "none",
-                width: "100%",
-                height: "100%",
-              }}
-              src={`https://21-sprint-mission-xw9a.vercel.app/`}
-            />
-          </Win98Window>
+            onIframe
+            iframeSrc="https://21-sprint-mission-xw9a.vercel.app/"
+          />
+        )}
+
+        {isOpenApp.junseokBook && (
+          <Win98Window
+            name="junseokBook"
+            onClose={OnClose}
+            onIframe
+            iframeSrc="https://win98-memobook.vercel.app/"
+          />
         )}
       </div>
     </div>

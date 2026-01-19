@@ -3,45 +3,50 @@ import styles from "./style/win98Window.module.scss";
 import close from "/close.png";
 import minimize from "/minimize.png";
 import maximize from "/maximize.png";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useResizeWindow from "./lib/useResizeWindow";
 import useRelocateWindow from "./lib/useRelocateWindow";
+import { AppLoader } from "@/pages/screen/ui/appLoader";
+import { useFocusing, useSetting, useZIndex } from "@/shares/zustand";
 
 type Win98WindowProps = {
-  title: string;
-  children: ReactNode;
+  name: string;
+  children?: ReactNode;
 
   active?: boolean;
-
+  onIframe?: boolean;
+  iframeSrc?: string;
   iconSrc?: string;
   iconAlt?: string;
 
-  onClose?: () => void;
+  onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
   onMinimize?: () => void;
-
-  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
 
   className?: string;
   style?: React.CSSProperties;
 };
 
 export function Win98Window({
-  title,
+  name,
   children,
   active = true,
   iconSrc,
   iconAlt = "",
-
+  onIframe = false,
+  iframeSrc = "",
   onClose,
   onMinimize,
-
-  setIsSetting,
 
   className = "",
   style,
 }: Win98WindowProps) {
   //
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isSetting, setIsSetting } = useSetting();
+  const nextZ = useZIndex((state) => state.next);
+  const { onFocusing, setOnFocusing } = useFocusing();
+
   const resizingBtnRef = useRef<HTMLButtonElement | null>(null);
   const resizingBorderRef = useRef<HTMLDivElement | null>(null);
   const windowRef = useRef<HTMLDivElement | null>(null);
@@ -70,10 +75,27 @@ export function Win98Window({
     setIsMax((prev) => !prev);
   };
 
+  // 앱 클릭시 최상단 zindex 및 focus
+  const handleMouseDown = () => {
+    if (!windowRef.current) return;
+    const nextZIndex: number = nextZ();
+    windowRef.current.style.zIndex = String(nextZIndex);
+    setOnFocusing(name);
+  };
+
+  // 첫 앱 open시 최상단 zindex 및 focus
+  useEffect(() => {
+    if (!windowRef.current) return;
+    const nextZIndex: number = nextZ();
+    windowRef.current.style.zIndex = String(nextZIndex);
+    setOnFocusing(name);
+  }, []);
+
   return (
     <div
       className={`${styles.windowWrapper} ${isMax ? styles.max : ""}`}
       ref={windowRef}
+      onMouseDown={handleMouseDown}
     >
       <div className={styles.resizeBorder} ref={resizingBorderRef} />
       <div
@@ -82,12 +104,15 @@ export function Win98Window({
           .join(" ")}
         style={style}
       >
-        <div className={styles.titleBar} ref={titleRef}>
+        <div
+          className={`${styles.titleBar} ${onFocusing[name] ? "" : styles.unFocused}`}
+          ref={titleRef}
+        >
           <div className={styles.titleLeft}>
             {iconSrc ? (
               <img className={styles.titleIcon} src={iconSrc} alt={iconAlt} />
             ) : null}
-            <div className={styles.titleText}>{title}</div>
+            <div className={styles.titleText}>{name}</div>
           </div>
 
           <div className={styles.controls} ref={controlsRef}>
@@ -108,6 +133,7 @@ export function Win98Window({
               <img src={maximize} />
             </button>
             <button
+              name={name}
               type="button"
               className={styles.controlBtn}
               aria-label="Close"
@@ -118,7 +144,31 @@ export function Win98Window({
           </div>
         </div>
 
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>
+          {onIframe ? (
+            <>
+              {isLoading && <AppLoader />}
+              <iframe
+                id="iframe"
+                onLoad={() => setIsLoading(false)}
+                style={{
+                  border: "none",
+                  pointerEvents:
+                    isSetting || !onFocusing[name] ? "none" : "auto",
+                  WebkitUserSelect: "none",
+                  MozUserSelect: "none",
+                  msUserSelect: "none",
+                  userSelect: "none",
+                  width: "100%",
+                  height: "100%",
+                }}
+                src={iframeSrc}
+              />
+            </>
+          ) : (
+            children
+          )}
+        </div>
 
         <div className={styles.win98Statusbar}>
           <div className={styles.statusPane}>ⓘ Ready</div>

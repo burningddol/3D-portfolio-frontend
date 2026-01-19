@@ -20,8 +20,6 @@
       width: 100px;
       height: 100px;
       padding: 5px 5px;
-      position: relative;
-      top: 15px;
     }
 
     &.touched img {
@@ -43,5 +41,12 @@
       color: white;
       border: 2px solid gray;
     }
+  }
+
+  .index1 {
+    top: 100px;
+  }
+  .index2 {
+    top: 300px;
   }
 }

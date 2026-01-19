@@ -1,5 +1,6 @@
 import styles from "./style/applications.module.scss";
 import toDoList from "/toDoList.png";
+import junseokBook from "/junseokBook.png";
 import {
   useState,
   useEffect,
@@ -8,41 +9,53 @@ import {
   useRef,
 } from "react";
 
-type AppsState = Record<string, boolean>;
+interface APP {
+  toDo: boolean;
+  junseokBook: boolean;
+}
 interface Props {
-  setIsOpenApp: Dispatch<SetStateAction<AppsState>>;
+  setIsOpenApp: Dispatch<SetStateAction<APP>>;
 }
 
 interface Touch {
-  [key: string]: boolean;
+  toDo: boolean;
+  junseokBook: boolean;
 }
 
-const resetTouch: Touch = {
-  internet: false,
+const RESET_TOUCH: Touch = {
+  toDo: false,
+  junseokBook: false,
 };
 
 export default function Applications({ setIsOpenApp }: Props) {
-  const [isTouched, setIsTouched] = useState<{ [key: string]: boolean }>({
-    internet: false,
-  });
+  const [isTouched, setIsTouched] = useState<Touch>(RESET_TOUCH);
 
-  const internetRef = useRef<HTMLButtonElement>(null);
+  const toDoRef = useRef<HTMLButtonElement>(null);
+  const junseokBookRef = useRef<HTMLButtonElement>(null);
 
-  const handleDoubleClick = () => {
-    setIsOpenApp({ internet: true });
-    setIsTouched(resetTouch);
+  const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name;
+    setIsOpenApp((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+    setIsTouched(RESET_TOUCH);
   };
 
-  const handleDownInternet = () => {
-    setIsTouched(() => ({ ...resetTouch, internet: true })); // 어플마다 만들어야함  고차함수로 구현 ㄱㄱ
+  const handleDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name;
+
+    setIsTouched(() => ({ ...RESET_TOUCH, [name]: true }));
   };
 
   // 어플 외 밖 클릭하면 touched 취소
   useEffect(() => {
     const handleDown = (e: MouseEvent) => {
-      const isActive = !internetRef.current?.contains(e.target as Node);
+      const isActive =
+        !toDoRef.current?.contains(e.target as Node) &&
+        !junseokBookRef.current?.contains(e.target as Node);
 
-      if (isActive) setIsTouched(resetTouch);
+      if (isActive) setIsTouched(RESET_TOUCH);
     };
     document.addEventListener("mousedown", handleDown);
     return () => {
@@ -53,13 +66,25 @@ export default function Applications({ setIsOpenApp }: Props) {
   return (
     <div className={styles.container}>
       <button
-        ref={internetRef}
-        className={`${styles.app} ${isTouched.internet ? styles.touched : ""}`}
+        name="toDo"
+        ref={toDoRef}
+        className={`${styles.app} ${isTouched.toDo ? styles.touched : ""} ${styles.index1}`}
         onDoubleClick={handleDoubleClick}
-        onMouseDown={handleDownInternet}
+        onMouseDown={handleDown}
       >
         <img src={toDoList} />
         <span>ToDoList Scheduler</span>
+      </button>
+
+      <button
+        name="junseokBook"
+        ref={junseokBookRef}
+        className={`${styles.app} ${isTouched.junseokBook ? styles.touched : ""} ${styles.index2} `}
+        onDoubleClick={handleDoubleClick}
+        onMouseDown={handleDown}
+      >
+        <img src={junseokBook} />
+        <span>Junseok's Book</span>
       </button>
     </div>
   );
