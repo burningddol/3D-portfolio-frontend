@@ -35,31 +35,14 @@ const useGsap: UseGsap = {
   firstMotion: () => {},
 };
 
+/* 애니메이션 회전미사용으로 잠정 폐기
+
 useGsap.changeRotation = ({ rotation, pointer, useY }: Rotation) => {
   gsap.to(rotation, {
     duration: 2,
     repeat: 0,
     x: useY ? pointer.y : 0,
     y: -pointer.x / 3.5,
-    z: 0,
-    ease: "power3.out",
-  });
-};
-
-useGsap.moveCamera = ({ position, target, pointer }: Camera) => {
-  gsap.to(position, {
-    duration: 1.5,
-    repeat: 0,
-    x: pointer.x * 25,
-    y: 30 + pointer.y * 10,
-    z: 90,
-    ease: "power3.out",
-  });
-  gsap.to(target, {
-    duration: 1.5,
-    repeat: 0,
-    x: pointer.x * 25,
-    y: 15 + pointer.y * 10,
     z: 0,
     ease: "power3.out",
   });
@@ -74,7 +57,7 @@ useGsap.moveLookAt = ({
   isWhoosh = false,
 }: LookAt) => {
   gsap.to(position, {
-    duration: 2,
+    duration: 1,
     repeat: 0,
     x: fly.x,
     y: fly.y,
@@ -82,7 +65,7 @@ useGsap.moveLookAt = ({
     ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
   });
   gsap.to(target, {
-    duration: 2.5,
+    duration: 1.25,
     repeat: 0,
     x: lookAt.x,
     y: lookAt.y,
@@ -90,7 +73,7 @@ useGsap.moveLookAt = ({
     ease: isOut ? "power3.out" : "power3.inout",
   });
 };
-
+*/
 useGsap.firstMotion = ({
   position,
   fly,
@@ -99,8 +82,6 @@ useGsap.firstMotion = ({
   isOut,
   isWhoosh = false,
 }: LookAt) => {
-  gsap.killTweensOf(position);
-  gsap.killTweensOf(target);
   gsap
     .timeline()
     .to(position, {

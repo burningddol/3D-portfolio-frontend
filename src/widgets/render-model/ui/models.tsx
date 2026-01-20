@@ -12,7 +12,7 @@ import {
   useProject,
 } from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
-import type { Camera, LookAt } from "../lib/useGsap";
+import type { LookAt } from "../lib/useGsap";
 import { Standard, Screen } from "./oldComputer";
 
 import { DrPaper1, DrPaper2 } from "./drPaper";
@@ -40,6 +40,11 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const drPepperGroup = useRef<THREE.Group>(null);
   const isFirstActive = useRef(false);
 
+  const desiredCamPos = useRef(new THREE.Vector3());
+  const desiredTarget = useRef(new THREE.Vector3());
+  const isAnimating = useRef(false);
+  const follow = 0.018;
+
   const { camera } = useThree();
 
   const { onDesktop, setOnDesktop } = useDesktop();
@@ -47,7 +52,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const { onControl, setOnControl } = useControlOrbit();
   const { onProject } = useProject();
 
-  const { moveCamera, moveLookAt, firstMotion } = useGsap;
+  const { firstMotion } = useGsap;
 
   const zoom = (): void => {
     setOnDesktop(true);
@@ -76,6 +81,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
   }, []); // deps에 missed추가하면 무한렌더링
 
   const startProjectMotion = (): void => {
+    isAnimating.current = true;
     const argues: LookAt = {
       position: camera.position,
       fly: FLY_MISSED,
@@ -85,39 +91,46 @@ export default function ObjectsRender({ orbitRef }: Props) {
       isWhoosh: true,
     };
 
-    const startFirstMotion = () => {
-      firstMotion(argues);
-    };
-    startFirstMotion();
+    firstMotion(argues);
+
+    setTimeout(() => {
+      isAnimating.current = false;
+    }, 1500); // firstMotion 총 길이와 맞추기
   };
 
   useFrame((state) => {
-    //const desktop = deskTopGroup.current as THREE.Group;    회전애니메이션용
-    //const drPepper = drPepperGroup.current as THREE.Group;
+    if (isAnimating.current) return;
+    if (!control.current) return;
 
-    const argues: Camera = {
-      position: camera.position,
-      target: control.current.target,
-      pointer: state.pointer,
-    };
-
-    const argues2: LookAt = {
-      position: camera.position,
-      fly: FLY_ZOOM,
-      target: control.current.target,
-      lookAt: LOOKAT_ZOOM,
-      isOut: false,
-    };
+    const pointer = state.pointer;
 
     if (onDesktop && !onControl) {
-      moveLookAt(argues2);
-      // changeRotation(argues2);    회전애니메이션용
+      // 데스크탑 줌 상태: 기본은 FLY_ZOOM, LOOKAT_ZOOM
+      desiredCamPos.current.set(FLY_ZOOM.x, FLY_ZOOM.y, FLY_ZOOM.z);
+
+      desiredTarget.current.set(LOOKAT_ZOOM.x, LOOKAT_ZOOM.y, LOOKAT_ZOOM.z);
+    } else if (!onDesktop && !onControl && isFirstActive.current) {
+      // 일반 상태: 기본은 FLY_MISSED, LOOKAT_MISSED
+      desiredCamPos.current.set(
+        FLY_MISSED.x + pointer.x * 25,
+        FLY_MISSED.y + pointer.y * 10,
+        FLY_MISSED.z,
+      );
+
+      desiredTarget.current.set(
+        LOOKAT_MISSED.x + pointer.x * 25,
+        LOOKAT_MISSED.y + pointer.y * 10,
+        LOOKAT_MISSED.z,
+      );
+    } else {
+      return;
     }
-    if (!onDesktop && !onControl && isFirstActive.current) {
-      moveCamera(argues);
-      //  changeRotation(argues1);    회전애니메이션용
-      // changeRotation(argues3);     회전애니메이션용
-    }
+
+    camera.position.lerp(desiredCamPos.current, follow);
+    control.current.target.lerp(desiredTarget.current, follow);
+
+    // OrbitControls damping/target 반영
+    control.current.update();
   });
 
   useEffect(() => {

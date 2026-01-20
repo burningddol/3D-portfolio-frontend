@@ -13,7 +13,7 @@ export function DivergenceMeter({ scene }: { scene: THREE.Group }) {
     const t = state.clock.elapsedTime;
 
     // 둥둥 떠있는 느낌
-    const floatY = Math.sin(t * 0.8) * 1.6;
+    const floatY = Math.sin(t * 1) * 1.7;
 
     // 미세 떨림
     const micro = Math.sin(t * 3.2) * 0.1;
