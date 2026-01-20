@@ -151,9 +151,9 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
     control.current.update();
 
-    // Force matrix update for Html component sync on macOS
+    // Force matrix update for Html component sync (camera.position이 lerp라 한박자 늦는거 prevent)
     camera.updateMatrixWorld();
-  }, -1);
+  }, -1); // priority -1로 HTML transform(priority 0) 보다 먼저 연산시켜 순서 안정화
 
   useEffect(() => {
     if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행

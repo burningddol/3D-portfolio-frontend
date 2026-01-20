@@ -94,8 +94,7 @@ useGsap.firstMotion = ({
 }: LookAt) => {
   gsapTicker.needsUpdate = true;
 
-  // Sync function to update OrbitControls and camera matrix on every GSAP tick
-  // This ensures Html overlay stays in sync with camera on macOS
+  // gsap 한틱마다 카메라 및 orbit 즉시 업데이트
   const syncUpdate = () => {
     if (gsapTicker.controlRef?.current) {
       gsapTicker.controlRef.current.update();
