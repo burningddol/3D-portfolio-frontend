@@ -10,6 +10,12 @@ body {
   position: relative;
 }
 
+.html3d {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /*---------------font------------*/
 
 @font-face {

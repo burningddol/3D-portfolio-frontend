@@ -83,12 +83,15 @@ export function Screen({ nodes }: { nodes: GLTFNodes }) {
 
         <Html
           transform
+          sprite
           occlude
           distanceFactor={7}
           rotation={[-0.09, 0, 0]}
           position={[0.01, 36.3, 11.2]}
           center
           pointerEvents="none"
+          zIndexRange={[10, 0]}
+          wrapperClass="html3d"
         >
           <iframe
             ref={iframeRef}
