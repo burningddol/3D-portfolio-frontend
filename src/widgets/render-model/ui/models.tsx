@@ -98,19 +98,19 @@ export default function ObjectsRender({ orbitRef }: Props) {
     }, 1500); // firstMotion 총 길이와 맞추기
   };
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (isAnimating.current) return;
     if (!control.current) return;
 
     const pointer = state.pointer;
 
     if (onDesktop && !onControl) {
-      // 데스크탑 줌 상태: 기본은 FLY_ZOOM, LOOKAT_ZOOM
+      // 데스크탑 줌 상태
       desiredCamPos.current.set(FLY_ZOOM.x, FLY_ZOOM.y, FLY_ZOOM.z);
 
       desiredTarget.current.set(LOOKAT_ZOOM.x, LOOKAT_ZOOM.y, LOOKAT_ZOOM.z);
     } else if (!onDesktop && !onControl && isFirstActive.current) {
-      // 일반 상태: 기본은 FLY_MISSED, LOOKAT_MISSED
+      // 일반 상태 + 마우스 반응
       desiredCamPos.current.set(
         FLY_MISSED.x + pointer.x * 25,
         FLY_MISSED.y + pointer.y * 10,
@@ -126,10 +126,12 @@ export default function ObjectsRender({ orbitRef }: Props) {
       return;
     }
 
-    camera.position.lerp(desiredCamPos.current, follow);
-    control.current.target.lerp(desiredTarget.current, follow);
+    const k = 6; // 반응 속도 (6~12 )
+    const alpha = 1 - Math.exp(-k * delta);
 
-    // OrbitControls damping/target 반영
+    camera.position.lerp(desiredCamPos.current, alpha);
+    control.current.target.lerp(desiredTarget.current, alpha);
+
     control.current.update();
   });
 
