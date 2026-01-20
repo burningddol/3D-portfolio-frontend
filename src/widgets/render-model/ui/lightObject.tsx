@@ -3,7 +3,7 @@ const LightObject = () => {
     <>
       <ambientLight intensity={0.27} />
 
-      <directionalLight position={[0, 10, 30]} intensity={0.28} castShadow />
+      <directionalLight position={[0, 10, 30]} intensity={0.17} castShadow />
       <directionalLight position={[-10, 12, -50]} intensity={1.25} castShadow />
     </>
   );

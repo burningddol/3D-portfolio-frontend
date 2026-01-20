@@ -12,7 +12,7 @@ import {
   useProject,
 } from "@/shares/zustand";
 import useGsap from "../lib/useGsap";
-import type { Rotation, LookAt } from "../lib/useGsap";
+import type { Camera, LookAt } from "../lib/useGsap";
 import { Standard, Screen } from "./oldComputer";
 
 import { DrPaper1, DrPaper2 } from "./drPaper";
@@ -23,11 +23,11 @@ type Props = {
   orbitRef: RefObject<OrbitControlsImpl | null>;
 };
 
-const FLY_ZOOM = new THREE.Vector3(0, 33, 40);
-const LOOKAT_ZOOM = new THREE.Vector3(0, 30, 0);
+const FLY_ZOOM = new THREE.Vector3(0, 34.3, 38);
+const LOOKAT_ZOOM = new THREE.Vector3(0, 30.3, 0);
 
-const FLY_MISSED = new THREE.Vector3(-70, 60, 110);
-const LOOKAT_MISSED = new THREE.Vector3(0, 0, 0);
+const FLY_MISSED = new THREE.Vector3(0, 30, 90);
+const LOOKAT_MISSED = new THREE.Vector3(0, 15, 0);
 
 export default function ObjectsRender({ orbitRef }: Props) {
   const { nodes } = useGLTF("/old_computer.glb");
@@ -38,6 +38,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const control = orbitRef as RefObject<OrbitControlsImpl>;
   const deskTopGroup = useRef<THREE.Group>(null);
   const drPepperGroup = useRef<THREE.Group>(null);
+  const isFirstActive = useRef(false);
 
   const { camera } = useThree();
 
@@ -46,55 +47,21 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const { onControl, setOnControl } = useControlOrbit();
   const { onProject } = useProject();
 
-  const { changeRotation, moveLookAt } = useGsap;
+  const { moveCamera, moveLookAt, firstMotion } = useGsap;
 
-  const zoom = (e: ThreeEvent<PointerEvent>): void => {
-    e.stopPropagation();
-    if (onDesktop) return;
-    if (onControl) return;
-    if (e.eventObject.name !== "desktopGroup") return;
-
-    const argues: LookAt = {
-      position: camera.position,
-      fly: FLY_ZOOM,
-      target: control.current.target,
-      lookAt: LOOKAT_ZOOM,
-      isOut: false,
-    };
-
-    moveLookAt(argues);
-
+  const zoom = (): void => {
     setOnDesktop(true);
     setOnControl(false);
   };
 
+  // 해당 고차함수 리팩토링 할 것 (회전애니메이션 => 이동애니메이션 변환과정 )
   const missed = useCallback(
-    (isWhoosh: boolean = false): (() => void) =>
-      (): void => {
-        if (onControl) return;
+    (): (() => void) => (): void => {
+      if (onControl) return;
 
-        const argues: LookAt = {
-          position: camera.position,
-          fly: FLY_MISSED,
-          target: control.current.target,
-          lookAt: LOOKAT_MISSED,
-          isOut: true,
-          isWhoosh: isWhoosh,
-        };
-
-        moveLookAt(argues);
-
-        setOnDesktop(false);
-      },
-    [
-      onControl,
-      camera,
-      FLY_MISSED,
-      control,
-      LOOKAT_MISSED,
-      moveLookAt,
-      setOnDesktop,
-    ]
+      setOnDesktop(false);
+    },
+    [setOnDesktop, onControl],
   );
 
   const inOut = (): void => {
@@ -106,40 +73,50 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const controlOut = useCallback((): void => {
     const onMissed = missed();
     onMissed();
-  }, []); // deps에 missed추가하면 무한렌더링  onControl deps에 왜넣었더라,, 일단 뺌
+  }, []); // deps에 missed추가하면 무한렌더링
 
   const startProjectMotion = (): void => {
-    const isWhoosh = true;
-    const onMissed = missed(isWhoosh);
-    onMissed();
+    const argues: LookAt = {
+      position: camera.position,
+      fly: FLY_MISSED,
+      target: control.current.target,
+      lookAt: LOOKAT_MISSED,
+      isOut: true,
+      isWhoosh: true,
+    };
+
+    const startFirstMotion = () => {
+      firstMotion(argues);
+    };
+    startFirstMotion();
   };
 
   useFrame((state) => {
-    const desktop = deskTopGroup.current as THREE.Group;
-    const timeMachine = drPepperGroup.current as THREE.Group;
+    //const desktop = deskTopGroup.current as THREE.Group;    회전애니메이션용
+    //const drPepper = drPepperGroup.current as THREE.Group;
 
-    const argues1: Rotation = {
-      rotation: desktop.rotation,
+    const argues: Camera = {
+      position: camera.position,
+      target: control.current.target,
       pointer: state.pointer,
     };
 
-    const argues2: Rotation = {
-      rotation: desktop.rotation,
-      pointer: new THREE.Vector2(0, 0.05),
-      useY: true,
-    };
-
-    const argues3: Rotation = {
-      rotation: timeMachine.rotation,
-      pointer: state.pointer,
+    const argues2: LookAt = {
+      position: camera.position,
+      fly: FLY_ZOOM,
+      target: control.current.target,
+      lookAt: LOOKAT_ZOOM,
+      isOut: false,
     };
 
     if (onDesktop && !onControl) {
-      changeRotation(argues2);
+      moveLookAt(argues2);
+      // changeRotation(argues2);    회전애니메이션용
     }
-    if (!onDesktop && !onControl) {
-      changeRotation(argues1);
-      changeRotation(argues3);
+    if (!onDesktop && !onControl && isFirstActive.current) {
+      moveCamera(argues);
+      //  changeRotation(argues1);    회전애니메이션용
+      // changeRotation(argues3);     회전애니메이션용
     }
   });
 
@@ -164,7 +141,10 @@ export default function ObjectsRender({ orbitRef }: Props) {
   }, [missed, onProject]);
 
   useEffect(() => {
-    if (onProject) startProjectMotion(); //웹 접속하자마자 1회실행 startProjectMotion이 controlOut과 inOut 덮어씀 순서 중요
+    if (onProject) {
+      setTimeout(() => (isFirstActive.current = true), 1400);
+      startProjectMotion();
+    } //웹 접속하자마자 1회실행 startProjectMotion이 controlOut과 inOut 덮어씀 순서 중요
   }, [onProject]);
 
   return (
@@ -197,7 +177,3 @@ export default function ObjectsRender({ orbitRef }: Props) {
     </>
   );
 }
-
-/*    렉 때문에 일단 모델 하나 빼둠
-  
-*/

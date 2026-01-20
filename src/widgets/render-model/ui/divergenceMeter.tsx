@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 export function DivergenceMeter({ scene }: { scene: THREE.Group }) {
   const ref = useRef<THREE.Object3D>(null);
 
-  const baseY = 39;
+  const baseY = 26;
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -13,7 +13,7 @@ export function DivergenceMeter({ scene }: { scene: THREE.Group }) {
     const t = state.clock.elapsedTime;
 
     // 둥둥 떠있는 느낌
-    const floatY = Math.sin(t * 0.8) * 1.4;
+    const floatY = Math.sin(t * 0.8) * 1.6;
 
     // 미세 떨림
     const micro = Math.sin(t * 3.2) * 0.1;
@@ -29,9 +29,9 @@ export function DivergenceMeter({ scene }: { scene: THREE.Group }) {
     <primitive
       ref={ref}
       object={scene}
-      position={[-61, baseY, 42]}
-      rotation={[0, -0.1, 0]}
-      scale={60}
+      position={[-54, baseY, 20]}
+      rotation={[0, 0.5, 0]}
+      scale={65}
     />
   );
 }

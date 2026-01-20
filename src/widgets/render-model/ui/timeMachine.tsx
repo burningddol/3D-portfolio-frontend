@@ -20,8 +20,8 @@ export function TimeMachine({ scene }: { scene: THREE.Group }) {
   return (
     <primitive
       object={scene}
-      position={[87, 0, 15]}
-      rotation={[0, 3.8, 0]}
+      position={[64, -5, 18]}
+      rotation={[0, 4.2, 0]}
       scale={62}
     />
   );

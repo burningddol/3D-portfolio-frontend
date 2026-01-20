@@ -15,12 +15,25 @@ export interface LookAt {
   isOut: boolean;
   isWhoosh?: boolean;
 }
+
+export interface Camera {
+  position: THREE.Vector3;
+  target: THREE.Vector3;
+  pointer: THREE.Vector2;
+}
 interface UseGsap {
   changeRotation: (rotationInfo: Rotation) => void;
   moveLookAt: (lookAtInfo: LookAt) => void;
+  moveCamera: (cameraInfo: Camera) => void;
+  firstMotion: (lookAtInfo: LookAt) => void;
 }
 
-const useGsap: UseGsap = { changeRotation: () => {}, moveLookAt: () => {} };
+const useGsap: UseGsap = {
+  changeRotation: () => {},
+  moveLookAt: () => {},
+  moveCamera: () => {},
+  firstMotion: () => {},
+};
 
 useGsap.changeRotation = ({ rotation, pointer, useY }: Rotation) => {
   gsap.to(rotation, {
@@ -28,6 +41,25 @@ useGsap.changeRotation = ({ rotation, pointer, useY }: Rotation) => {
     repeat: 0,
     x: useY ? pointer.y : 0,
     y: -pointer.x / 3.5,
+    z: 0,
+    ease: "power3.out",
+  });
+};
+
+useGsap.moveCamera = ({ position, target, pointer }: Camera) => {
+  gsap.to(position, {
+    duration: 1.5,
+    repeat: 0,
+    x: pointer.x * 25,
+    y: 30 + pointer.y * 10,
+    z: 90,
+    ease: "power3.out",
+  });
+  gsap.to(target, {
+    duration: 1.5,
+    repeat: 0,
+    x: pointer.x * 25,
+    y: 15 + pointer.y * 10,
     z: 0,
     ease: "power3.out",
   });
@@ -51,6 +83,44 @@ useGsap.moveLookAt = ({
   });
   gsap.to(target, {
     duration: 2.5,
+    repeat: 0,
+    x: lookAt.x,
+    y: lookAt.y,
+    z: lookAt.z,
+    ease: isOut ? "power3.out" : "power3.inout",
+  });
+};
+
+useGsap.firstMotion = ({
+  position,
+  fly,
+  target,
+  lookAt,
+  isOut,
+  isWhoosh = false,
+}: LookAt) => {
+  gsap.killTweensOf(position);
+  gsap.killTweensOf(target);
+  gsap
+    .timeline()
+    .to(position, {
+      duration: 1,
+      repeat: 0,
+      x: 0,
+      y: 50,
+      z: 130,
+      ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
+    })
+    .to(position, {
+      duration: 0.5,
+      repeat: 0,
+      x: fly.x,
+      y: fly.y,
+      z: fly.z,
+      ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
+    });
+  gsap.to(target, {
+    duration: 1.5,
     repeat: 0,
     x: lookAt.x,
     y: lookAt.y,
