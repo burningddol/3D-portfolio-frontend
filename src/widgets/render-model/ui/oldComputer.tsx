@@ -7,7 +7,7 @@ type GLTFNodes = Record<string, THREE.Object3D>;
 
 const getMeshesFromNodes = (nodes: GLTFNodes) => {
   return Object.values(nodes).filter(
-    (node): node is THREE.Mesh => node instanceof THREE.Mesh
+    (node): node is THREE.Mesh => node instanceof THREE.Mesh,
   );
 };
 
@@ -52,7 +52,7 @@ export function Screen({ nodes }: { nodes: GLTFNodes }) {
           onControl: onControl,
         },
       },
-      window.location.origin
+      window.location.origin,
     );
   }, [onDesktop, onControl]);
 
