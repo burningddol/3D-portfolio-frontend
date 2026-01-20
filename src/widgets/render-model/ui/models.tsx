@@ -43,7 +43,6 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const desiredCamPos = useRef(new THREE.Vector3());
   const desiredTarget = useRef(new THREE.Vector3());
   const isAnimating = useRef(false);
-  const follow = 0.018;
 
   const { camera } = useThree();
 
