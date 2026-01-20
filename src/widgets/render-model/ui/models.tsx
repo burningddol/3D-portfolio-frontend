@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import type { ThreeEvent } from "@react-three/fiber";
+
 import type { RefObject } from "react";
 import { useRef, useEffect, useCallback } from "react";
 import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
