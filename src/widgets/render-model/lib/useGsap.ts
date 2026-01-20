@@ -1,5 +1,7 @@
 import gsap from "gsap";
 import * as THREE from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import type { RefObject } from "react";
 
 export interface Rotation {
   rotation: THREE.Euler;
@@ -21,6 +23,14 @@ export interface Camera {
   target: THREE.Vector3;
   pointer: THREE.Vector2;
 }
+
+// Shared state for syncing GSAP with R3F frame loop (fixes macOS Html sync)
+export const gsapTicker = {
+  needsUpdate: false,
+  controlRef: null as RefObject<OrbitControlsImpl | null> | null,
+  cameraRef: null as THREE.Camera | null,
+};
+
 interface UseGsap {
   changeRotation: (rotationInfo: Rotation) => void;
   moveLookAt: (lookAtInfo: LookAt) => void;
@@ -82,24 +92,42 @@ useGsap.firstMotion = ({
   isOut,
   isWhoosh = false,
 }: LookAt) => {
-  gsap
-    .timeline()
-    .to(position, {
-      duration: 1,
-      repeat: 0,
-      x: 0,
-      y: 50,
-      z: 130,
-      ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
-    })
-    .to(position, {
-      duration: 0.5,
-      repeat: 0,
-      x: fly.x,
-      y: fly.y,
-      z: fly.z,
-      ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
-    });
+  gsapTicker.needsUpdate = true;
+
+  // Sync function to update OrbitControls and camera matrix on every GSAP tick
+  // This ensures Html overlay stays in sync with camera on macOS
+  const syncUpdate = () => {
+    if (gsapTicker.controlRef?.current) {
+      gsapTicker.controlRef.current.update();
+    }
+    if (gsapTicker.cameraRef) {
+      gsapTicker.cameraRef.updateMatrixWorld();
+    }
+  };
+
+  const tl = gsap.timeline({
+    onUpdate: syncUpdate,
+    onComplete: () => {
+      gsapTicker.needsUpdate = false;
+    },
+  });
+
+  tl.to(position, {
+    duration: 1,
+    repeat: 0,
+    x: 0,
+    y: 50,
+    z: 130,
+    ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
+  }).to(position, {
+    duration: 0.5,
+    repeat: 0,
+    x: fly.x,
+    y: fly.y,
+    z: fly.z,
+    ease: !isWhoosh && isOut ? "power3.inout" : "power3.out",
+  });
+
   gsap.to(target, {
     duration: 1.5,
     repeat: 0,
@@ -107,6 +135,7 @@ useGsap.firstMotion = ({
     y: lookAt.y,
     z: lookAt.z,
     ease: isOut ? "power3.out" : "power3.inout",
+    onUpdate: syncUpdate,
   });
 };
 

@@ -11,7 +11,7 @@ import {
   useControlOrbit,
   useProject,
 } from "@/shares/zustand";
-import useGsap from "../lib/useGsap";
+import useGsap, { gsapTicker } from "../lib/useGsap";
 import type { LookAt } from "../lib/useGsap";
 import { Standard, Screen } from "./oldComputer";
 
@@ -53,6 +53,12 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
   const { firstMotion } = useGsap;
 
+  // Sync refs with gsapTicker for macOS Html sync
+  useEffect(() => {
+    gsapTicker.controlRef = control;
+    gsapTicker.cameraRef = camera;
+  }, [camera]);
+
   const zoom = (): void => {
     setOnDesktop(true);
     setOnControl(false);
@@ -81,6 +87,12 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
   const startProjectMotion = (): void => {
     isAnimating.current = true;
+
+    // Disable OrbitControls during GSAP animation to prevent conflicts
+    if (control.current) {
+      control.current.enabled = false;
+    }
+
     const argues: LookAt = {
       position: camera.position,
       fly: FLY_MISSED,
@@ -94,9 +106,15 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
     setTimeout(() => {
       isAnimating.current = false;
+      // Re-enable OrbitControls after animation completes
+      if (control.current) {
+        control.current.enabled = true;
+      }
     }, 1500); // firstMotion 총 길이와 맞추기
   };
 
+  // Priority -1: runs BEFORE Html's useFrame to ensure camera matrix is updated first
+  // This fixes macOS sync issues where Html overlay lags behind camera movement
   useFrame((state, delta) => {
     if (isAnimating.current) return;
     if (!control.current) return;
@@ -132,7 +150,10 @@ export default function ObjectsRender({ orbitRef }: Props) {
     control.current.target.lerp(desiredTarget.current, alpha);
 
     control.current.update();
-  });
+
+    // Force matrix update for Html component sync on macOS
+    camera.updateMatrixWorld();
+  }, -1);
 
   useEffect(() => {
     if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행

@@ -89,6 +89,9 @@ export function Screen({ nodes }: { nodes: GLTFNodes }) {
           position={[0.01, 36.3, 11.2]}
           center
           pointerEvents="none"
+          prepend
+          zIndexRange={[16777271, 0]}
+          eps={0.001}
         >
           <iframe
             ref={iframeRef}
