@@ -60,8 +60,10 @@ export default function ObjectsRender({ orbitRef }: Props) {
   }, [camera]);
 
   const zoom = (): void => {
-    setOnDesktop(true);
-    setOnControl(false);
+    if (!onControl) {
+      setOnDesktop(true);
+      setOnControl(false);
+    }
   };
 
   // 해당 고차함수 리팩토링 할 것 (회전애니메이션 => 이동애니메이션 변환과정 )
@@ -113,8 +115,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
     }, 1500); // firstMotion 총 길이와 맞추기
   };
 
-  // Priority -1: runs BEFORE Html's useFrame to ensure camera matrix is updated first
-  // This fixes macOS sync issues where Html overlay lags behind camera movement
+  // priority -1로 HTML transform(priority 0) 보다 먼저 연산시켜 순서 안정화
   useFrame((state, delta) => {
     if (isAnimating.current) return;
     if (!control.current) return;
@@ -153,7 +154,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
     // Force matrix update for Html component sync (camera.position이 lerp라 한박자 늦는거 prevent)
     camera.updateMatrixWorld();
-  }, -1); // priority -1로 HTML transform(priority 0) 보다 먼저 연산시켜 순서 안정화
+  }, -1);
 
   useEffect(() => {
     if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행
