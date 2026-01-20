@@ -125,7 +125,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
       return;
     }
 
-    const k = 10; // 반응 속도 (6~12 )
+    const k = 7; // 반응 속도 (6~12 )
     const alpha = 1 - Math.exp(-k * delta);
 
     camera.position.lerp(desiredCamPos.current, alpha);
