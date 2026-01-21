@@ -8,7 +8,7 @@ import {
   type SetStateAction,
   useRef,
 } from "react";
-import { useAPPListOnNav } from "@/shares/zustand";
+import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
 import { type APPName } from "@/shares/zustand";
 
 interface APP {
@@ -34,13 +34,13 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   const [isTouched, setIsTouched] = useState<Touch>(RESET_TOUCH);
 
   const { addAPPListOnNav } = useAPPListOnNav();
-
+  const { addOnFocusing } = useFocusing();
   const toDoRef = useRef<HTMLButtonElement>(null);
   const junseokBookRef = useRef<HTMLButtonElement>(null);
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name as APPName;
-
+    addOnFocusing(name);
     setIsOpenApp((prev) => ({
       ...prev,
       [name]: true,
@@ -48,7 +48,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
     setIsTouched(RESET_TOUCH);
 
     if (!isOpenApp[name]) addAPPListOnNav(name); // 앱을 처음 열 경우만 Nav에 추가
-    console.log();
+
     // window창 DOM 생성 이후 조건으로
     if (!isOpenApp[name]) return;
     const el = document.getElementById(name);

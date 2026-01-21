@@ -88,11 +88,6 @@ export function Win98Window({
     addOnFocusing(name);
   };
 
-  // 첫 앱 open시  focus
-  useEffect(() => {
-    addOnFocusing(name);
-  }, []);
-
   //  앱 open시 최상단 zindex 및 보이기
   useEffect(() => {
     if (!windowRef.current || !onFocusing[name]) return;
