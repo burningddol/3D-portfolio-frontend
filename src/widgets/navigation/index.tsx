@@ -6,8 +6,9 @@ import NavMenu from "./ui/navMenu";
 import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
 import { type APPName } from "@/shares/zustand";
 interface APP {
-  ToDoSchedular: boolean;
+  "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
+  "My Blog": boolean;
 }
 interface Props {
   setOnScreen: (isActive: boolean) => void;

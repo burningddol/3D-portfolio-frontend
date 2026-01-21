@@ -81,8 +81,9 @@ type Focusing = {
 };
 
 const INITIAL_FOCUSING: Record<string, boolean> = {
-  ToDoSchedular: false,
+  "ToDo Schedular": false,
   "Junseok's Book": false,
+  "My Blog": false,
 };
 
 export const useFocusing = create<Focusing>((set) => ({
@@ -95,7 +96,7 @@ export const useFocusing = create<Focusing>((set) => ({
   },
 }));
 
-export type APPName = "ToDoSchedular" | "Junseok's Book";
+export type APPName = "ToDo Schedular" | "Junseok's Book" | "My Blog";
 
 type APPList = {
   APPListOnNav: APPName[];

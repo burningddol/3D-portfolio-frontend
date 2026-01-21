@@ -5,7 +5,7 @@ export default function useDebouncedLoader(delayMs = 250) {
   const { active, progress } = useProgress();
   const [isShowBtn, setIsShowBtn] = useState<boolean>(false);
   const t = useRef<number | null>(null);
-  console.log(active);
+
   useEffect(() => {
     // 로딩 시작하면 즉시 보여주기
     if (active) {

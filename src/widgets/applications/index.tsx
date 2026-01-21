@@ -1,6 +1,7 @@
 import styles from "./style/applications.module.scss";
 import toDoList from "/toDoList.png";
 import junseokBook from "/junseokBook.png";
+import blog from "/blog.png";
 import {
   useState,
   useEffect,
@@ -12,8 +13,9 @@ import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
 import { type APPName } from "@/shares/zustand";
 
 interface APP {
-  ToDoSchedular: boolean;
+  "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
+  "My Blog": boolean;
 }
 interface Props {
   setIsOpenApp: Dispatch<SetStateAction<APP>>;
@@ -21,13 +23,15 @@ interface Props {
 }
 
 interface Touch {
-  ToDoSchedular: boolean;
+  "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
+  "My Blog": boolean;
 }
 
 const RESET_TOUCH: Touch = {
-  ToDoSchedular: false,
+  "ToDo Schedular": false,
   "Junseok's Book": false,
+  "My Blog": false,
 };
 
 export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
@@ -37,6 +41,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   const { addOnFocusing } = useFocusing();
   const toDoRef = useRef<HTMLButtonElement>(null);
   const junseokBookRef = useRef<HTMLButtonElement>(null);
+  const myBlogRef = useRef<HTMLButtonElement>(null);
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name as APPName;
@@ -67,7 +72,8 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
     const handleDown = (e: MouseEvent) => {
       const isActive =
         !toDoRef.current?.contains(e.target as Node) &&
-        !junseokBookRef.current?.contains(e.target as Node);
+        !junseokBookRef.current?.contains(e.target as Node) &&
+        !myBlogRef.current?.contains(e.target as Node);
 
       if (isActive) setIsTouched(RESET_TOUCH);
     };
@@ -80,14 +86,14 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   return (
     <div className={styles.container}>
       <button
-        name="ToDoSchedular"
+        name="ToDo Schedular"
         ref={toDoRef}
-        className={`${styles.app} ${isTouched.ToDoSchedular ? styles.touched : ""} ${styles.index1}`}
+        className={`${styles.app} ${isTouched["ToDo Schedular"] ? styles.touched : ""} ${styles.index1}`}
         onDoubleClick={handleDoubleClick}
         onMouseDown={handleDown}
       >
         <img src={toDoList} />
-        <span>ToDoList Scheduler</span>
+        <span>ToDo Scheduler</span>
       </button>
 
       <button
@@ -99,6 +105,17 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
       >
         <img src={junseokBook} />
         <span>Junseok's Book</span>
+      </button>
+
+      <button
+        name="My Blog"
+        ref={myBlogRef}
+        className={`${styles.app} ${isTouched["My Blog"] ? styles.touched : ""} ${styles.index3} `}
+        onDoubleClick={handleDoubleClick}
+        onMouseDown={handleDown}
+      >
+        <img src={blog} />
+        <span>My Blog</span>
       </button>
     </div>
   );

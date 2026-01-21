@@ -10,13 +10,15 @@ import { useAPPListOnNav } from "@/shares/zustand";
 import { type APPName } from "@/shares/zustand";
 
 interface APP {
-  ToDoSchedular: boolean;
+  "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
+  "My Blog": boolean;
 }
 
 const INITIAL_IS_OPEN_APP: APP = {
-  ToDoSchedular: false,
+  "ToDo Schedular": false,
   "Junseok's Book": false,
+  "My Blog": false,
 };
 
 export default function Screen() {
@@ -64,9 +66,9 @@ export default function Screen() {
         <Applications isOpenApp={isOpenApp} setIsOpenApp={setIsOpenApp} />
         <Navigation isOpenApp={isOpenApp} setOnScreen={setOnScreen} />
 
-        {isOpenApp.ToDoSchedular && (
+        {isOpenApp["ToDo Schedular"] && (
           <Win98Window
-            name="ToDoSchedular"
+            name="ToDo Schedular"
             onClose={OnClose}
             onIframe
             iframeSrc="https://21-sprint-mission-xw9a.vercel.app/"
@@ -79,6 +81,15 @@ export default function Screen() {
             onClose={OnClose}
             onIframe
             iframeSrc="https://win98-memobook.vercel.app/"
+          />
+        )}
+
+        {isOpenApp["My Blog"] && (
+          <Win98Window
+            name="My Blog"
+            onClose={OnClose}
+            onIframe
+            iframeSrc="https://velog.io/@junbug/posts/"
           />
         )}
       </div>
