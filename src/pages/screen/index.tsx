@@ -71,7 +71,7 @@ export default function Screen() {
             name="ToDo Schedular"
             onClose={OnClose}
             onIframe
-            iframeSrc="https://21-sprint-mission-xw9a.vercel.app/"
+            iframeSrc="https://todoiniframe.vercel.app/"
           />
         )}
 
