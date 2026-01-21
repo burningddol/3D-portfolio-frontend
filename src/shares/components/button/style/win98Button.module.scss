@@ -1,7 +1,7 @@
 /* win98-button.module.scss */
 
 /* Win98 기본 팔레트 */
-$win98-face: #c0c0c0;
+$win98-face: #c0c0c0e0;
 $win98-shadow: #808080;
 $win98-dark: #404040;
 $win98-light: #ffffff;
@@ -133,17 +133,18 @@ $win98-primary: #000080;
 }
 
 .responsive {
-  max-width: 200px;
-  height: 52px;
+  max-width: 300px;
+  height: 44px;
   flex: 1;
   padding: 0 10px;
   font-size: 20px;
+  justify-content: flex-start;
 }
 
 /* 큰 사이즈 */
 .large {
   @extend .button;
-  height: 52px;
+  height: 44px;
   padding: 0 14px;
   font-size: 30px;
 }

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import NavMenu from "./ui/navMenu";
 import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
 import { type APPName } from "@/shares/zustand";
+import imageProvider from "@/shares/utils/imageProvider";
 interface APP {
   "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
@@ -65,6 +66,7 @@ export default function Navigation({ isOpenApp, setOnScreen }: Props) {
           isOpenApp[app] === true && (
             <Win98Button
               pressed={onFocusing[app]}
+              icon={<img src={imageProvider(app)} className={styles.icon} />}
               size="responsive"
               onClick={() => handleAPPClick(app)}
               key={app}

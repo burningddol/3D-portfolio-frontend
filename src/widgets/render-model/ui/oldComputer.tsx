@@ -63,7 +63,7 @@ export function Screen({ nodes }: { nodes: GLTFNodes }) {
           map={noise}
           toneMapped={false}
           transparent
-          opacity={0.1}
+          opacity={0.29}
           blending={THREE.AdditiveBlending}
         />
       </mesh>
@@ -76,7 +76,7 @@ export function Screen({ nodes }: { nodes: GLTFNodes }) {
         <meshBasicMaterial
           alphaMap={texture}
           transparent
-          opacity={0.25}
+          opacity={0} //이펙트 꺼둠 테마 고려상
           toneMapped={false}
           depthWrite={false}
         />

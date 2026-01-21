@@ -16,10 +16,8 @@
     background-color: transparent;
 
     img {
-      margin-left: 5px;
       width: 100px;
       height: 100px;
-      padding: 5px 5px;
     }
 
     &.touched img {
@@ -28,12 +26,16 @@
     }
 
     span {
-      font-size: 20px;
+      width: 100px;
+      font-size: 21px;
       font-weight: 700;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: black;
+      color: white;
+
+      font-family: "spaceMono";
+      font-weight: 500;
     }
 
     &.touched span {

@@ -35,9 +35,9 @@ export default function Screen() {
     onScreen ? styles.screenOn : styles.screenOff
   } ${onControl && styles.onControl}`;
 
-  const oldEffectStyles = `${styles.oldEffect} ${
+  /*const oldEffectStyles = `${styles.oldEffect} ${
     onScreen ? styles.screenOn : styles.screenOff
-  } ${onControl && styles.onControl}`;
+  } ${onControl && styles.onControl}`;*/
 
   const OnClose = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name as APPName;
@@ -57,7 +57,7 @@ export default function Screen() {
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>
       <Glitch />
-      <div className={oldEffectStyles} />
+      {/*<div className={oldEffectStyles} /> oldEffect 일단 꺼둠 테마상*/}
 
       <div className={wallPaperStyles}>
         <div className={styles.stillWork}>

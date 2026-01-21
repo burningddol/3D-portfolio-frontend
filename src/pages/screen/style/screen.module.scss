@@ -1,4 +1,4 @@
-$win98-face: #c0c0c0;
+$win98-face: #c0c0c0e0;
 $win98-wallPaper: #008081;
 $win98-highlight: #dfdfdf;
 $win98-light: #ffffff;
@@ -41,7 +41,11 @@ $win98-dark: #404040;
 .wallPaper {
   width: 100vw;
   height: 100vh;
-  background-color: $win98-wallPaper;
+  background-color: black;
+  background-image: url(/wallPaper.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   position: relative;
 }
 
@@ -58,7 +62,7 @@ $win98-dark: #404040;
   pointer-events: none;
 
   z-index: 99999;
-  opacity: 0.2;
+  opacity: 0; //올드이펙트 꺼둠
 }
 
 .screenOn.onControl {
