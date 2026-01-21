@@ -53,7 +53,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
   const { firstMotion } = useGsap;
 
-  // Sync refs with gsapTicker for macOS Html sync
+  // Sync refs
   useEffect(() => {
     gsapTicker.controlRef = control;
     gsapTicker.cameraRef = camera;
@@ -90,7 +90,6 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const startProjectMotion = (): void => {
     isAnimating.current = true;
 
-    // Disable OrbitControls during GSAP animation to prevent conflicts
     if (control.current) {
       control.current.enabled = false;
     }
@@ -108,7 +107,6 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
     setTimeout(() => {
       isAnimating.current = false;
-      // Re-enable OrbitControls after animation completes
       if (control.current) {
         control.current.enabled = true;
       }
@@ -152,7 +150,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
 
     control.current.update();
 
-    // Force matrix update for Html component sync (camera.position이 lerp라 한박자 늦는거 prevent)
+    //  (camera.position이 lerp라 한박자 늦는거 prevent)
     camera.updateMatrixWorld();
   }, -1);
 
@@ -160,14 +158,14 @@ export default function ObjectsRender({ orbitRef }: Props) {
     if (!onControl && onProject) controlOut(); //웹 접속하자마자 1회실행
   }, [controlOut, onControl, onProject]);
 
-  //수신
+  //수신, 모니터 꺼질때 zoomOut
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.origin !== window.location.origin) return;
       if (e.data?.type !== "SET_SCREEN") return;
 
       if (e.data.payload.on === false && onProject) {
-        //웹 접속하자마자 1회실행, on=onScreen
+        //웹 접속하자마자 1회실행 방지로 onProject조건넣음, on=onScreen
         inOut();
       }
     };

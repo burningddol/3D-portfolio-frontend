@@ -24,9 +24,8 @@ export interface Camera {
   pointer: THREE.Vector2;
 }
 
-// Shared state for syncing GSAP with R3F frame loop (fixes macOS Html sync)
+// gsap 애니 1틱마다 카메라 , orbit 업데이트 -> HTML transform 계산 동기화
 export const gsapTicker = {
-  needsUpdate: false,
   controlRef: null as RefObject<OrbitControlsImpl | null> | null,
   cameraRef: null as THREE.Camera | null,
 };
@@ -92,8 +91,6 @@ useGsap.firstMotion = ({
   isOut,
   isWhoosh = false,
 }: LookAt) => {
-  gsapTicker.needsUpdate = true;
-
   // gsap 한틱마다 카메라 및 orbit 즉시 업데이트
   const syncUpdate = () => {
     if (gsapTicker.controlRef?.current) {
@@ -106,9 +103,6 @@ useGsap.firstMotion = ({
 
   const tl = gsap.timeline({
     onUpdate: syncUpdate,
-    onComplete: () => {
-      gsapTicker.needsUpdate = false;
-    },
   });
 
   tl.to(position, {
