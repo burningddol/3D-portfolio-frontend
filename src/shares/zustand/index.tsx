@@ -76,17 +76,43 @@ export const useZIndex = create<ZIndexState>((set, get) => ({
 
 type Focusing = {
   onFocusing: Record<string, boolean>;
-  setOnFocusing: (name: string) => void;
+  addOnFocusing: (name: string) => void;
+  removeOnFocusing: (name: string) => void;
 };
 
 const INITIAL_FOCUSING: Record<string, boolean> = {
-  toDo: false,
-  junseokBook: false,
+  ToDoSchedular: false,
+  "Junseok's Book": false,
 };
 
 export const useFocusing = create<Focusing>((set) => ({
   onFocusing: INITIAL_FOCUSING,
-  setOnFocusing(name: string) {
+  addOnFocusing(name: string) {
     set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: true } }));
+  },
+  removeOnFocusing(name: string) {
+    set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: false } }));
+  },
+}));
+
+export type APPName = "ToDoSchedular" | "Junseok's Book";
+
+type APPList = {
+  APPListOnNav: APPName[];
+  addAPPListOnNav: (name: APPName) => void;
+  removeAPPListOnNav: (name: APPName) => void;
+};
+
+export const useAPPListOnNav = create<APPList>((set) => ({
+  APPListOnNav: [],
+  addAPPListOnNav(name: APPName) {
+    set((state) => ({
+      APPListOnNav: [...state.APPListOnNav, name],
+    }));
+  },
+  removeAPPListOnNav(name: APPName) {
+    set((state) => ({
+      APPListOnNav: state.APPListOnNav.filter((app) => app !== name),
+    }));
   },
 }));

@@ -3,7 +3,7 @@ import styles from "./style/win98Button.module.scss";
 
 type Win98ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "primary" | "icon";
-  size?: "small" | "default" | "large";
+  size?: "small" | "default" | "large" | "responsive";
   pressed?: boolean;
   icon?: ReactNode;
 };
@@ -20,7 +20,13 @@ export default function Win98Button({
   const base = variant === "icon" ? styles.iconButton : styles.button;
 
   const sizeClass =
-    size === "small" ? styles.small : size === "large" ? styles.large : "";
+    size === "small"
+      ? styles.small
+      : size === "large"
+        ? styles.large
+        : size === "responsive"
+          ? styles.responsive
+          : "";
 
   const variantClass = variant === "primary" ? styles.primary : "";
 

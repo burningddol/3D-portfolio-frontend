@@ -132,6 +132,14 @@ $win98-primary: #000080;
   font-size: 12px;
 }
 
+.responsive {
+  max-width: 200px;
+  height: 52px;
+  flex: 1;
+  padding: 0 10px;
+  font-size: 20px;
+}
+
 /* 큰 사이즈 */
 .large {
   @extend .button;

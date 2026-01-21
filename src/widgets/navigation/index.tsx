@@ -3,17 +3,31 @@ import styles from "./style/navigation.module.scss";
 import start from "/start.png";
 import { useState, useEffect, useRef } from "react";
 import NavMenu from "./ui/navMenu";
-
+import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
+import { type APPName } from "@/shares/zustand";
+interface APP {
+  ToDoSchedular: boolean;
+  "Junseok's Book": boolean;
+}
 interface Props {
   setOnScreen: (isActive: boolean) => void;
+  isOpenApp: APP;
 }
 
-export default function Navigation({ setOnScreen }: Props) {
+export default function Navigation({ isOpenApp, setOnScreen }: Props) {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
+
+  const { APPListOnNav } = useAPPListOnNav();
+  const { onFocusing, addOnFocusing } = useFocusing();
+
   const handleClick = () => {
     setIsShowMenu((prev) => !prev);
+  };
+
+  const handleAPPClick = (app: APPName) => {
+    addOnFocusing(app);
   };
 
   useEffect(() => {
@@ -45,6 +59,19 @@ export default function Navigation({ setOnScreen }: Props) {
           Start
         </Win98Button>
       </div>
+      {APPListOnNav.map(
+        (app) =>
+          isOpenApp[app] === true && (
+            <Win98Button
+              pressed={onFocusing[app]}
+              size="responsive"
+              onClick={() => handleAPPClick(app)}
+              key={app}
+            >
+              {app}
+            </Win98Button>
+          ),
+      )}
       <span className={styles.navInfo}>El Psy Kongroo</span>
       {isShowMenu && (
         <div ref={menuRef}>

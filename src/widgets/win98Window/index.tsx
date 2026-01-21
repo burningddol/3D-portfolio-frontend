@@ -8,6 +8,7 @@ import useResizeWindow from "./lib/useResizeWindow";
 import useRelocateWindow from "./lib/useRelocateWindow";
 import { AppLoader } from "@/pages/screen/ui/appLoader";
 import { useFocusing, useSetting, useZIndex } from "@/shares/zustand";
+import { type APPName } from "@/shares/zustand";
 
 type Win98WindowProps = {
   name: string;
@@ -20,8 +21,6 @@ type Win98WindowProps = {
   iconAlt?: string;
 
   onClose?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-
-  onMinimize?: () => void;
 
   className?: string;
   style?: React.CSSProperties;
@@ -36,7 +35,6 @@ export function Win98Window({
   onIframe = false,
   iframeSrc = "",
   onClose,
-  onMinimize,
 
   className = "",
   style,
@@ -45,7 +43,7 @@ export function Win98Window({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { isSetting, setIsSetting } = useSetting();
   const nextZ = useZIndex((state) => state.next);
-  const { onFocusing, setOnFocusing } = useFocusing();
+  const { onFocusing, addOnFocusing, removeOnFocusing } = useFocusing();
 
   const resizingBtnRef = useRef<HTMLButtonElement | null>(null);
   const resizingBorderRef = useRef<HTMLDivElement | null>(null);
@@ -71,6 +69,13 @@ export function Win98Window({
     setIsSetting,
   });
 
+  const onMinimize = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name as APPName;
+    if (!windowRef.current || !name) return;
+    windowRef.current.style.display = "none";
+    removeOnFocusing(name);
+  };
+
   const onMaximize = () => {
     setIsMax((prev) => !prev);
   };
@@ -80,19 +85,26 @@ export function Win98Window({
     if (!windowRef.current) return;
     const nextZIndex: number = nextZ();
     windowRef.current.style.zIndex = String(nextZIndex);
-    setOnFocusing(name);
+    addOnFocusing(name);
   };
 
-  // 첫 앱 open시 최상단 zindex 및 focus
+  // 첫 앱 open시  focus
   useEffect(() => {
-    if (!windowRef.current) return;
+    addOnFocusing(name);
+  }, []);
+
+  //  앱 open시 최상단 zindex 및 보이기
+  useEffect(() => {
+    if (!windowRef.current || !onFocusing[name]) return;
+
     const nextZIndex: number = nextZ();
     windowRef.current.style.zIndex = String(nextZIndex);
-    setOnFocusing(name);
-  }, []);
+    windowRef.current.style.display = "block";
+  }, [onFocusing[name]]);
 
   return (
     <div
+      id={name}
       className={`${styles.windowWrapper} ${isMax ? styles.max : ""}`}
       ref={windowRef}
       onMouseDown={handleMouseDown}
@@ -117,6 +129,7 @@ export function Win98Window({
 
           <div className={styles.controls} ref={controlsRef}>
             <button
+              name={name}
               type="button"
               className={styles.controlBtn}
               aria-label="Minimize"

@@ -8,38 +8,52 @@ import {
   type SetStateAction,
   useRef,
 } from "react";
+import { useAPPListOnNav } from "@/shares/zustand";
+import { type APPName } from "@/shares/zustand";
 
 interface APP {
-  toDo: boolean;
-  junseokBook: boolean;
+  ToDoSchedular: boolean;
+  "Junseok's Book": boolean;
 }
 interface Props {
   setIsOpenApp: Dispatch<SetStateAction<APP>>;
+  isOpenApp: APP;
 }
 
 interface Touch {
-  toDo: boolean;
-  junseokBook: boolean;
+  ToDoSchedular: boolean;
+  "Junseok's Book": boolean;
 }
 
 const RESET_TOUCH: Touch = {
-  toDo: false,
-  junseokBook: false,
+  ToDoSchedular: false,
+  "Junseok's Book": false,
 };
 
-export default function Applications({ setIsOpenApp }: Props) {
+export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   const [isTouched, setIsTouched] = useState<Touch>(RESET_TOUCH);
+
+  const { addAPPListOnNav } = useAPPListOnNav();
 
   const toDoRef = useRef<HTMLButtonElement>(null);
   const junseokBookRef = useRef<HTMLButtonElement>(null);
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name;
+    const name = e.currentTarget.name as APPName;
+
     setIsOpenApp((prev) => ({
       ...prev,
       [name]: true,
     }));
     setIsTouched(RESET_TOUCH);
+
+    if (!isOpenApp[name]) addAPPListOnNav(name); // 앱을 처음 열 경우만 Nav에 추가
+
+    // window창 DOM 생성 이후 조건으로
+    if (!isOpenApp.ToDoSchedular) return;
+    const el = document.getElementById(name);
+    if (!el) return;
+    el.style.display = "block"; //창 minimize 했다가 다시 누를경우 대비
   };
 
   const handleDown = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,9 +80,9 @@ export default function Applications({ setIsOpenApp }: Props) {
   return (
     <div className={styles.container}>
       <button
-        name="toDo"
+        name="ToDoSchedular"
         ref={toDoRef}
-        className={`${styles.app} ${isTouched.toDo ? styles.touched : ""} ${styles.index1}`}
+        className={`${styles.app} ${isTouched.ToDoSchedular ? styles.touched : ""} ${styles.index1}`}
         onDoubleClick={handleDoubleClick}
         onMouseDown={handleDown}
       >
@@ -77,9 +91,9 @@ export default function Applications({ setIsOpenApp }: Props) {
       </button>
 
       <button
-        name="junseokBook"
+        name="Junseok's Book"
         ref={junseokBookRef}
-        className={`${styles.app} ${isTouched.junseokBook ? styles.touched : ""} ${styles.index2} `}
+        className={`${styles.app} ${isTouched["Junseok's Book"] ? styles.touched : ""} ${styles.index2} `}
         onDoubleClick={handleDoubleClick}
         onMouseDown={handleDown}
       >
