@@ -48,9 +48,9 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
     setIsTouched(RESET_TOUCH);
 
     if (!isOpenApp[name]) addAPPListOnNav(name); // 앱을 처음 열 경우만 Nav에 추가
-
+    console.log();
     // window창 DOM 생성 이후 조건으로
-    if (!isOpenApp.ToDoSchedular) return;
+    if (!isOpenApp[name]) return;
     const el = document.getElementById(name);
     if (!el) return;
     el.style.display = "block"; //창 minimize 했다가 다시 누를경우 대비
