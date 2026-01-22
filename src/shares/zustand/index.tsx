@@ -77,6 +77,7 @@ export const useZIndex = create<ZIndexState>((set, get) => ({
 type Focusing = {
   onFocusing: Record<string, boolean>;
   addOnFocusing: (name: string) => void;
+  toggleOnFocusing: (name: string) => void;
   removeOnFocusing: (name: string) => void;
 };
 
@@ -90,6 +91,11 @@ export const useFocusing = create<Focusing>((set) => ({
   onFocusing: INITIAL_FOCUSING,
   addOnFocusing(name: string) {
     set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: true } }));
+  },
+  toggleOnFocusing(name: string) {
+    set((state) => ({
+      onFocusing: { ...state.onFocusing, [name]: !state.onFocusing[name] },
+    }));
   },
   removeOnFocusing(name: string) {
     set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: false } }));

@@ -22,14 +22,25 @@ export default function Navigation({ isOpenApp, setOnScreen }: Props) {
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
   const { APPListOnNav } = useAPPListOnNav();
-  const { onFocusing, addOnFocusing } = useFocusing();
+  const { onFocusing, toggleOnFocusing, addOnFocusing } = useFocusing();
 
   const handleClick = () => {
     setIsShowMenu((prev) => !prev);
   };
 
   const handleAPPClick = (app: APPName) => {
-    addOnFocusing(app);
+    const isFocusing = onFocusing[app];
+    // 포커싱 안 돼 있을 때
+    if (!isFocusing) {
+      addOnFocusing(app);
+      return;
+    }
+    // 이미 포커싱 돼 있을 때
+    const windowEl = document.getElementById(app);
+    if (!windowEl) return;
+
+    windowEl.style.display = "none";
+    toggleOnFocusing(app);
   };
 
   useEffect(() => {
