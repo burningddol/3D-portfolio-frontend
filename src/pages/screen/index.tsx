@@ -13,12 +13,14 @@ interface APP {
   "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
   "My Blog": boolean;
+  "Jabdori Time": boolean;
 }
 
 const INITIAL_IS_OPEN_APP: APP = {
   "ToDo Schedular": false,
   "Junseok's Book": false,
   "My Blog": false,
+  "Jabdori Time": false,
 };
 
 export default function Screen() {
@@ -90,6 +92,15 @@ export default function Screen() {
             onClose={OnClose}
             onIframe
             iframeSrc="https://velog.io/@junbug/posts/"
+          />
+        )}
+
+        {isOpenApp["Jabdori Time"] && (
+          <Win98Window
+            name="Jabdori Time"
+            onClose={OnClose}
+            onIframe
+            iframeSrc="https://jabdori-time.vercel.app/"
           />
         )}
       </div>

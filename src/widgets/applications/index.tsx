@@ -2,6 +2,7 @@ import styles from "./style/applications.module.scss";
 import toDoList from "/toDoList.png";
 import junseokBook from "/junseokBook.png";
 import blog from "/blog.png";
+import jabdori from "/jabdori.png";
 import {
   useState,
   useEffect,
@@ -16,6 +17,7 @@ interface APP {
   "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
   "My Blog": boolean;
+  "Jabdori Time": boolean;
 }
 interface Props {
   setIsOpenApp: Dispatch<SetStateAction<APP>>;
@@ -26,12 +28,14 @@ interface Touch {
   "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
   "My Blog": boolean;
+  "Jabdori Time": boolean;
 }
 
 const RESET_TOUCH: Touch = {
   "ToDo Schedular": false,
   "Junseok's Book": false,
   "My Blog": false,
+  "Jabdori Time": false,
 };
 
 export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
@@ -42,6 +46,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   const toDoRef = useRef<HTMLButtonElement>(null);
   const junseokBookRef = useRef<HTMLButtonElement>(null);
   const myBlogRef = useRef<HTMLButtonElement>(null);
+  const jabdoriTimeRef = useRef<HTMLButtonElement>(null);
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name as APPName;
@@ -73,7 +78,8 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
       const isActive =
         !toDoRef.current?.contains(e.target as Node) &&
         !junseokBookRef.current?.contains(e.target as Node) &&
-        !myBlogRef.current?.contains(e.target as Node);
+        !myBlogRef.current?.contains(e.target as Node) &&
+        !jabdoriTimeRef.current?.contains(e.target as Node);
 
       if (isActive) setIsTouched(RESET_TOUCH);
     };
@@ -116,6 +122,17 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
       >
         <img src={blog} />
         <span>My Blog</span>
+      </button>
+
+      <button
+        name="Jabdori Time"
+        ref={jabdoriTimeRef}
+        className={`${styles.app} ${isTouched["Jabdori Time"] ? styles.touched : ""} ${styles.index4} `}
+        onDoubleClick={handleDoubleClick}
+        onMouseDown={handleDown}
+      >
+        <img src={jabdori} />
+        <span>Jabdori Time</span>
       </button>
     </div>
   );

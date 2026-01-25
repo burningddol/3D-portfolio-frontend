@@ -10,6 +10,7 @@ interface APP {
   "ToDo Schedular": boolean;
   "Junseok's Book": boolean;
   "My Blog": boolean;
+  "Jabdori Time": boolean;
 }
 interface Props {
   setOnScreen: (isActive: boolean) => void;
