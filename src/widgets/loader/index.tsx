@@ -38,6 +38,17 @@ export default function Loader() {
 
           <ProgressBar percent={percent} />
 
+          {!isShowBtn && filteredProgress === 100 && (
+            <div className={styles.spinnerWrapper}>
+              almost done...
+              <div className={styles.spinner}>
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+          )}
+
           {isShowBtn && (
             <>
               <span>Press the button to continue... </span>
