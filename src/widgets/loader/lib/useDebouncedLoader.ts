@@ -7,14 +7,14 @@ export default function useDebouncedLoader(delayMs = 250) {
   const t = useRef<number | null>(null);
 
   useEffect(() => {
-    // 로딩 시작하면 즉시 보여주기
+    // active 중간에 계속 바껴서 디바운싱 적용
     if (active) {
       if (t.current) window.clearTimeout(t.current);
       setIsShowBtn(false);
       return;
     }
 
-    // 로딩 끝나도 바로 숨기지 말고 Nms 후에 숨기기
+    // active 중간에 false되도 바로 안보여줌
     t.current = window.setTimeout(() => {
       setIsShowBtn(true);
     }, delayMs);

@@ -10,7 +10,7 @@ export default function Loader() {
   const [isShowLoader, setIsShowLoader] = useState<boolean>(true);
   const [filteredProgress, setFilteredProgress] = useState<number>(0);
 
-  const { isShowBtn, progress } = useDebouncedLoader(700);
+  const { isShowBtn, progress } = useDebouncedLoader(200);
   const { setOnProject } = useProject();
 
   const percent: number = Math.floor(filteredProgress);
@@ -49,6 +49,6 @@ export default function Loader() {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
