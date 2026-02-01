@@ -39,9 +39,12 @@ export default function ObjectsRender({ orbitRef }: Props) {
   const deskTopGroup = useRef<THREE.Group>(null);
   const drPepperGroup = useRef<THREE.Group>(null);
   const isFirstActive = useRef(false);
+  const wholeGroup = useRef<THREE.Group>(null);
 
   const desiredCamPos = useRef(new THREE.Vector3());
   const desiredTarget = useRef(new THREE.Vector3());
+  const desiredRotate = useRef(new THREE.Euler());
+  const desiredQuaternion = useRef(new THREE.Quaternion());
   const isAnimating = useRef(false);
 
   const { camera } = useThree();
@@ -116,7 +119,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
   // priority -1로 HTML transform(priority 0) 보다 먼저 연산시켜 순서 안정화
   useFrame((state, delta) => {
     if (isAnimating.current) return;
-    if (!control.current) return;
+    if (!control.current || !wholeGroup.current) return;
 
     const pointer = state.pointer;
 
@@ -138,6 +141,8 @@ export default function ObjectsRender({ orbitRef }: Props) {
         LOOKAT_MISSED.y + pointer.y * 10,
         LOOKAT_MISSED.z,
       );
+
+      desiredRotate.current.set(0, -pointer.x * 0.06, 0);
     } else {
       return;
     }
@@ -145,8 +150,12 @@ export default function ObjectsRender({ orbitRef }: Props) {
     const k = 7; // 반응 속도 (6~12 )
     const alpha = 1 - Math.exp(-k * delta);
 
+    //오일러각은 컴퓨팅적 계산 쉽지않아서 quaternion으로 한번 변환
+    desiredQuaternion.current.setFromEuler(desiredRotate.current);
+
     camera.position.lerp(desiredCamPos.current, alpha);
     control.current.target.lerp(desiredTarget.current, alpha);
+    wholeGroup.current.quaternion.slerp(desiredQuaternion.current, alpha);
 
     control.current.update();
 
@@ -182,7 +191,7 @@ export default function ObjectsRender({ orbitRef }: Props) {
   }, [onProject]);
 
   return (
-    <>
+    <group ref={wholeGroup}>
       <group
         name="desktopGroup"
         position={[0, -5, 0]}
@@ -208,6 +217,6 @@ export default function ObjectsRender({ orbitRef }: Props) {
       <group>
         <TimeMachine scene={scene2} />
       </group>
-    </>
+    </group>
   );
 }
