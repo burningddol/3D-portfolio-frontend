@@ -8,10 +8,10 @@ import useResizeWindow from "./lib/useResizeWindow";
 import useRelocateWindow from "./lib/useRelocateWindow";
 import { AppLoader } from "@/pages/screen/ui/appLoader";
 import { useFocusing, useSetting, useZIndex } from "@/shares/zustand";
-import { type APPName } from "@/shares/zustand";
+import { type APPName } from "@/shares/types";
 
 type Win98WindowProps = {
-  name: string;
+  name: APPName;
   children?: ReactNode;
 
   active?: boolean;
@@ -69,9 +69,8 @@ export function Win98Window({
     setIsSetting,
   });
 
-  const onMinimize = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name as APPName;
-    if (!windowRef.current || !name) return;
+  const onMinimize = () => {
+    if (!windowRef.current) return;
     windowRef.current.style.display = "none";
     removeOnFocusing(name);
   };

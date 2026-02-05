@@ -7,26 +7,12 @@ import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
 import { useAPPListOnNav } from "@/shares/zustand";
-import { type APPName } from "@/shares/zustand";
-
-interface APP {
-  "ToDo Schedular": boolean;
-  "Junseok's Book": boolean;
-  "My Blog": boolean;
-  "Jabdori Time": boolean;
-}
-
-const INITIAL_IS_OPEN_APP: APP = {
-  "ToDo Schedular": false,
-  "Junseok's Book": false,
-  "My Blog": false,
-  "Jabdori Time": false,
-};
+import { type APPName, type AppOpenStatus, INITIAL_APP_STATUS } from "@/shares/types";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
   const [onControl, setOnControl] = useState<boolean>(false);
-  const [isOpenApp, setIsOpenApp] = useState<APP>(INITIAL_IS_OPEN_APP);
+  const [isOpenApp, setIsOpenApp] = useState<AppOpenStatus>(INITIAL_APP_STATUS);
 
   const { removeAPPListOnNav } = useAPPListOnNav();
 

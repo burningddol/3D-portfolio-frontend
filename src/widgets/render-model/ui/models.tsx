@@ -19,7 +19,7 @@ import { DrPaper1, DrPaper2 } from "./drPaper";
 import { TimeMachine } from "./timeMachine";
 import { DivergenceMeter } from "./divergenceMeter";
 
-type Props = {
+type ObjectsRenderProps = {
   orbitRef: RefObject<OrbitControlsImpl | null>;
 };
 
@@ -29,7 +29,7 @@ const LOOKAT_ZOOM = new THREE.Vector3(0, 30.3, 0);
 const FLY_MISSED = new THREE.Vector3(0, 30, 90);
 const LOOKAT_MISSED = new THREE.Vector3(0, 15, 0);
 
-export default function ObjectsRender({ orbitRef }: Props) {
+export default function ObjectsRender({ orbitRef }: ObjectsRenderProps) {
   const { nodes } = useGLTF("/old_computer.glb");
   const { scene } = useGLTF("/glb/divergence_meter.glb");
   const { scene: scene2 } = useGLTF("/glb/time_machine2.glb");

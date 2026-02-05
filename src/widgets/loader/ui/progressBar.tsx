@@ -1,10 +1,10 @@
 import styles from "../style/progressBar.module.scss";
 
-interface Props {
+type ProgressBarProps = {
   percent: number;
-}
+};
 
-export default function ProgressBar({ percent }: Props) {
+export default function ProgressBar({ percent }: ProgressBarProps) {
   const progressItems: undefined[] = Array.from({ length: percent });
 
   return (

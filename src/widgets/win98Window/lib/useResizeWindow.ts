@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 
-interface Props {
+type UseResizeWindowParams = {
   resizingBtnRef: React.RefObject<HTMLButtonElement | null>;
   resizingBorderRef: React.RefObject<HTMLDivElement | null>;
   windowRef: React.RefObject<HTMLDivElement | null>;
   setIsSetting: (isActive: boolean) => void;
-}
+};
 
 export default function useResizeWindow({
   resizingBtnRef,
   resizingBorderRef,
   windowRef,
   setIsSetting,
-}: Props) {
+}: UseResizeWindowParams) {
   useEffect(() => {
     const btn = resizingBtnRef?.current;
     const border = resizingBorderRef?.current;

@@ -11,35 +11,15 @@ import {
   useRef,
 } from "react";
 import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
-import { type APPName } from "@/shares/zustand";
+import { type APPName, type AppOpenStatus, INITIAL_APP_STATUS } from "@/shares/types";
 
-interface APP {
-  "ToDo Schedular": boolean;
-  "Junseok's Book": boolean;
-  "My Blog": boolean;
-  "Jabdori Time": boolean;
-}
-interface Props {
-  setIsOpenApp: Dispatch<SetStateAction<APP>>;
-  isOpenApp: APP;
-}
-
-interface Touch {
-  "ToDo Schedular": boolean;
-  "Junseok's Book": boolean;
-  "My Blog": boolean;
-  "Jabdori Time": boolean;
-}
-
-const RESET_TOUCH: Touch = {
-  "ToDo Schedular": false,
-  "Junseok's Book": false,
-  "My Blog": false,
-  "Jabdori Time": false,
+type ApplicationsProps = {
+  setIsOpenApp: Dispatch<SetStateAction<AppOpenStatus>>;
+  isOpenApp: AppOpenStatus;
 };
 
-export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
-  const [isTouched, setIsTouched] = useState<Touch>(RESET_TOUCH);
+export default function Applications({ isOpenApp, setIsOpenApp }: ApplicationsProps) {
+  const [isTouched, setIsTouched] = useState<AppOpenStatus>(INITIAL_APP_STATUS);
 
   const { addAPPListOnNav } = useAPPListOnNav();
   const { addOnFocusing } = useFocusing();
@@ -55,7 +35,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
       ...prev,
       [name]: true,
     }));
-    setIsTouched(RESET_TOUCH);
+    setIsTouched(INITIAL_APP_STATUS);
 
     if (!isOpenApp[name]) addAPPListOnNav(name); // 앱을 처음 열 경우만 Nav에 추가
 
@@ -69,7 +49,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
   const handleDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name;
 
-    setIsTouched(() => ({ ...RESET_TOUCH, [name]: true }));
+    setIsTouched(() => ({ ...INITIAL_APP_STATUS, [name]: true }));
   };
 
   // 어플 외 밖 클릭하면 touched 취소
@@ -81,7 +61,7 @@ export default function Applications({ isOpenApp, setIsOpenApp }: Props) {
         !myBlogRef.current?.contains(e.target as Node) &&
         !jabdoriTimeRef.current?.contains(e.target as Node);
 
-      if (isActive) setIsTouched(RESET_TOUCH);
+      if (isActive) setIsTouched(INITIAL_APP_STATUS);
     };
     document.addEventListener("mousedown", handleDown);
     return () => {

@@ -1,59 +1,49 @@
 import { create } from "zustand";
+import { type APPName, INITIAL_APP_STATUS } from "@/shares/types";
 
-type Desktop = {
-  onDesktop: boolean;
-  setOnDesktop: (isActive: boolean) => void;
+/**
+ * Boolean 상태를 관리하는 제네릭 스토어 타입
+ */
+type BooleanStore<K extends string> = {
+  [key in K]: boolean;
+} & {
+  [key in `set${Capitalize<K>}`]: (isActive: boolean) => void;
 };
 
-export const useDesktop = create<Desktop>((set) => ({
+// Desktop 상태
+export const useDesktop = create<BooleanStore<"onDesktop">>((set) => ({
   onDesktop: false,
   setOnDesktop(isActive: boolean) {
     set(() => ({ onDesktop: isActive }));
   },
 }));
 
-type Hover = {
-  isHovered: boolean;
-  setIsHovered: (isActive: boolean) => void;
-};
-
-export const useHover = create<Hover>((set) => ({
+// Hover 상태
+export const useHover = create<BooleanStore<"isHovered">>((set) => ({
   isHovered: false,
   setIsHovered(isActive: boolean) {
     set(() => ({ isHovered: isActive }));
   },
 }));
 
-type Project = {
-  onProject: boolean;
-  setOnProject: (isActive: boolean) => void;
-};
-
-export const useProject = create<Project>((set) => ({
+// Project 상태
+export const useProject = create<BooleanStore<"onProject">>((set) => ({
   onProject: false,
   setOnProject(isActive: boolean) {
     set(() => ({ onProject: isActive }));
   },
 }));
 
-type Control = {
-  onControl: boolean;
-  setOnControl: (isActive: boolean) => void;
-};
-
-export const useControlOrbit = create<Control>((set) => ({
+// Control 상태
+export const useControlOrbit = create<BooleanStore<"onControl">>((set) => ({
   onControl: false,
   setOnControl(isActive: boolean) {
     set(() => ({ onControl: isActive }));
   },
 }));
 
-type Setting = {
-  isSetting: boolean;
-  setIsSetting: (isActive: boolean) => void;
-};
-
-export const useSetting = create<Setting>((set) => ({
+// Setting 상태
+export const useSetting = create<BooleanStore<"isSetting">>((set) => ({
   isSetting: false,
   setIsSetting(isActive: boolean) {
     set(() => ({ isSetting: isActive }));
@@ -74,48 +64,38 @@ export const useZIndex = create<ZIndexState>((set, get) => ({
   },
 }));
 
-type Focusing = {
-  onFocusing: Record<string, boolean>;
-  addOnFocusing: (name: string) => void;
-  toggleOnFocusing: (name: string) => void;
-  removeOnFocusing: (name: string) => void;
+type FocusingState = {
+  onFocusing: Record<APPName, boolean>;
+  addOnFocusing: (name: APPName) => void;
+  toggleOnFocusing: (name: APPName) => void;
+  removeOnFocusing: (name: APPName) => void;
 };
 
-const INITIAL_FOCUSING: Record<string, boolean> = {
-  "ToDo Schedular": false,
-  "Junseok's Book": false,
-  "My Blog": false,
-  "Jabdori Time": false,
-};
-
-export const useFocusing = create<Focusing>((set) => ({
-  onFocusing: INITIAL_FOCUSING,
-  addOnFocusing(name: string) {
-    set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: true } }));
+export const useFocusing = create<FocusingState>((set) => ({
+  onFocusing: INITIAL_APP_STATUS,
+  addOnFocusing(name: APPName) {
+    set(() => ({ onFocusing: { ...INITIAL_APP_STATUS, [name]: true } }));
   },
-  toggleOnFocusing(name: string) {
+  toggleOnFocusing(name: APPName) {
     set((state) => ({
       onFocusing: { ...state.onFocusing, [name]: !state.onFocusing[name] },
     }));
   },
-  removeOnFocusing(name: string) {
-    set(() => ({ onFocusing: { ...INITIAL_FOCUSING, [name]: false } }));
+  removeOnFocusing(name: APPName) {
+    set(() => ({ onFocusing: { ...INITIAL_APP_STATUS, [name]: false } }));
   },
 }));
 
-export type APPName =
-  | "ToDo Schedular"
-  | "Junseok's Book"
-  | "My Blog"
-  | "Jabdori Time";
+// APPName은 @/shares/types에서 re-export
+export type { APPName } from "@/shares/types";
 
-type APPList = {
+type APPListState = {
   APPListOnNav: APPName[];
   addAPPListOnNav: (name: APPName) => void;
   removeAPPListOnNav: (name: APPName) => void;
 };
 
-export const useAPPListOnNav = create<APPList>((set) => ({
+export const useAPPListOnNav = create<APPListState>((set) => ({
   APPListOnNav: [],
   addAPPListOnNav(name: APPName) {
     set((state) => ({

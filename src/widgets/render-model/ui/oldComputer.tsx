@@ -31,7 +31,7 @@ export function Standard({ nodes }: { nodes: GLTFNodes }) {
 }
 
 export function Screen({ nodes }: { nodes: GLTFNodes }) {
-  const ScreenMesh: any = nodes.Screen;
+  const ScreenMesh = nodes.Screen as THREE.Mesh;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const onDesktop = useDesktop((s) => s.onDesktop);
   const onControl = useControlOrbit((s) => s.onControl);

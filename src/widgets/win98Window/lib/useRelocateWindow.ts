@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
-interface Props {
+type UseRelocateWindowParams = {
   titleRef: React.RefObject<HTMLDivElement | null>;
   resizingBorderRef: React.RefObject<HTMLDivElement | null>;
   windowRef: React.RefObject<HTMLDivElement | null>;
   controlsRef: React.RefObject<HTMLDivElement | null>;
   setIsSetting: (isActive: boolean) => void;
-}
+};
 
 export default function useRelocateWindow({
   titleRef,
@@ -14,7 +14,7 @@ export default function useRelocateWindow({
   windowRef,
   controlsRef,
   setIsSetting,
-}: Props) {
+}: UseRelocateWindowParams) {
   useEffect(() => {
     const titleBar = titleRef?.current;
     const border = resizingBorderRef?.current;

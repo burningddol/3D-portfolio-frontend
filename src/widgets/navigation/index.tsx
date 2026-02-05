@@ -4,20 +4,15 @@ import start from "/start.png";
 import { useState, useEffect, useRef } from "react";
 import NavMenu from "./ui/navMenu";
 import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
-import { type APPName } from "@/shares/zustand";
+import { type APPName, type AppOpenStatus } from "@/shares/types";
 import imageProvider from "@/shares/utils/imageProvider";
-interface APP {
-  "ToDo Schedular": boolean;
-  "Junseok's Book": boolean;
-  "My Blog": boolean;
-  "Jabdori Time": boolean;
-}
-interface Props {
-  setOnScreen: (isActive: boolean) => void;
-  isOpenApp: APP;
-}
 
-export default function Navigation({ isOpenApp, setOnScreen }: Props) {
+type NavigationProps = {
+  setOnScreen: (isActive: boolean) => void;
+  isOpenApp: AppOpenStatus;
+};
+
+export default function Navigation({ isOpenApp, setOnScreen }: NavigationProps) {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);

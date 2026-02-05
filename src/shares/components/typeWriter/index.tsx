@@ -5,13 +5,13 @@ import manual from "/manual.svg";
 import { useControlOrbit } from "@/shares/zustand";
 import { useKeyboardAudio } from "@/features/audio/useAudio";
 
-type Props = {
+type TypewriterProps = {
   text: string;
   speed?: number;
   info?: boolean;
 };
 
-export default function Typewriter({ text, speed = 50, info = false }: Props) {
+export default function Typewriter({ text, speed = 50, info = false }: TypewriterProps) {
   const { onControl, setOnControl } = useControlOrbit();
   const chars = useMemo(() => Array.from(text ?? ""), [text]);
   const [i, setI] = useState(0);
