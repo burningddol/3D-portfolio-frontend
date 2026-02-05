@@ -1,16 +1,13 @@
 import { create } from "zustand";
 import { type APPName, INITIAL_APP_STATUS } from "@/shares/types";
 
-/**
- * Boolean 상태를 관리하는 제네릭 스토어 타입
- */
 type BooleanStore<K extends string> = {
   [key in K]: boolean;
 } & {
   [key in `set${Capitalize<K>}`]: (isActive: boolean) => void;
 };
 
-// Desktop 상태
+// Desktop
 export const useDesktop = create<BooleanStore<"onDesktop">>((set) => ({
   onDesktop: false,
   setOnDesktop(isActive: boolean) {
@@ -18,7 +15,7 @@ export const useDesktop = create<BooleanStore<"onDesktop">>((set) => ({
   },
 }));
 
-// Hover 상태
+// Hover
 export const useHover = create<BooleanStore<"isHovered">>((set) => ({
   isHovered: false,
   setIsHovered(isActive: boolean) {
@@ -26,7 +23,7 @@ export const useHover = create<BooleanStore<"isHovered">>((set) => ({
   },
 }));
 
-// Project 상태
+// Project
 export const useProject = create<BooleanStore<"onProject">>((set) => ({
   onProject: false,
   setOnProject(isActive: boolean) {
@@ -34,7 +31,7 @@ export const useProject = create<BooleanStore<"onProject">>((set) => ({
   },
 }));
 
-// Control 상태
+// Control
 export const useControlOrbit = create<BooleanStore<"onControl">>((set) => ({
   onControl: false,
   setOnControl(isActive: boolean) {
@@ -42,7 +39,7 @@ export const useControlOrbit = create<BooleanStore<"onControl">>((set) => ({
   },
 }));
 
-// Setting 상태
+// Setting
 export const useSetting = create<BooleanStore<"isSetting">>((set) => ({
   isSetting: false,
   setIsSetting(isActive: boolean) {
