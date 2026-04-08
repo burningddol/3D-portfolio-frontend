@@ -10,7 +10,8 @@
 
 ## 데모
 
-> _Live link · GIF 추가 예정_
+![bandicam 2026-04-09 05-47-42-518](https://github.com/user-attachments/assets/c3babeaa-7b67-41af-98c1-89321b552525)
+
 
 ---
 
