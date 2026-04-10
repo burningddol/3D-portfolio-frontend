@@ -27,9 +27,36 @@ $win98-dark: #404040;
 
 .navInfo {
   font-family: "spaceMono";
-  font-weight: 700;
-  font-size: 20px;
   position: absolute;
-  bottom: 20px;
-  right: 17px;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 14px;
+  gap: 2px;
+
+  // Win98 inset bevel
+  border-top: 1px solid $win98-dark;
+  border-left: 1px solid $win98-dark;
+  border-right: 1px solid $win98-light;
+  border-bottom: 1px solid $win98-light;
+  box-shadow:
+    inset 1px 1px 0 0 #808080,
+    inset -1px -1px 0 0 $win98-highlight;
+
+  span:first-child {
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  span:last-child {
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
+    white-space: nowrap;
+  }
 }

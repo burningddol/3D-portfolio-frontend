@@ -14,6 +14,12 @@ type NavigationProps = {
 
 export default function Navigation({ isOpenApp, setOnScreen }: NavigationProps) {
   const [isShowMenu, setIsShowMenu] = useState(false);
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
@@ -82,7 +88,10 @@ export default function Navigation({ isOpenApp, setOnScreen }: NavigationProps) 
             </Win98Button>
           ),
       )}
-      <span className={styles.navInfo}>El Psy Kongroo</span>
+      <div className={styles.navInfo}>
+        <span>{now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true })}</span>
+        <span>{now.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" })}</span>
+      </div>
       {isShowMenu && (
         <div ref={menuRef}>
           <NavMenu setOnScreen={setOnScreen} setIsShowMenu={setIsShowMenu} />
