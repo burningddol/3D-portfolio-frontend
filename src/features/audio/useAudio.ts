@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import React from "react";
 
 export function useDesktopAudio(): () => void {
@@ -9,13 +9,13 @@ export function useDesktopAudio(): () => void {
     return desktopOnOff;
   }, []);
 
-  const playEffect = () => {
+  const playEffect = useCallback(() => {
     audio.currentTime = 0;
     audio.play();
     setTimeout(() => {
       audio.pause();
     }, 800);
-  };
+  }, [audio]);
 
   return playEffect;
 }

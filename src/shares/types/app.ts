@@ -19,3 +19,10 @@ export const APP_NAMES: APPName[] = [
   "My Blog",
   "Jabdori Time",
 ];
+
+export const APP_IFRAME_SRCS: Record<APPName, string> = {
+  "ToDo Schedular": "https://todoiniframe.vercel.app/",
+  "Junseok's Book": "https://win98-memobook.vercel.app/",
+  "My Blog": "https://velog.io/@junbug/posts/",
+  "Jabdori Time": "https://jabdori-time.vercel.app/",
+};

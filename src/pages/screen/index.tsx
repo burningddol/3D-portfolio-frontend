@@ -7,7 +7,13 @@ import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
 import { useAPPListOnNav } from "@/shares/zustand";
-import { type APPName, type AppOpenStatus, INITIAL_APP_STATUS } from "@/shares/types";
+import {
+  type APPName,
+  type AppOpenStatus,
+  INITIAL_APP_STATUS,
+  APP_NAMES,
+  APP_IFRAME_SRCS,
+} from "@/shares/types";
 
 export default function Screen() {
   const [onScreen, setOnScreen] = useState<boolean>(false);
@@ -15,32 +21,27 @@ export default function Screen() {
   const [isOpenApp, setIsOpenApp] = useState<AppOpenStatus>(INITIAL_APP_STATUS);
 
   const { removeAPPListOnNav } = useAPPListOnNav();
-
   const mouseAudio = useMouseAudio();
   const screenOnOffAudio = useDesktopAudio();
 
-  const wallPaperStyles = `${styles.wallPaper} ${
-    onScreen ? styles.screenOn : styles.screenOff
-  } ${onControl && styles.onControl}`;
+  const wallPaperStyles = [
+    styles.wallPaper,
+    onScreen ? styles.screenOn : styles.screenOff,
+    onControl && styles.onControl,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-  /*const oldEffectStyles = `${styles.oldEffect} ${
-    onScreen ? styles.screenOn : styles.screenOff
-  } ${onControl && styles.onControl}`;*/
-
-  const OnClose = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name as APPName;
+  const handleClose = (name: APPName) => {
     removeAPPListOnNav(name);
-    setIsOpenApp((prev) => ({
-      ...prev,
-      [name]: false,
-    }));
+    setIsOpenApp((prev) => ({ ...prev, [name]: false }));
   };
 
   usePostMessage(onScreen, setOnScreen, setOnControl);
 
   useEffect(() => {
     if (onScreen) screenOnOffAudio();
-  }, [onScreen]);
+  }, [onScreen, screenOnOffAudio]);
 
   return (
     <div onMouseDown={mouseAudio} onMouseUp={mouseAudio}>
@@ -54,40 +55,16 @@ export default function Screen() {
         <Applications isOpenApp={isOpenApp} setIsOpenApp={setIsOpenApp} />
         <Navigation isOpenApp={isOpenApp} setOnScreen={setOnScreen} />
 
-        {isOpenApp["ToDo Schedular"] && (
-          <Win98Window
-            name="ToDo Schedular"
-            onClose={OnClose}
-            onIframe
-            iframeSrc="https://todoiniframe.vercel.app/"
-          />
-        )}
-
-        {isOpenApp["Junseok's Book"] && (
-          <Win98Window
-            name="Junseok's Book"
-            onClose={OnClose}
-            onIframe
-            iframeSrc="https://win98-memobook.vercel.app/"
-          />
-        )}
-
-        {isOpenApp["My Blog"] && (
-          <Win98Window
-            name="My Blog"
-            onClose={OnClose}
-            onIframe
-            iframeSrc="https://velog.io/@junbug/posts/"
-          />
-        )}
-
-        {isOpenApp["Jabdori Time"] && (
-          <Win98Window
-            name="Jabdori Time"
-            onClose={OnClose}
-            onIframe
-            iframeSrc="https://jabdori-time.vercel.app/"
-          />
+        {APP_NAMES.map((name) =>
+          isOpenApp[name] ? (
+            <Win98Window
+              key={name}
+              name={name}
+              onClose={() => handleClose(name)}
+              onIframe
+              iframeSrc={APP_IFRAME_SRCS[name]}
+            />
+          ) : null
         )}
       </div>
     </div>
