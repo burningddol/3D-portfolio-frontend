@@ -12,7 +12,7 @@ import {
   type AppOpenStatus,
   INITIAL_APP_STATUS,
   APP_NAMES,
-  APP_IFRAME_SRCS,
+  APP_CONFIG,
 } from "@/shares/types";
 
 export default function Screen() {
@@ -62,7 +62,7 @@ export default function Screen() {
               name={name}
               onClose={() => handleClose(name)}
               onIframe
-              iframeSrc={APP_IFRAME_SRCS[name]}
+              iframeSrc={APP_CONFIG[name].iframeSrc}
             />
           ) : null
         )}

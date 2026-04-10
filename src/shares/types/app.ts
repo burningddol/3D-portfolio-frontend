@@ -20,9 +20,9 @@ export const APP_NAMES: APPName[] = [
   "Jabdori Time",
 ];
 
-export const APP_IFRAME_SRCS: Record<APPName, string> = {
-  "ToDo Schedular": "https://todoiniframe.vercel.app/",
-  "Junseok's Book": "https://win98-memobook.vercel.app/",
-  "My Blog": "https://velog.io/@junbug/posts/",
-  "Jabdori Time": "https://jabdori-time.vercel.app/",
+export const APP_CONFIG: Record<APPName, { label: string; iframeSrc: string }> = {
+  "ToDo Schedular": { label: "ToDo Scheduler", iframeSrc: "https://todoiniframe.vercel.app/" },
+  "Junseok's Book": { label: "Junseok's Book", iframeSrc: "https://win98-memobook.vercel.app/" },
+  "My Blog": { label: "My Blog", iframeSrc: "https://velog.io/@junbug/posts/" },
+  "Jabdori Time": { label: "Jabdori Time", iframeSrc: "https://jabdori-time.vercel.app/" },
 };

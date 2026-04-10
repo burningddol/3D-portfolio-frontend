@@ -1,119 +1,76 @@
 import styles from "./style/applications.module.scss";
-import toDoList from "/toDoList.png";
-import junseokBook from "/junseokBook.png";
-import blog from "/blog.png";
-import jabdori from "/jabdori.png";
 import {
   useState,
   useEffect,
+  useRef,
   type Dispatch,
   type SetStateAction,
-  useRef,
 } from "react";
 import { useAPPListOnNav, useFocusing } from "@/shares/zustand";
-import { type APPName, type AppOpenStatus, INITIAL_APP_STATUS } from "@/shares/types";
+import {
+  type APPName,
+  type AppOpenStatus,
+  APP_NAMES,
+  APP_CONFIG,
+} from "@/shares/types";
+import imageProvider from "@/shares/utils/imageProvider";
 
 type ApplicationsProps = {
   setIsOpenApp: Dispatch<SetStateAction<AppOpenStatus>>;
   isOpenApp: AppOpenStatus;
 };
 
-export default function Applications({ isOpenApp, setIsOpenApp }: ApplicationsProps) {
-  const [isTouched, setIsTouched] = useState<AppOpenStatus>(INITIAL_APP_STATUS);
+export default function Applications({
+  isOpenApp,
+  setIsOpenApp,
+}: ApplicationsProps) {
+  const [touchedApp, setTouchedApp] = useState<APPName | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { addAPPListOnNav } = useAPPListOnNav();
   const { addOnFocusing } = useFocusing();
-  const toDoRef = useRef<HTMLButtonElement>(null);
-  const junseokBookRef = useRef<HTMLButtonElement>(null);
-  const myBlogRef = useRef<HTMLButtonElement>(null);
-  const jabdoriTimeRef = useRef<HTMLButtonElement>(null);
 
-  const handleDoubleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name as APPName;
-    addOnFocusing(name);
-    setIsOpenApp((prev) => ({
-      ...prev,
-      [name]: true,
-    }));
-    setIsTouched(INITIAL_APP_STATUS);
-
-    if (!isOpenApp[name]) addAPPListOnNav(name); // 앱을 처음 열 경우만 Nav에 추가
-
-    // window창 DOM 생성 이후 조건으로
-    if (!isOpenApp[name]) return;
-    const el = document.getElementById(name);
-    if (!el) return;
-    el.style.display = "block"; //창 minimize 했다가 다시 누를경우 대비
+  const handleDoubleClick = (name: APPName) => {
+    addOnFocusing(name); // Win98Window의 onFocusing useEffect가 display:block 복원 처리
+    setIsOpenApp((prev) => ({ ...prev, [name]: true }));
+    setTouchedApp(null);
+    if (!isOpenApp[name]) addAPPListOnNav(name);
   };
 
-  const handleDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name;
-
-    setIsTouched(() => ({ ...INITIAL_APP_STATUS, [name]: true }));
+  const handleDown = (name: APPName) => {
+    setTouchedApp(name);
   };
 
-  // 어플 외 밖 클릭하면 touched 취소
   useEffect(() => {
-    const handleDown = (e: MouseEvent) => {
-      const isActive =
-        !toDoRef.current?.contains(e.target as Node) &&
-        !junseokBookRef.current?.contains(e.target as Node) &&
-        !myBlogRef.current?.contains(e.target as Node) &&
-        !jabdoriTimeRef.current?.contains(e.target as Node);
-
-      if (isActive) setIsTouched(INITIAL_APP_STATUS);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) {
+        setTouchedApp(null);
+      }
     };
-    document.addEventListener("mousedown", handleDown);
-    return () => {
-      document.removeEventListener("mousedown", handleDown);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <div className={styles.container}>
-      <button
-        name="ToDo Schedular"
-        ref={toDoRef}
-        className={`${styles.app} ${isTouched["ToDo Schedular"] ? styles.touched : ""} ${styles.index1}`}
-        onDoubleClick={handleDoubleClick}
-        onMouseDown={handleDown}
-      >
-        <img src={toDoList} />
-        <span>ToDo Scheduler</span>
-      </button>
-
-      <button
-        name="Junseok's Book"
-        ref={junseokBookRef}
-        className={`${styles.app} ${isTouched["Junseok's Book"] ? styles.touched : ""} ${styles.index2} `}
-        onDoubleClick={handleDoubleClick}
-        onMouseDown={handleDown}
-      >
-        <img src={junseokBook} />
-        <span>Junseok's Book</span>
-      </button>
-
-      <button
-        name="My Blog"
-        ref={myBlogRef}
-        className={`${styles.app} ${isTouched["My Blog"] ? styles.touched : ""} ${styles.index3} `}
-        onDoubleClick={handleDoubleClick}
-        onMouseDown={handleDown}
-      >
-        <img src={blog} />
-        <span>My Blog</span>
-      </button>
-
-      <button
-        name="Jabdori Time"
-        ref={jabdoriTimeRef}
-        className={`${styles.app} ${isTouched["Jabdori Time"] ? styles.touched : ""} ${styles.index4} `}
-        onDoubleClick={handleDoubleClick}
-        onMouseDown={handleDown}
-      >
-        <img src={jabdori} />
-        <span>Jabdori Time</span>
-      </button>
+    <div className={styles.container} ref={containerRef}>
+      {APP_NAMES.map((name, index) => (
+        <button
+          key={name}
+          name={name}
+          className={[
+            styles.app,
+            touchedApp === name ? styles.touched : "",
+            styles[`index${index + 1}`],
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          onDoubleClick={() => handleDoubleClick(name)}
+          onMouseDown={() => handleDown(name)}
+        >
+          <img src={imageProvider(name)} alt={name} />
+          <span>{APP_CONFIG[name].label}</span>
+        </button>
+      ))}
     </div>
   );
 }
