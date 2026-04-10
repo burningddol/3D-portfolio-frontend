@@ -6,6 +6,7 @@ import { useDesktopAudio, useMouseAudio } from "@/features/audio/useAudio";
 import { usePostMessage } from "./lib/usePostMessage";
 import Applications from "@/widgets/applications";
 import { Win98Window } from "@/widgets/win98Window";
+import Win98Button from "@/shares/components/button";
 import { useAPPListOnNav } from "@/shares/zustand";
 import {
   type APPName,
@@ -49,9 +50,6 @@ export default function Screen() {
       {/*<div className={oldEffectStyles} /> oldEffect 일단 꺼둠 테마상*/}
 
       <div className={wallPaperStyles}>
-        <div className={styles.stillWork}>
-          This project is still a work in progress...
-        </div>
         <Applications isOpenApp={isOpenApp} setIsOpenApp={setIsOpenApp} />
         <Navigation isOpenApp={isOpenApp} setOnScreen={setOnScreen} />
 
@@ -61,10 +59,26 @@ export default function Screen() {
               key={name}
               name={name}
               onClose={() => handleClose(name)}
-              onIframe
+              onIframe={APP_CONFIG[name].openInIframe}
               iframeSrc={APP_CONFIG[name].iframeSrc}
-            />
-          ) : null
+            >
+              {!APP_CONFIG[name].openInIframe && (
+                <div className={styles.linkContent}>
+                  <p className={styles.linkDescription}>
+                    GitHub is not supported in embedded windows.
+                  </p>
+                  <Win98Button
+                    size="large"
+                    onClick={() =>
+                      window.open(APP_CONFIG[name].iframeSrc, "_blank")
+                    }
+                  >
+                    Open in GitHub
+                  </Win98Button>
+                </div>
+              )}
+            </Win98Window>
+          ) : null,
         )}
       </div>
     </div>
