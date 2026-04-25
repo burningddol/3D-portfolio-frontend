@@ -1,0 +1,50 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <!-- Wooden frame (brown) -->
+  <rect x="6" y="10" width="88" height="74" fill="#8b6f47"/>
+  <!-- Frame highlight (top/left) -->
+  <rect x="6" y="10" width="88" height="2" fill="#c19a6b"/>
+  <rect x="6" y="10" width="2" height="74" fill="#c19a6b"/>
+  <!-- Frame shadow (bottom/right) -->
+  <rect x="6" y="82" width="88" height="2" fill="#5a4530"/>
+  <rect x="92" y="10" width="2" height="74" fill="#5a4530"/>
+
+  <!-- Chalkboard surface (dark green) -->
+  <rect x="10" y="14" width="80" height="66" fill="#2d4a2a"/>
+  <!-- Board inset bevel -->
+  <rect x="10" y="14" width="80" height="1" fill="#1a3018"/>
+  <rect x="10" y="14" width="1" height="66" fill="#1a3018"/>
+  <rect x="10" y="79" width="80" height="1" fill="#3d5a3a"/>
+  <rect x="89" y="14" width="1" height="66" fill="#3d5a3a"/>
+
+  <!-- Chalk header line -->
+  <text x="14" y="24" font-family="'Courier New', monospace" font-size="6" font-weight="bold" fill="#f0e6d2">- CS NOTE -</text>
+  <rect x="13" y="26" width="44" height="1" fill="#cccccc" opacity="0.7"/>
+
+  <!-- Big "CS" chalk text -->
+  <text x="50" y="55" font-family="'Courier New', monospace" font-size="26" font-weight="bold" fill="#fffacd" text-anchor="middle">CS</text>
+
+  <!-- Underline accent -->
+  <rect x="36" y="58" width="28" height="1" fill="#fffacd"/>
+  <rect x="40" y="60" width="20" height="1" fill="#fffacd" opacity="0.6"/>
+
+  <!-- Small chalk marks (CS-themed) -->
+  <text x="14" y="72" font-family="'Courier New', monospace" font-size="5" fill="#cccccc">O(n)</text>
+  <text x="36" y="72" font-family="'Courier New', monospace" font-size="5" fill="#cccccc">if{}</text>
+  <text x="58" y="72" font-family="'Courier New', monospace" font-size="5" fill="#cccccc">0101</text>
+  <text x="78" y="72" font-family="'Courier New', monospace" font-size="5" fill="#cccccc">&lt;/&gt;</text>
+
+  <!-- Chalk tray (bottom ledge) -->
+  <rect x="6" y="84" width="88" height="6" fill="#6b5532"/>
+  <rect x="6" y="84" width="88" height="1" fill="#8b6f47"/>
+  <rect x="6" y="89" width="88" height="1" fill="#3a2810"/>
+
+  <!-- Eraser on tray -->
+  <rect x="68" y="85" width="14" height="4" fill="#d4b896"/>
+  <rect x="68" y="85" width="14" height="1" fill="#e8d4b0"/>
+  <rect x="68" y="85" width="1" height="4" fill="#e8d4b0"/>
+  <rect x="81" y="85" width="1" height="4" fill="#a08868"/>
+
+  <!-- Chalk piece on tray -->
+  <rect x="14" y="86" width="10" height="2" fill="#fffacd"/>
+  <rect x="14" y="86" width="10" height="1" fill="#ffffff"/>
+</svg>
